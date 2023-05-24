@@ -6,7 +6,9 @@ import { useLanguage } from '@/hooks/useLanguage';
 import Image from 'next/image';
 import getCategoryData from '@/lib/getCategoryData';
 import getBrandsData from '@/lib/getBrandsData';
-export const ProductsPage = ({ cat, type }: { cat: any, type: any }) => {
+import BreadCrumb from './breadcrumb';
+import { useRouter } from 'next/router';
+export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, menuData: any }) => {
 
     const [data, setData] = useState([{
     }])
@@ -28,6 +30,8 @@ export const ProductsPage = ({ cat, type }: { cat: any, type: any }) => {
     const [modelDetails, setModelDetails] = useState({
         short_description: ""
     })
+    const router = useRouter()
+
     // function getApiUrl(isProductsPage: boolean, cat: string, type: any, noOfProducts: number) {
     //     const url = `https://prodapp.lifepharmacy.com/api/web/products?${isProductsPage ? "" : cat != "" ? `${cat}=${type}&` : ""}order_by=popularity&type=cols&skip=${noOfProducts}&take=40&new_method=true&lang=`
     //     console.log(url);
@@ -74,20 +78,18 @@ export const ProductsPage = ({ cat, type }: { cat: any, type: any }) => {
                         setData(proData.data.products)
                         setfiltersData(proData.data.filters)
                         setModelDetails(proData.data.model_details)
-
                     }
                 }
             )
         }
+
         getCategoryData().then(cat_data => {
             setCatData(cat_data)
+        })
 
-        }
-        )
         getBrandsData().then((brands_data: any) => {
             setBrandsData(brands_data)
         })
-
 
     }
 
@@ -96,50 +98,38 @@ export const ProductsPage = ({ cat, type }: { cat: any, type: any }) => {
         fetchData(cat, noOfProducts, true)
         setNoOfProducts(c => c + 40)
     }
+
+
     useEffect(() => {
         fetchData(cat, 0, false)
-
     }, [])
+
 
 
     return (
         <div className="mx-auto max-w-[1450px] px-[10px] ">
 
             {
-                filtersData.categories[0].images.banner != "" ?
-                    <div className=" h-[10rem] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
-                        <div className='my-auto space-y-2'>
-                        {cat ? <h1 className='text-4xl text-center capitalize'>{typeGenerate(cat)}</h1> : null}
-                        <h1 className='text-2xl  text-center   capitalize text-blue-500'>{type ? String(type).toLowerCase().replace(/-/g, ' ') : " Products"} </h1>
-                        </div>
-
-                    </div> :
+                filtersData.categories && filtersData.categories[0].images.banner != null ?
                     <div className=''>
                         <Image src={filtersData.categories[0].images.banner} height={500} width={1440} alt="headerimg" className=' object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto ' />
-                        <nav className="flex px-5 py-3 mb-5 text-gray-700   rounded-lg bg-gray-50 my-5" aria-label="Breadcrumb">
-                            <ol className="inline-flex items-center space-x-1 md:space-x-3">
-                                <li className="inline-flex items-center">
-                                    <a href={`/`} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 ">
-                                        <svg aria-hidden="true" className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <div className="flex items-center">
-                                        <svg aria-hidden="true" className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                                        <a className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 ">Products</a>
-                                    </div>
-                                </li>
-                            </ol>
-                        </nav>
+                        <BreadCrumb menuData={menuData} />
                         <div className="relative">
                             <p className={`text-sm text-gray-600 my-5  ${readMoreClick ? '' : 'overflow-y-hidden h-[7rem]'} text-ellipsis leading-7`} dangerouslySetInnerHTML={{ __html: modelDetails.short_description }} />
                             <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMoreClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
                                 <button onClick={() => setReadMoreClick(!readMoreClick)} className=' rounded-full text-sm bg-white border border-slate-200 hover:bg-slate-100 hover:text-blue-500 p-1 px-2'>Read {readMoreClick ? 'Less' : 'More'}</button>
                             </div>
                         </div>
-                    </div>
+                    </div> :
+                    <>
+                        <div className=" h-[12em] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
+                            <div className='my-auto space-y-2'>
+                                {cat ? <h1 className='text-4xl text-center capitalize'>{typeGenerate(cat)}</h1> : null}
+                                <h1 className='text-2xl  text-center   capitalize text-blue-500'>{type ? String(type).toLowerCase().replace(/-/g, ' ') : " Products"} </h1>
+                            </div>
+                        </div>
+                        <BreadCrumb menuData={menuData} />
+                    </>
 
             }
             <ProductsPageData data={data} cat_data={catData} brands_data={brandsData} />

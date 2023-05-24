@@ -31,7 +31,7 @@ const ProductsPageData = ({ data, cat_data, brands_data }: { data: any, cat_data
     return (
         <div className='py-5 max-w-[1450px]  mx-auto'>
 
-            <div className="flex justify-end border-b border-gray-200 py-5">
+            <div className="flex justify-end  py-2">
 
                 <div className="flex items-center">
                     <div className="relative inline-block text-left group/sort-menu">
@@ -85,7 +85,7 @@ const ProductsPageData = ({ data, cat_data, brands_data }: { data: any, cat_data
                                 >
 
                                     <AccordionItem className="" value="item-1">
-                                        <AccordionTrigger className="font-bold">Category</AccordionTrigger>
+                                        <AccordionTrigger className="font-bold text-lg">Category</AccordionTrigger>
                                         {cat_data.data.map((item: any) => (
                                             <AccordionContent className="" >
                                                 <Accordion.Root
@@ -118,9 +118,6 @@ const ProductsPageData = ({ data, cat_data, brands_data }: { data: any, cat_data
                                             </AccordionContent>
                                         ))}
                                     </AccordionItem>
-
-
-
                                 </Accordion.Root>
                                 <Accordion.Root
                                     className=""
@@ -129,7 +126,7 @@ const ProductsPageData = ({ data, cat_data, brands_data }: { data: any, cat_data
                                     collapsible
                                 >
                                     <AccordionItem className="" value="item-1">
-                                        <AccordionTrigger className="font-bold">Brands</AccordionTrigger>
+                                        <AccordionTrigger className="font-bold text-lg">Brands</AccordionTrigger>
                                         <AccordionContent className="" >
                                             {brands_data ?
                                                 brands_data.data.brands.map((brand: any) => (
@@ -151,7 +148,7 @@ const ProductsPageData = ({ data, cat_data, brands_data }: { data: any, cat_data
                             collapsible
                         >
                             <AccordionItem className="" value="item-1">
-                                <AccordionTrigger className="font-bold">Price</AccordionTrigger>
+                                <AccordionTrigger className="font-bold text-lg">Price</AccordionTrigger>
 
                                 <AccordionContent className="" >
                                     <div className="justify-between flex">
@@ -159,12 +156,12 @@ const ProductsPageData = ({ data, cat_data, brands_data }: { data: any, cat_data
                                         <button className=" bg-slate-200 hover:bg-slate-300 text-sm w-fit px-2 p-1 rounded-full">Filter</button>
                                     </div>
                                     <Slider.Root
-                                        className="relative flex items-center select-none touch-none w-[200px] h-5"
-                                        defaultValue={[50]}
+                                        className="relative flex items-center select-none touch-none w-full h-5 mt-5"
+                                        defaultValue={[0]}
                                         onValueChange={rangeSliderValueChange}
                                         value={rangeSliderValue}
-                                        max={100}
-                                        step={1}
+                                        max={10000}
+                                        step={100}
                                     >
                                         <Slider.Track className="bg-blackA10 relative grow rounded-full h-[3px]">
                                             <Slider.Range className="absolute bg-gray-400 rounded-full h-full" />
