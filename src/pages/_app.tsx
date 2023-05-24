@@ -9,6 +9,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 
 import { Poppins } from 'next/font/google';
 import NextNProgress from 'nextjs-progressbar';
+
 const poppins = Poppins({
   weight: '300',
   subsets: ['latin'],

@@ -1,41 +1,20 @@
-import { GetStaticPaths, GetStaticProps } from "next"
-import getHomePageData from "@/lib/getHomePageData"
 import getSingleProductData from "@/lib/getSingleProductData"
 import SingleProductsContent from "@/components/single-product-page"
-const SingleProductPage = ({ pagesParams }: { pagesParams: any}) => {
-
-
+const SingleProductPage = ({ singleProductData }: { singleProductData: any }) => {
 
     return (
-        <SingleProductsContent pro_data={pagesParams}  />
+        <SingleProductsContent pro_data={singleProductData} />
     )
 }
 
 export default SingleProductPage
 
-export const getStaticPaths = async () => {
+export async function getServerSideProps({ locale, params }: { locale: any, params: any }) {
+    const singleProductData = await getSingleProductData(locale, params.singleProduct);
 
-
-
-    // const paths = [...new Set(slugs)].map((slug) => (
-    //     {
-    //         params: {
-    //             pages: slug
-    //         }
-    //     }
-
-    // ))
-
-    return {
-        fallback: "blocking",
-        paths: []
-    };
-}
-export const getStaticProps = async (context: any) => {
-    const pagesParams = context.params?.singleProduct;
     return {
         props: {
-            pagesParams,
+            singleProductData: singleProductData.data.product,
         },
     };
-};
+}
