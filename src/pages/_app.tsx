@@ -8,9 +8,9 @@ import { getSession } from 'next-auth/react'
 import { useLanguage } from '@/hooks/useLanguage'
 
 import { Poppins } from 'next/font/google';
-
+import NextNProgress from 'nextjs-progressbar';
 const poppins = Poppins({
-  weight: '400',
+  weight: '300',
   subsets: ['latin'],
 });
 
@@ -32,13 +32,16 @@ const App = ({ Component, data, brands_data, session, pageProps }: TProps) => {
 
   const { t, locale } = useLanguage();
   return (
-    <SessionProvider session={session}>
-      <main dir={getDirection(locale)} className={poppins.className}>
-        <Layout data={data} brands_data={brands_data} sessionServ={session} isArabic={false} lang={locale ? locale : "en"} langData={t}>
-          <Component {...pageProps} />
-        </Layout>
-      </main>
-    </SessionProvider>
+    <>
+      <NextNProgress color="#eba834"/>
+      <SessionProvider session={session}>
+        <main dir={getDirection(locale)} className={poppins.className}>
+          <Layout data={data} brands_data={brands_data} sessionServ={session} isArabic={false} lang={locale ? locale : "en"} langData={t}>
+            <Component {...pageProps} />
+          </Layout>
+        </main>
+      </SessionProvider></>
+
   )
 
 }

@@ -5,9 +5,12 @@ import { useRouter } from 'next/router';
 
 const Products = ({ }) => {
     const router = useRouter()
+    const { query } = router
     const category = Object.keys(router.query)[0]
-   
-    return <ProductsPage cat={category} type={router.query[`${category}`]}/>
+const queryData = query.collections ? query.collections : query.categories ? query.categories : query.collections ? query.collections : null
+
+    return <ProductsPage cat={category} type={router.query[`${category}`]} menuData={["Products", String(queryData).replace(/-/g, ' ')
+]} />
 }
 
 
