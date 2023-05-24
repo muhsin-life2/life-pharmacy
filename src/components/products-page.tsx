@@ -8,7 +8,8 @@ import getCategoryData from '@/lib/getCategoryData';
 import getBrandsData from '@/lib/getBrandsData';
 import BreadCrumb from './breadcrumb';
 import { useRouter } from 'next/router';
-export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, menuData: any }) => {
+
+export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: any, menuData: any, type: any }) => {
 
     const [data, setData] = useState([{
     }])
@@ -19,18 +20,7 @@ export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, men
     const [brandsData, setBrandsData] = useState({})
     const [readMoreClick, setReadMoreClick] = useState(false)
     const { locale } = useLanguage();
-    const [filtersData, setfiltersData] = useState({
-        categories: [{
-            images: {
-                banner: ""
-            }
-        }
-        ]
-    })
-    const [modelDetails, setModelDetails] = useState({
-        short_description: ""
-    })
-    const router = useRouter()
+
 
     // function getApiUrl(isProductsPage: boolean, cat: string, type: any, noOfProducts: number) {
     //     const url = `https://prodapp.lifepharmacy.com/api/web/products?${isProductsPage ? "" : cat != "" ? `${cat}=${type}&` : ""}order_by=popularity&type=cols&skip=${noOfProducts}&take=40&new_method=true&lang=`
@@ -41,10 +31,10 @@ export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, men
 
     function typeGenerate(type: string) {
         switch (type) {
-            case "categories":
-                return "category"
-            case "collections":
-                return "collection"
+            case "Category":
+                return "categories"
+            case "Collection":
+                return "collections"
         }
         return ""
     }
@@ -60,8 +50,7 @@ export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, men
                     }
                     else {
                         setData(proData.data.products)
-                        setfiltersData(proData.data.filters)
-                        setModelDetails(proData.data.model_details)
+
                     }
                 }
             )
@@ -76,13 +65,14 @@ export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, men
                     }
                     else {
                         setData(proData.data.products)
-                        setfiltersData(proData.data.filters)
-                        setModelDetails(proData.data.model_details)
                     }
                 }
             )
         }
 
+    }
+
+    useEffect(()=>{
         getCategoryData().then(cat_data => {
             setCatData(cat_data)
         })
@@ -91,31 +81,25 @@ export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, men
             setBrandsData(brands_data)
         })
 
-    }
+    },[])
 
     function loadMoreProducts() {
         setAnimateSpin(true)
-        fetchData(cat, noOfProducts, true)
+        fetchData(typeGenerate(menuData[0]), noOfProducts, true)
         setNoOfProducts(c => c + 40)
     }
-
-
-    useEffect(() => {
-        fetchData(cat, 0, false)
-    }, [])
 
 
 
     return (
         <div className="mx-auto max-w-[1450px] px-[10px] ">
-
             {
-                filtersData.categories && filtersData.categories[0].images.banner != null ?
+                categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0]  && categoryData.filters.categories[0].images.banner ?
                     <div className=''>
-                        <Image src={filtersData.categories[0].images.banner} height={500} width={1440} alt="headerimg" className=' object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto ' />
+                        <Image src={categoryData.filters.categories[0].images.banner} height={500} width={1440} alt="headerimg" className=' object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto ' />
                         <BreadCrumb menuData={menuData} />
                         <div className="relative">
-                            <p className={`text-sm text-gray-600 my-5  ${readMoreClick ? '' : 'overflow-y-hidden h-[7rem]'} text-ellipsis leading-7`} dangerouslySetInnerHTML={{ __html: modelDetails.short_description }} />
+                            <p className={`text-sm text-gray-600 my-5  ${readMoreClick ? '' : 'overflow-y-hidden h-[7rem]'} text-ellipsis leading-7`} dangerouslySetInnerHTML={{ __html: categoryData.model_details.short_description }} />
                             <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMoreClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
                                 <button onClick={() => setReadMoreClick(!readMoreClick)} className=' rounded-full text-sm bg-white border border-slate-200 hover:bg-slate-100 hover:text-blue-500 p-1 px-2'>Read {readMoreClick ? 'Less' : 'More'}</button>
                             </div>
@@ -124,15 +108,15 @@ export const ProductsPage = ({ cat, type, menuData }: { cat: any, type: any, men
                     <>
                         <div className=" h-[12em] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
                             <div className='my-auto space-y-2'>
-                                {cat ? <h1 className='text-4xl text-center capitalize'>{typeGenerate(cat)}</h1> : null}
-                                <h1 className='text-2xl  text-center   capitalize text-blue-500'>{type ? String(type).toLowerCase().replace(/-/g, ' ') : " Products"} </h1>
+                                {menuData[0] ? <h1 className='text-4xl text-center capitalize'>{menuData[0]}</h1> : null}
+                                <h1 className='text-2xl  text-center   capitalize text-blue-500'>{menuData[1] ? String(menuData[1]).toLowerCase().replace(/-/g, ' ') : " Products"} </h1>
                             </div>
                         </div>
                         <BreadCrumb menuData={menuData} />
                     </>
 
             }
-            <ProductsPageData data={data} cat_data={catData} brands_data={brandsData} />
+            <ProductsPageData data={categoryData.products} cat_data={catData} brands_data={brandsData} />
             {showMoreProductsbtn ?
                 <div className='w-full flex justify-center'>
                     <button onClick={() => { loadMoreProducts() }} className='bg-[#39f] text-white px-3 py-2 flex'>

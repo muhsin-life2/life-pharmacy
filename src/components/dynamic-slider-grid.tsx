@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation, Autoplay } from "swiper";
 import ImgPage from "./img-page";
-
+import { useSwiper } from 'swiper/react';
 interface props {
     data: any,
     isDesktop: boolean,
@@ -13,7 +13,7 @@ interface props {
 }
 
 const DynamicSliderGrid: FC<props> = ({ data, isDesktop, isMobile }) => {
-
+    const swiper = useSwiper();
 
     if (isDesktop === false && isMobile === false) {
         return <></>
@@ -36,6 +36,7 @@ const DynamicSliderGrid: FC<props> = ({ data, isDesktop, isMobile }) => {
 
             {data.section_data_array.map((sec_data: any) => (
                 <SwiperSlide>
+                    
                     {(sec_data.desktop.image_url || sec_data.mobile.image_url) &&
                         <ImgPage sectionData={sec_data} isDesktop={isDesktop} isMobile={isMobile} m_height={0} m_width={0} />
                     }
