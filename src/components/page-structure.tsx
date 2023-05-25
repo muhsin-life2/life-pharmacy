@@ -1,5 +1,4 @@
 import { useState, useEffect, FC } from "react";
-import { useWindowSize } from '@react-hook/window-size'
 import Products from "./products";
 import { useRouter } from 'next/router';
 import DynamicGrid from "./dynamic-grid";
@@ -15,26 +14,21 @@ interface compProps {
 const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
 
     const [domLoaded, setDomLoaded] = useState(false);
-    const [width, height] = useWindowSize();
+
     const router = useRouter()
 
     useEffect(() => {
         setDomLoaded(true);
     }, []);
 
-    // function getProductsDatas(catName) {
-    //     getProductsData(lang, catName).then(res => setProData(res.data.products)
-    //      )
 
-    //     return proDatas
-    // }
     return (
 
         <div >
             {
                 data.section_type === "dynamic_slider_grid" ?
                     <>
-                        <div className="min-[565px]:hidden block">
+                        <div className="min-[566px]:hidden block">
                             <DynamicSliderGrid data={data} isDesktop={false} isMobile={!data.settings.hide_in_mobile_web || data.settings.hide_in_mobile_web === false} />
                         </div>
 
@@ -48,7 +42,7 @@ const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
             {
                 data.section_type === "dynamic_grid" ?
                     <>
-                        <div className="min-[565px]:hidden block">
+                        <div className="min-[566px]:hidden block">
                             <DynamicGrid data={data} isDesktop={false} isMobile={!data.settings.hide_in_mobile_web || data.settings.hide_in_mobile_web === false} />
                         </div>
                         <div className="max-[565px]:hidden block">
