@@ -9,7 +9,7 @@ import { useLanguage } from '@/hooks/useLanguage'
 
 import { Poppins } from 'next/font/google';
 import NextNProgress from 'nextjs-progressbar';
-
+import Head from 'next/head'
 const poppins = Poppins({
   weight: '300',
   subsets: ['latin'],
@@ -34,6 +34,9 @@ const App = ({ Component, data, brands_data, session, pageProps }: TProps) => {
   const { t, locale } = useLanguage();
   return (
     <>
+    <Head>
+    <title>Life Pharmacy UAE - Online Pharmacy Delivery in 30 minutes</title>
+    </Head>
       <NextNProgress color="#eba834"/>
       <SessionProvider session={session}>
         <main dir={getDirection(locale)} className={poppins.className}>

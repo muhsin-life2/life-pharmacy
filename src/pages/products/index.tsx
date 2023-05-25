@@ -3,36 +3,37 @@ import { ProductsPage } from "@/components/products-page"
 import { useRouter } from 'next/router';
 import getProductsDataByCat from "@/lib/getProductsDataByCat";
 
-const Products = ({ type, productsData, cat }: { type: any, productsData: any, cat: any }) => {
+const Products = ({ productsData, cat, filterPath, selectedBrands }: { productsData: any, cat: any, filterPath: string, selectedBrands: string }) => {
 
-    return <ProductsPage type={type} categoryData={productsData} menuData={["Products", String(cat).replace(/-/g, ' ')
-    ]} />
+    return <ProductsPage filterPath={filterPath} isSearchPage={false} categoryData={productsData} menuData={["Products", String(cat).replace(/-/g, ' ')]} selectedBrands={selectedBrands} />
 }
-
-
-// export async  function getServerSideProps(){
-// const productsData = await getProductsDataByCat("", "", 0, true)
-// console.log(productsData);
-
-// }
 
 export default Products
 
 export async function getServerSideProps({ locale, query }: { locale: any, query: any }) {
-    let type = ""
+
+    let filterPath = ""
     let cat = ""
     if (query.collections) {
-        type = "collections"
+        filterPath = `collections${query.collections != "" ? `=${query.collections}` : ""}`
         cat = query.collections
     }
+    else if (query.categories) {
+        filterPath = `categories${query.categories != "" ? `=${query.categories}` : ""}`
+        cat = query.categories
+    }
+    if (query.brands) {
 
-    const productsData = await getProductsDataByCat(type, cat, 0, false, locale);
+        filterPath += `${filterPath != "" ? "&" : ""} brands=${query.brands}`
 
+    }
+    const productsData = await getProductsDataByCat(filterPath, 0, false, locale);
     return {
         props: {
             productsData: productsData.data,
-            type,
+            filterPath,
             cat,
+            selectedBrands: query.brands?query.brands:""
         }
     }
 }
