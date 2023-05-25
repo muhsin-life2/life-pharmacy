@@ -7,9 +7,8 @@ import Image from 'next/image';
 import getCategoryData from '@/lib/getCategoryData';
 import getBrandsData from '@/lib/getBrandsData';
 import BreadCrumb from './breadcrumb';
-import { useRouter } from 'next/router';
 
-export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: any, menuData: any, type: any }) => {
+export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData, selectedBrands }: { categoryData: any, menuData: any, filterPath: string, isSearchPage: boolean, selectedBrands:string }) => {
 
     const [data, setData] = useState([{
     }])
@@ -17,18 +16,9 @@ export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: a
     const [animateSpin, setAnimateSpin] = useState(false)
     const [showMoreProductsbtn, setShowMoreProductsbtn] = useState(true)
     const [catData, setCatData] = useState({})
-    const [brandsData, setBrandsData] = useState({})
+
     const [readMoreClick, setReadMoreClick] = useState(false)
     const { locale } = useLanguage();
-
-
-    // function getApiUrl(isProductsPage: boolean, cat: string, type: any, noOfProducts: number) {
-    //     const url = `https://prodapp.lifepharmacy.com/api/web/products?${isProductsPage ? "" : cat != "" ? `${cat}=${type}&` : ""}order_by=popularity&type=cols&skip=${noOfProducts}&take=40&new_method=true&lang=`
-    //     console.log(url);
-
-    //     return url
-    // }
-
     function typeGenerate(type: string) {
         switch (type) {
             case "Category":
@@ -41,7 +31,7 @@ export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: a
 
     function fetchData(query: any, noOfProducts: number, loadMoreData: boolean) {
         if (query === null) {
-            getProductsDataByCat(query, type, noOfProducts, true, locale).then(
+            getProductsDataByCat(filterPath, noOfProducts, true, locale).then(
                 (proData: any) => {
                     if (loadMoreData) {
                         setData([...data, ...proData.data.products])
@@ -56,7 +46,7 @@ export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: a
             )
         }
         else {
-            getProductsDataByCat(query, type, noOfProducts, false, locale).then(
+            getProductsDataByCat(filterPath, noOfProducts, false, locale).then(
                 (proData: any) => {
                     if (loadMoreData) {
                         setData([...data, ...proData.data.products])
@@ -72,16 +62,11 @@ export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: a
 
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         getCategoryData().then(cat_data => {
             setCatData(cat_data)
         })
-
-        getBrandsData().then((brands_data: any) => {
-            setBrandsData(brands_data)
-        })
-
-    },[])
+    }, [])
 
     function loadMoreProducts() {
         setAnimateSpin(true)
@@ -94,7 +79,7 @@ export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: a
     return (
         <div className="mx-auto max-w-[1450px] px-[10px] ">
             {
-                categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0]  && categoryData.filters.categories[0].images.banner ?
+                categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0] && categoryData.filters.categories[0].images.banner ?
                     <div className=''>
                         <Image src={categoryData.filters.categories[0].images.banner} height={500} width={1440} alt="headerimg" className=' object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto ' />
                         <BreadCrumb menuData={menuData} />
@@ -116,7 +101,7 @@ export const ProductsPage = ({ categoryData, menuData, type }: { categoryData: a
                     </>
 
             }
-            <ProductsPageData data={categoryData.products} cat_data={catData} brands_data={brandsData} />
+            <ProductsPageData data={categoryData} cat_data={catData} isSearchPage={isSearchPage} selectedBrands={selectedBrands}/>
             {showMoreProductsbtn ?
                 <div className='w-full flex justify-center'>
                     <button onClick={() => { loadMoreProducts() }} className='bg-[#39f] text-white px-3 py-2 flex'>

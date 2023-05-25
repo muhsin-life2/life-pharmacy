@@ -76,7 +76,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                 }
                             </div>
 
-                            <div className="xl:w-1/4 lg:w-3/12 md:w-1/2 w-full  m-2 relative bg-[url('/images/default-product-image.png')] bg-bottom">
+                            <div className="xl:w-1/4 lg:w-3/12 md:w-1/2 w-full  m-2 relative  bg-bottom">
                                 <div className="w-full items-center object-cover object-center rounded-lg bg-white">
                                     <Image alt="ecommerce" className="w-full  " height={300} width={300} src={FeaturedImage} />
                                 </div>

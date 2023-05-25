@@ -21,7 +21,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper'
 import 'swiper/css';
 import 'swiper/css/pagination';
-import Example from "./categories-accordion";
+
 import Link from "next/link";
 import { Menu } from "@headlessui/react";
 import { Dialog, Transition, RadioGroup, Listbox } from "@headlessui/react";
@@ -37,6 +37,11 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import React, { FC } from 'react'
 
+import dynamic from "next/dynamic"
+
+const Example = dynamic(() => import('./categories-accordion'), {
+  loading: () => <p>Loading...</p>,
+});
 interface navbarProps {
   data: any,
   brands_data: any,
@@ -200,6 +205,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
     reset();
     return 0;
   }
+
   function searchSuggestions(searchData: string, isMobile: boolean, type: string) {
     if (isMobile) {
       setSmScreenSearchBox(false)
@@ -207,12 +213,11 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
     else {
       searchButtonOnClick(false)
     }
-
     if (type === "search") {
-      router.push(`/${lang}/home/search?term=${searchData}`)
+      router.push(`/search?term=${searchData}`)
     }
     else {
-      router.push(`/${lang}/products/${searchData}`)
+      router.push(`/products/${searchData}`)
     }
   }
 
@@ -342,7 +347,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       };
       setSearchLoadingState(true)
 
-      fetch("https://WHCXS2GWOG-dsn.algolia.net/1/indexes/*/queries?lang=ae-ar", requestOptions)
+      fetch("https://WHCXS2GWOG-dsn.algolia.net/1/indexes/*/queries?lang=ae-en", requestOptions)
         .then(response => response.json())
         .then(result => {
           setData(result);
@@ -355,7 +360,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       }
       else {
         setVisibility(false);
-
       }
       setQueryData(query)
     }
@@ -446,7 +450,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
               setaddNewAddress(true);
               setLocationModal(false);
             })
-            
+
           }
           else {
             // console.log(error)
@@ -896,7 +900,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
           <div className="grid grid-cols-3 gap-4  hidden lg:flex md:flex bg-white shadow-md">
             <div onMouseOver={() => setOverlay(true)} onMouseLeave={() => { setOverlay(false) }} className="group inline-block shop-by-cat ">
               <button
-                onMouseOver={() => shopByCatOnMouseOver()} className="group-hover:bg-blue-500 py-[5px]  group-hover:text-white hover:text-white dropdown BeautyCareele  border-r border-gray-500 w-[236px]"
+                onMouseOver={() => shopByCatOnMouseOver()} className="group-hover:bg-blue-500 py-[5px]  group-hover:text-white hover:text-white dropdown BeautyCareele  border-r border-slate-300 w-[236px]"
                 id="dropdownDefaultButton" data-dropdown-toggle="dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                   stroke="currentColor" className="w-6 h-6 my-2 float-left ml-3">
@@ -914,7 +918,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
               <div className="flex justify-start absolute bg-white  scale-0 group-hover:scale-100 left-0 right-0">
                 <div className="z-30  bg-white">
                   <ul className="text-sm text-gray-700  rounded-sm transform scale-0 group-hover:scale-100  
-              transition duration-100 ease-in-out origin-top bg-white w-[236px] h-full flex flex-wrap border-r-[0.1px] border-gray-400 shadow-md" id="catgories-element">
+              transition duration-100 ease-in-out origin-top bg-white w-[236px] h-full flex flex-wrap border-r-[0.1px] border-slate-300 shadow-md" id="catgories-element">
                     {data.data.map((item: any, i: number) => (
                       <li key={item.name} onMouseOver={(e) => { ulListTrigger(e, (item.name + "ele").replace(/\s/g, '')) }} className={" group/btn w-full list" + i}>
                         <button id={(item.name + "btn").replace(/\s/g, '')} className={`single-btn w-full py-4 transition-all duration-100 ease-in-out group-hover/btn:bg-blue-50 group-hover/btn:border-blue-500 group-hover/btn:text-blue-400 ${isArabic ? 'pr-5 group-hover/btn:border-r-[4px]' : 'pl-5 group-hover/btn:border-l-[4px]'} text-left flex px-2`} >
@@ -1893,40 +1897,51 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                 <span className="sr-only">Close modal</span>
               </button> */}
 
-      <div className="fixed bottom-7 left-1/2 -translate-x-1/2 md:hidden w-3/4 backdrop-blur-sm bg-opacity-95 bg-slate-100 sm:h-20 h-12 rounded-full sm:pt-3 pt-1 items-center z-30">
-        <div className="flex justify-between mt-2 sm:px-16 px-6">
+      <div className="fixed bottom-0 left-0 right-0 md:hidden border-t border-gray-300   backdrop-blur-sm bg-opacity-95 bg-slate-100 sm:h-14 h-12 py-1 items-center z-30">
+        <div className="flex justify-between sm:px-8 px-6">
           <Link className="group/button" href={'/'}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-5 h-5  fill-gray-500 my-auto group-focus/button:fill-black">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-10 sm:h-9 w-6 h-6 mx-auto  fill-gray-500 my-auto group-focus/button:fill-blue-500">
               <path fill-rule="evenodd" d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z" clip-rule="evenodd" />
             </svg>
+            <p className="sm:text-xs text-center text-[10px]">Home</p>
+
           </Link>
 
           <button className="group/button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-5 h-5  fill-gray-500 my-auto group-focus/button:fill-black">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-6 h-6 mx-auto  fill-gray-500 my-auto group-focus/button:fill-blue-500">
               <path d="M5.127 3.502L5.25 3.5h9.5c.041 0 .082 0 .123.002A2.251 2.251 0 0012.75 2h-5.5a2.25 2.25 0 00-2.123 1.502zM1 10.25A2.25 2.25 0 013.25 8h13.5A2.25 2.25 0 0119 10.25v5.5A2.25 2.25 0 0116.75 18H3.25A2.25 2.25 0 011 15.75v-5.5zM3.25 6.5c-.04 0-.082 0-.123.002A2.25 2.25 0 015.25 5h9.5c.98 0 1.814.627 2.123 1.502a3.819 3.819 0 00-.123-.002H3.25z" />
             </svg>
+            <p className="sm:text-xs text-[10px]">Category</p>
+
+
           </button>
 
           <button onClick={() => {
             setSmScreenSearchBox(true)
             searchButtonOnClick(false)
           }}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-5 h-5 fill-gray-500 my-auto group-focus/button:fill-black">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="mx-auto sm:w-10 sm:h-9 w-6 h-6 fill-gray-500 my-auto group-focus/button:fill-blue-500">
               <path d="M6.5 9a2.5 2.5 0 115 0 2.5 2.5 0 01-5 0z" />
               <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 5a4 4 0 102.248 7.309l1.472 1.471a.75.75 0 101.06-1.06l-1.471-1.472A4 4 0 009 5z" clip-rule="evenodd" />
             </svg>
+            <p className="sm:text-xs text-[10px]">Search</p>
+
           </button>
 
           <button className="group/button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-5 h-5 fill-gray-500 my-auto group-focus/button:fill-black">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="mx-auto sm:w-10 sm:h-9 w-6 h-6 fill-gray-500 my-auto group-focus/button:fill-blue-500">
               <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-5.5-2.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0zM10 12a5.99 5.99 0 00-4.793 2.39A6.483 6.483 0 0010 16.5a6.483 6.483 0 004.793-2.11A5.99 5.99 0 0010 12z" clip-rule="evenodd" />
             </svg>
+            <p className="sm:text-xs text-[10px]">Account</p>
+
           </button>
 
           <button className="group/button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-5 h-5 fill-gray-500 my-auto group-focus/button:fill-black">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="mx-auto sm:w-10 sm:h-9 w-6 h-6 fill-gray-500 my-auto group-focus/button:fill-blue-500">
               <path fill-rule="evenodd" d="M6 5v1H4.667a1.75 1.75 0 00-1.743 1.598l-.826 9.5A1.75 1.75 0 003.84 19H16.16a1.75 1.75 0 001.743-1.902l-.826-9.5A1.75 1.75 0 0015.333 6H14V5a4 4 0 00-8 0zm4-2.5A2.5 2.5 0 007.5 5v1h5V5A2.5 2.5 0 0010 2.5zM7.5 10a2.5 2.5 0 005 0V8.75a.75.75 0 011.5 0V10a4 4 0 01-8 0V8.75a.75.75 0 011.5 0V10z" clip-rule="evenodd" />
             </svg>
+            <p className="sm:text-xs text-[10px] group-focus/button:text-blue-500 ">Cart</p>
+
           </button>
 
         </div>
@@ -1991,7 +2006,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" className="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                               </svg>
-
                               <span className="sr-only">Close modal</span>
                             </button> : ""}
                           </div>

@@ -3,7 +3,7 @@ export default function Footer({ langData }: { langData: any }) {
     return (
         <>
             <div className="z-10  mx-auto ">
-                <div className="flex justify-around   lg:text-2xl md:text-2xl text-xl mb-3 max-w-[1450px] mx-auto px-[10px]">
+                <div className="flex justify-around   lg:text-2xl md:text-2xl text-xl lg:py-5 py-3 max-w-[1450px] mx-auto px-[10px]">
                     <div >
                         <div className="text-center  font-bold  ">{langData.footer.top_part.n26}</div>
                         <div className=" text-center font-semibold text-gray-600  md:text-sm text-[10px]">{langData.footer.top_part.years_of_trust}</div>
@@ -26,8 +26,6 @@ export default function Footer({ langData }: { langData: any }) {
                                     <div className="flex justify-center ">
                                         <Image src="https://www.lifepharmacy.com/images/appstore.svg" className="mx-3 w-1/4 sm:w-1/4 md:w-1/6 lg:w-1/6 " alt="Download" width={700} height={700} />
                                         <Image src="https://www.lifepharmacy.com/images/playstore.svg" className="w-1/4 sm:w-1/4 md:w-1/6 lg:w-1/6 " alt="AppStore" width={300} height={300} />
-
-                                        {/* <Image src="https://www.lifepharmacy.com/images/appstore.svg" alt="Download" className=" w-1/4 md:w-1/6 sm:w-1/4 lg:w-1/6" width={700} height={700} /> */}
                                     </div>
                                 </div>
                                 <div className="lg:w-4/6 mx-4">
