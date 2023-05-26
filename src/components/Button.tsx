@@ -8,21 +8,20 @@ export const BrandsButton = ({ selectedBrands, brandName }: { selectedBrands: st
     const brandsArray = selectedBrands.split(",")
 
     const brandsOnClick = (clickedBrand: any) => {
-        debugger
         if (selectedBrands.includes(clickedBrand)) {
             router.push(router.asPath.replace(`${brandsArray.length === 1 ? "&brands=" + clickedBrand : "," + clickedBrand}`, ""))
         }
-        else{
+        else {
             if (router.query.brands) {
-                router.push(`${router.asPath},${clickedBrand.toLowerCase()}`)
+                router.push(`${router.asPath},${clickedBrand}`)
             }
             else {
                 router.push(`${router.asPath}&brands=${clickedBrand}`)
             }
         }
         setIsInverted(!isInverted)
-  
     }
+
     return (
         <div onClick={() => {
             brandsOnClick(brandName.toLowerCase().replace(/[\s&]+/g, '-'))
