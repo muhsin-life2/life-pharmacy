@@ -14,10 +14,11 @@ interface layoutProps {
   sessionServ: any,
   isArabic: boolean,
   lang: string,
-  langData: any
+  langData: any,
+  userAddressData:any
 }
 
-export const Layout: FC<layoutProps> = ({ children, data, brands_data, sessionServ, isArabic, lang, langData }) => {
+export const Layout: FC<layoutProps> = ({ children, data, brands_data, sessionServ, isArabic, lang, langData, userAddressData }) => {
   function searchButtonOnLeave(e: any) {
     if (!e.target.parentNode.classList.contains("group-search")) {
       document.getElementsByClassName("lg-screen-searchsuggestion-lg")[0].classList.add("hidden");
@@ -56,7 +57,7 @@ export const Layout: FC<layoutProps> = ({ children, data, brands_data, sessionSe
         theme="colored"
       />
       <section onMouseDown={(e) => { searchButtonOnLeave(e) }}>
-        <Navbar data={data} brands_data={brands_data} sessionServ={sessionServ} isArabic={isArabic} lang={lang} langData={langData} languageClickedToast={languageClickedToast} />
+        <Navbar data={data} brands_data={brands_data} sessionServ={sessionServ} isArabic={isArabic} lang={lang} langData={langData} languageClickedToast={languageClickedToast} userAddressData={userAddressData.data.addresses}/>
         <main>{children}</main>
         <Footer langData={langData} />
       </section>
