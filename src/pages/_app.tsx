@@ -19,10 +19,11 @@ type TProps = AppProps & {
   data: any,
   brands_data: any,
   session: any,
+  userAddrData:any
 };
 
 
-const App = ({ Component, data, brands_data, session, pageProps }: TProps) => {
+const App = ({ Component, data, brands_data, session, pageProps, userAddrData }: TProps) => {
 
   const getDirection = (lang: any) => {
     if (lang === "ar") {
@@ -40,7 +41,7 @@ const App = ({ Component, data, brands_data, session, pageProps }: TProps) => {
       <NextNProgress color="#eba834"/>
       <SessionProvider session={session}>
         <main dir={getDirection(locale)} className={poppins.className}>
-          <Layout data={data} brands_data={brands_data} sessionServ={session} isArabic={false} lang={locale ? locale : "en"} langData={t}>
+          <Layout data={data} brands_data={brands_data} sessionServ={session} isArabic={false} lang={locale ? locale : "en"} langData={t} userAddressData={userAddrData}>
             <Component {...pageProps} />
           </Layout>
         </main>
@@ -73,7 +74,8 @@ App.getInitialProps = async (context: any) => {
   return {
     data,
     brands_data,
-    session
+    session,
+    userAddrData
   };
 };
 
