@@ -1,13 +1,11 @@
 import { SingleProductData } from "./single-product-data"
-import { ProductsSkeleton } from "./productsSkeleton"
 import React, { useState } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionTrigger, AccordionContent, AccordionItem } from "./accordion-radix";
 import { BrandsButton } from "./Button";
 import * as Slider from '@radix-ui/react-slider';
-const ProductsPageData = ({ data, cat_data, isSearchPage, selectedBrands }: { data: any, cat_data: any, isSearchPage: boolean, selectedBrands: string }) => {
+const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, selectedBrands, children }: { cat_data: any, isSearchPage: boolean, selectedBrands: string, productsData: any, brandsData: any, children: any }) => {
 
-    const skeletonArray = Array(12).fill(<ProductsSkeleton />)
     const [rangeSliderValue, setRangeSliderValue] = useState([50])
 
 
@@ -73,7 +71,7 @@ const ProductsPageData = ({ data, cat_data, isSearchPage, selectedBrands }: { da
                         <form className="hidden lg:block divide-y space-y-4">
                             {cat_data.data ?
                                 <>
-                                <div ></div>
+                                    <div ></div>
                                     <Accordion.Root
                                         className=""
                                         type="single"
@@ -123,8 +121,8 @@ const ProductsPageData = ({ data, cat_data, isSearchPage, selectedBrands }: { da
                                         <AccordionItem className="" value="item-1">
                                             <AccordionTrigger className="font-bold">Brands</AccordionTrigger>
                                             <AccordionContent className="" >
-                                                {data.brands ?
-                                                    data.brands.map((brand: any) => (
+                                                {brandsData ?
+                                                    brandsData.map((brand: any) => (
                                                         brand.featured ?
                                                             <BrandsButton selectedBrands={selectedBrands} brandName={brand.name} />
                                                             : null
@@ -173,13 +171,14 @@ const ProductsPageData = ({ data, cat_data, isSearchPage, selectedBrands }: { da
                         : null}
                     <div className={`${isSearchPage ? ' col-span-full' : "col-span-3"}`}>
                         <div className={`grid ${isSearchPage ? "xl:grid-cols-6 lg:grid-cols-4  md:grid-cols-3" : "xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2"}  min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
-                            {data.products.length > 1 ? data.products.map((pro_data: any) => (
+                            {productsData.length > 1 ? productsData.map((pro_data: any) => (
                                 <SingleProductData pro_data={pro_data} />
                             )) : <div className="w-full col-span-3">
                                 <h1 className="text-blue-500 text-center py-2">No Products Found</h1>
                             </div>
                             }
                         </div>
+                        {children}
                     </div>
 
                 </div>

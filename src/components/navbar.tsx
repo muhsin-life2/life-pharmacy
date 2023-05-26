@@ -36,12 +36,13 @@ import { removeFromCart } from "../redux/cart.slice";
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import React, { FC } from 'react'
-
+import Example from "./categories-accordion";
 import dynamic from "next/dynamic"
 
-const Example = dynamic(() => import('./categories-accordion'), {
-  loading: () => <p>Loading...</p>,
-});
+
+const DeliveryModal = dynamic(() => import("./delivery-modal"));
+
+
 interface navbarProps {
   data: any,
   brands_data: any,
@@ -94,6 +95,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
   const [addNewAddressClick, setAddNewAddressClick] = useState(false);
   const [cartItemsVisib, setCartItemsVisib] = useState(false);
   const [domLoaded, setDomLoaded] = useState(false);
+  const [showNavbarAcc, setShowNavbarAcc] = useState(false);
 
   const [addnewAddressFormVisibility, setaddnewAddressFormVisibility] = useState(false);
   const [availableAddresses, setavailableAddresses] = useState(true);
@@ -254,6 +256,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
   var i = 1;
 
   function shopByCatOnMouseOver() {
+    setShowNavbarAcc(true);
     (document.getElementById("BeautyCareele") as HTMLInputElement).classList.remove("hidden");
     (document.getElementById("BeautyCarebtn") as HTMLInputElement).classList.add("text-blue-400", isArabic ? "border-r-4" : "border-l-4", "border-blue-500", "bg-blue-50");
     i = 1;
@@ -982,7 +985,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
                           <div className=" mb-9 ">
                             <div className="flex justify-between  w-full flex-wrap">
-
                               <div className="  lg:order-none md:w-full">
 
                                 <Example acc_data={item.children} />
@@ -1228,6 +1230,9 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
           </div>
         </Dialog>
       </Transition>
+      {isOpen === true ?
+        <DeliveryModal isOpen={isOpen} setIsOpen={setIsOpen} setLocationModal={setLocationModal} />
+        : null}
 
       <div id="location-modal" aria-hidden="true" className="hidden fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal justify-center items-center" >
         <div id="overlay" className=" fixed inset-0 transition-opacity">

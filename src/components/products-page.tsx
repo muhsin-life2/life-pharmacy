@@ -5,20 +5,19 @@ import getProductsDataByCat from '@/lib/getProductsDataByCat';
 import { useLanguage } from '@/hooks/useLanguage';
 import Image from 'next/image';
 import getCategoryData from '@/lib/getCategoryData';
-import getBrandsData from '@/lib/getBrandsData';
 import BreadCrumb from './breadcrumb';
 
-export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData, selectedBrands }: { categoryData: any, menuData: any, filterPath: string, isSearchPage: boolean, selectedBrands:string }) => {
+export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData, selectedBrands }: { categoryData: any, menuData: any, filterPath: string, isSearchPage: boolean, selectedBrands: string }) => {
 
-    const [data, setData] = useState([{
-    }])
     const [noOfProducts, setNoOfProducts] = useState(40)
     const [animateSpin, setAnimateSpin] = useState(false)
     const [showMoreProductsbtn, setShowMoreProductsbtn] = useState(true)
     const [catData, setCatData] = useState({})
-
     const [readMoreClick, setReadMoreClick] = useState(false)
     const { locale } = useLanguage();
+    const productsData = categoryData.products
+    const [data, setData] = useState(productsData)
+
     function typeGenerate(type: string) {
         switch (type) {
             case "Category":
@@ -30,17 +29,14 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
     }
 
     function fetchData(query: any, noOfProducts: number, loadMoreData: boolean) {
+        debugger
         if (query === null) {
             getProductsDataByCat(filterPath, noOfProducts, true, locale).then(
                 (proData: any) => {
                     if (loadMoreData) {
-                        setData([...data, ...proData.data.products])
+                        categoryData.products = categoryData.products.concat(proData.data.products)
                         setAnimateSpin(false)
                         setShowMoreProductsbtn(false)
-                    }
-                    else {
-                        setData(proData.data.products)
-
                     }
                 }
             )
@@ -49,17 +45,14 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
             getProductsDataByCat(filterPath, noOfProducts, false, locale).then(
                 (proData: any) => {
                     if (loadMoreData) {
+                        debugger
                         setData([...data, ...proData.data.products])
                         setAnimateSpin(false)
                         setShowMoreProductsbtn(false)
                     }
-                    else {
-                        setData(proData.data.products)
-                    }
                 }
             )
         }
-
     }
 
     useEffect(() => {
@@ -73,7 +66,6 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
         fetchData(typeGenerate(menuData[0]), noOfProducts, true)
         setNoOfProducts(c => c + 40)
     }
-
 
 
     return (
@@ -99,18 +91,20 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
                         </div>
                         <BreadCrumb menuData={menuData} />
                     </>
-
             }
-            <ProductsPageData data={categoryData} cat_data={catData} isSearchPage={isSearchPage} selectedBrands={selectedBrands}/>
-            {showMoreProductsbtn ?
-                <div className='w-full flex justify-center'>
-                    <button onClick={() => { loadMoreProducts() }} className='bg-[#39f] text-white px-3 py-2 flex'>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className={`w-6 h-6 ${animateSpin ? 'animate-spin' : ''}`}>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                        </svg>
-                        <p className='mx-3'>Load More Products</p> </button>
-                </div>
-                : null}
+            <ProductsPageData productsData={data} brandsData={categoryData.brands} cat_data={catData} isSearchPage={isSearchPage} selectedBrands={selectedBrands} >
+                {showMoreProductsbtn && productsData.length > 0 ?
+                    <div className='w-full flex justify-center mt-10'>
+                        <button onClick={() => { loadMoreProducts() }} className='border-slate-300 flex items-center border  px-3 py-2  rounded-full hover:bg-[#39f] hover:text-white transition-all duration-300'>
+                            <div className='mx-3 text-sm  items-center'>More Products</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className={`w-4 h-4 ${animateSpin ? 'animate-spin' : ''}`}>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                        </button>
+                    </div>
+                    : null}
+            </ProductsPageData>
+
         </div>
     )
 }

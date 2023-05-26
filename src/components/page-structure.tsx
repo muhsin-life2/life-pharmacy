@@ -1,8 +1,10 @@
 import { useState, useEffect, FC } from "react";
-import Products from "./products";
 import { useRouter } from 'next/router';
-import DynamicGrid from "./dynamic-grid";
+
 import DynamicSliderGrid from "./dynamic-slider-grid";
+import DynamicGrid from "./dynamic-grid";
+import dynamic from "next/dynamic";
+
 
 interface compProps {
     data: any
@@ -13,18 +15,14 @@ interface compProps {
 
 const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
 
-    const [domLoaded, setDomLoaded] = useState(false);
 
     const router = useRouter()
 
-    useEffect(() => {
-        setDomLoaded(true);
-    }, []);
 
 
     return (
 
-        <div >
+        <div>
             {
                 data.section_type === "dynamic_slider_grid" ?
                     <>
