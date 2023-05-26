@@ -467,8 +467,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
   function saveAddresstoDb() {
     debugger
-
-
     var requestOptions = {
       method: 'POST',
       headers: {
@@ -481,10 +479,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
     const res = fetch("https://prodapp.lifepharmacy.com/api/user/save-address", requestOptions)
       .then(response => {
         if (response.ok) {
+          debugger
           setAddressDataIndex(0);
           setaddNewAddress(false);
           refreshData();
-          return response.json();
         } else {
           throw new Error('Request failed');
         }
@@ -494,7 +492,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
 
   }
-  var addressId = sessionServ ? (sessionServ.length != 0 ? (sessionServ[sessionServ.length - 1]?.id) + 1 : 12345 + 1) : ""
+  var addressId = sessionServ ? (sessionServ.token.addresses.length != 0 ? (sessionServ.token.addresses[sessionServ.token.addresses.length - 1]?.id) + 1 : 12345 + 1) : ""
   const [formData, setFormData] = useState({
     id: addressId,
     entity_id: 1462724,
@@ -564,7 +562,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       if (sessionServ.token.addresses.length > 0) {
         setavailableAddresses(true)
       }
-      else if (sessionServ.token.addresses.length == 0) {
+      else if (sessionServ.token.addresses.length === 0) {
         setAddNewAddressClick(true)
       }
     }
@@ -1234,13 +1232,12 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
         <DeliveryModal isOpen={isOpen} setIsOpen={setIsOpen} setLocationModal={setLocationModal} />
         : null}
 
-      <div id="location-modal" aria-hidden="true" className="hidden fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto h-modal justify-center items-center" >
+      <div id="location-modal" aria-hidden="true" className="hidden fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-modal justify-center items-center" >
         <div id="overlay" className=" fixed inset-0 transition-opacity">
           <div className="absolute inset-0 bg-gray-500 opacity-50"></div>
         </div>
 
         <div className="relative w-full h-full max-w-lg md:h-auto">
-
           <div className="relative bg-white rounded-lg shadow  mt-3">
             <button type="button" className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center  " >
               <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -1248,13 +1245,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
             </button>
             <div className="px-6 py-6 lg:px-8">
               <div className="relative bg-white rounded-lg shadow ">
-                {/* <div className="flex items-center justify-between rounded-t ">
-                    <button type="button"
-                      className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center  "
-                      data-modal-hide="medium-modal">
-                  
-                    </button>
-                  </div> */}
                 <div className="p-3 space-y-6 mt-3">
                   <h3 className="text-2xl font-semibold text-blue-500  text-center mt-6">
                     Where do you want the delivery?
@@ -1454,78 +1444,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
         </Dialog>
       </Transition>
 
-      {/* 
-      <Transition appear show={notValidOTPPageVisib} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => { setnotValidOTPPageVisib(false) }}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-3xl bg-white  text-left align-middle shadow-xl transition-all">
-                  <div className="rounded-t-3xl bg-red-500 p-6 text-center text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="mx-auto h-28 w-28">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className=" p-5 text-center">
-                    <h3 className="mb-5 text-center text-3xl font-bold">Oops</h3>
-                    <p className=" font-semibold text-gray-600">Something went wrong!</p>
-                    <p className=" font-semibold text-gray-600">Invalid code. Please enter the correct code.</p>
-                    <button onClick={() => { setnotValidOTPPageVisib(false) }} type="button" className="mt-10 rounded-lg border border-gray-200 bg-red-500 px-5 py-1.5 text-sm font-medium text-white hover:bg-red-700 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 ">OK</button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition> */}
-
-
-
-      {/* {successOTP ? <>
-          <div id="popup-modal" tabindex="-1" className="z-100 fixed top-1/2 left-1/2 z-50 h-[calc(100%-1rem)]  -translate-y-1/2 -translate-x-1/2 overflow-y-auto overflow-x-hidden p-4 shadow-md md:h-auto w-96 rounded-b-3xl">
-            <div className="relative h-full w-full max-w-md  bg-white md:h-auto rounded-3xl">
-              <button type="button" className="absolute top-3 right-2.5 ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900  " data-modal-hide="popup-modal"></button>
-              <div className="rounded-t-3xl bg-green-400 p-6 text-center text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-36 h-36 relative mx-auto">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                </svg>
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="mx-auto h-10 w-10 absolute inset-0 top-[75px]">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div className="p-5 text-center">
-                <h3 className="mb-5 text-center text-3xl font-bold">Verified Device</h3>
-                <p className="font-semibold text-gray-600">Sign in Successfull</p>
-
-                <button type="button" onClick={() => { setOTPSucessState(false) }} className="mt-10 rounded-lg border border-gray-200 bg-green-400 px-5 py-1.5 text-sm font-medium text-white hover:bg-green-500 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200">OK</button>
-              </div>
-            </div>
-          </div>
-
-
-        </>
-          :""} */}
       <Transition appear show={notValidOTPPageVisib} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={() => { setnotValidOTPPageVisib(false) }}>
           <Transition.Child
@@ -1571,7 +1490,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       </Transition>
       {/* {sessionServ && sessionServ.token.addresses.length !=0 ?setavailableAddresses(true):setaddNewAddress(true)}  */}
       <Transition appear show={sessionServ && addNewAddress ? true : false} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => { setaddNewAddress(false) }}>
+        <Dialog as="div" className="relative z-50" onClose={() => { setaddNewAddress(false)
+        setaddnewAddressFormVisibility(false) }}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -1596,7 +1516,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                 leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-2xl transform  overflow-y-auto no-scrollbar rounded-2xl text-left align-middle shadow-xl transition-all ">
                   {addNewAddressClick && sessionServ.token.addresses.length === 0 ?
-                    <div className=" bg-white rounded-lg shadow  overflow-y-auto no-scrollbar h-[calc(80vh-1rem)]">
+                    <div className=" bg-white rounded-lg shadow  overflow-y-auto no-scrollbar min-h-fit  max-h-[calc(80vh-1rem)] ">
                       <div className="flex items-start justify-between ">
 
                       </div>
@@ -1617,7 +1537,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                       </div>
                     </div> : ""}
                   {addnewAddressFormVisibility ?
-                    <div className="max-w-4xl relative  w-full ">
+                    <div className="max-w-4xl relative w-full">
                       <div className="relative   rounded-lg  overflow-y-auto no-scrollbar bg-white">
                         <div className="absolute top-3 left-2.5 flex">
                           <button type="button" className=" ml-auto inline-flex items-center rounded-lg bg-white bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900  " onClick={() => {
@@ -1630,9 +1550,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                             <span className="sr-only">Close modal</span>
                           </button>
                           <h3 className="ml-3 text-sm font-bold text-indigo-800  p-1.5">Your Address</h3>
-
                         </div>
-
 
                         <div className="px-6 pt-16 pb-4 bg-white">
                           <form className="space-y-3 " onSubmit={addressFormOnSubmit}>
@@ -1640,7 +1558,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                               <label className="mb-3 block w-fit rounded-full bg-indigo-800 px-3 py-1 text-[10px] font-semibold text-white ">PERSONAL DETAILS</label>
                               <input type="text" name="name" value={formData.name} onChange={formDatahandleChange} onBlur={(e) => { e.target.value === "" ? e.target.classList.add("border-red-500") : e.target.classList.remove("border-red-500") }} className={"focus:outline-none block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500      addressFormInputEle"} placeholder="Full Name *"
                                 required />
-
                             </div>
                             <div>
                               <label className=" text-sm block mb-2 font-medium text-gray-90 file: ">Enter your mobile number <span className="text-red-500">*</span></label>
@@ -1666,7 +1583,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                               </div>
                             </div>
                             <div>
-                              <label className="mb-3 block w-fit rounded-full bg-indigo-800 px-3 py-1 text-[10px] font-semibold text-white ">ADDRESS DETAILS</label>
+                              <label className="mb-3 block w-fit rounded-full bg-indigo-800 px-3 py-1 text-[10px] font-semibold text-white">ADDRESS DETAILS</label>
 
                               <div className="flex w-1/2">
                                 <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900    ">
@@ -1698,7 +1615,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                                 required />
                             </div>
 
-
                             <div className="flex ">
                               <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900    ">
                                 Country
@@ -1716,12 +1632,11 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                             </div>
 
                           </form>
-
                         </div>
                       </div>
                     </div> : ""}
                   {sessionServ?.token?.addresses.length > 0 && availableAddresses ?
-                    <div className=" overflow-y-auto overflow-x-hidden rounded-lg bg-white shadow no-scrollbar  h-[calc(80vh-1rem)]">
+                    <div className=" overflow-y-auto overflow-x-hidden rounded-lg bg-white shadow no-scrollbar  min-h-fit  max-h-[calc(80vh-1rem)]">
                       <div className="flex items-start justify-between">
                         {/* <button onClick={() => {
                           setaddNewAddress(false)
@@ -1732,6 +1647,14 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                       </div>
 
                       <div className="mx-auto w-full p-4 py-6">
+                        <div className="w-full flex justify-between pb-2 items-center">
+                          <div className="text-[#002579] font-bold text-sm mx-2">Address</div>
+                          <button className="text-xs bg-blue-500 text-white p-2 rounded" onClick={() => {
+                            setavailableAddresses(false)
+                            setaddnewAddressFormVisibility(true)
+                          }
+                          }>Add New Address</button>
+                        </div>
                         <RadioGroup value={AddressDataIndex} onChange={setAddressDataIndex}>
                           <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
                           <div className="space-y-2">
@@ -1841,7 +1764,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
                       </div> */}
                       <div className="w-full bg-white px-6 py-3 sticky bottom-0">
-                        <button className="text-[11px]  px-3 py-2 w-full text-center bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => { setaddNewAddress(false) }} >CONFIRM ADDRESS</button>
+                        <button className="text-[11px]  px-3 py-2 w-full text-center bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => { setaddNewAddress(false)
+                        setaddnewAddressFormVisibility(false) }} >CONFIRM ADDRESS</button>
                       </div>
                     </div>
 
