@@ -51,10 +51,11 @@ interface navbarProps {
   lang: string,
   langData: any,
   languageClickedToast: any
+  userAddressData:any
 }
 
 
-const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lang, langData, languageClickedToast }) => {
+const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lang, langData, languageClickedToast, userAddressData }) => {
 
   const { data: session } = useSession()
   const { asPath } = useRouter()
@@ -492,7 +493,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
 
   }
-  var addressId = sessionServ ? (sessionServ.token.addresses.length != 0 ? (sessionServ.token.addresses[sessionServ.token.addresses.length - 1]?.id) + 1 : 12345 + 1) : ""
+  var addressId = sessionServ ? (userAddressData.length != 0 ? (userAddressData[userAddressData.length - 1]?.id) + 1 : 12345 + 1) : ""
   const [formData, setFormData] = useState({
     id: addressId,
     entity_id: 1462724,
@@ -559,10 +560,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
     if (sessionServ != null) {
       setaddNewAddress(true)
 
-      if (sessionServ.token.addresses.length > 0) {
+      if (userAddressData.length > 0) {
         setavailableAddresses(true)
       }
-      else if (sessionServ.token.addresses.length === 0) {
+      else if (userAddressData.length === 0) {
         setAddNewAddressClick(true)
       }
     }
@@ -1515,7 +1516,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95">
                 <Dialog.Panel className="w-full max-w-2xl transform  overflow-y-auto no-scrollbar rounded-2xl text-left align-middle shadow-xl transition-all ">
-                  {addNewAddressClick && sessionServ.token.addresses.length === 0 ?
+                  {addNewAddressClick && userAddressData.length === 0 ?
                     <div className=" bg-white rounded-lg shadow  overflow-y-auto no-scrollbar min-h-fit  max-h-[calc(80vh-1rem)] ">
                       <div className="flex items-start justify-between ">
 
@@ -1658,7 +1659,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                         <RadioGroup value={AddressDataIndex} onChange={setAddressDataIndex}>
                           <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
                           <div className="space-y-2">
-                            {sessionServ.token.addresses.map((addr: any, indx: number) => (
+                            {userAddressData.map((addr: any, indx: number) => (
                               <RadioGroup.Option
                                 key={addr.id}
                                 value={addr}
