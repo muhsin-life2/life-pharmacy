@@ -51,7 +51,7 @@ interface navbarProps {
   lang: string,
   langData: any,
   languageClickedToast: any
-  userAddressData:any
+  userAddressData: any
 }
 
 
@@ -436,6 +436,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
             await refreshData().then(() => {
 
               setaddNewAddress(true);
+              setaddnewAddressFormVisibility(false)
               setLocationModal(false);
             })
           }
@@ -452,16 +453,15 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
           if (res?.ok) {
             await refreshData().then(() => {
               setaddNewAddress(true);
+              setaddnewAddressFormVisibility(false)
               setLocationModal(false);
             })
 
           }
           else {
-            // console.log(error)
             setnotValidOTPPageVisib(true)
           }
         })
-      //for the address we use the same hook 
       setPhoneNumberValidState(false)
     }
   }
@@ -476,13 +476,12 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       },
       body: JSON.stringify(formData)
     };
-    console.log(requestOptions);
     const res = fetch("https://prodapp.lifepharmacy.com/api/user/save-address", requestOptions)
       .then(response => {
         if (response.ok) {
-          debugger
           setAddressDataIndex(0);
           setaddNewAddress(false);
+          setaddnewAddressFormVisibility(false)
           refreshData();
         } else {
           throw new Error('Request failed');
@@ -1491,8 +1490,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       </Transition>
       {/* {sessionServ && sessionServ.token.addresses.length !=0 ?setavailableAddresses(true):setaddNewAddress(true)}  */}
       <Transition appear show={sessionServ && addNewAddress ? true : false} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => { setaddNewAddress(false)
-        setaddnewAddressFormVisibility(false) }}>
+        <Dialog as="div" className="relative z-50" onClose={() => {
+          setaddNewAddress(false)
+          setaddnewAddressFormVisibility(false)
+        }}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -1765,8 +1766,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
                       </div> */}
                       <div className="w-full bg-white px-6 py-3 sticky bottom-0">
-                        <button className="text-[11px]  px-3 py-2 w-full text-center bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => { setaddNewAddress(false)
-                        setaddnewAddressFormVisibility(false) }} >CONFIRM ADDRESS</button>
+                        <button className="text-[11px]  px-3 py-2 w-full text-center bg-blue-500 text-white rounded-lg hover:bg-blue-600" onClick={() => {
+                          setaddNewAddress(false)
+                          setaddnewAddressFormVisibility(false)
+                        }} >CONFIRM ADDRESS</button>
                       </div>
                     </div>
 
