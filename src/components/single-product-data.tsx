@@ -90,7 +90,7 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
                             <div className="flex justify-start overflow-x-auto no-scrollbar">
                                 {pro_data.categories ?
                                     pro_data.categories.map((cat: any) => (
-                                        <a href={`products?categories=${cat.slug}`} className="whitespace-nowrap lg:text-[10px] text-[9px] border border-gray-300 hover:bg-gray-300 hover-border-white mr-2 rounded-md px-2 bg-[#f4f7ff] py-[1px] text-[#002579]">{cat.name}</a>
+                                        <a href={`products?categories=${cat.slug}`} className="whitespace-nowrap lg:text-[10px] text-[9px] border border-gray-300 hover:bg-gray-300 hover-border-white mr-2 rounded-md px-2 bg-[#f4f7ff] py-[2px] text-[#002579]">{cat.name}</a>
                                     ))
                                     : null}
                             </div>

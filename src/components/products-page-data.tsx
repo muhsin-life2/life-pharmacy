@@ -4,11 +4,13 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionTrigger, AccordionContent, AccordionItem } from "./accordion-radix";
 import { BrandsButton } from "./Button";
 import * as Slider from '@radix-ui/react-slider';
+import { useRouter } from "next/router";
+import { use } from "i18next";
 const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, selectedBrands, children }: { cat_data: any, isSearchPage: boolean, selectedBrands: string, productsData: any, brandsData: any, children: any }) => {
 
     const [rangeSliderValue, setRangeSliderValue] = useState([50])
 
-
+    const router = useRouter();
     function slugify(text: string) {
         return text.toLowerCase().replace(/[\/\s&]+/g, '-');
     }
@@ -19,6 +21,14 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
 
     const rangeSliderValueChange = (newValue: number[]) => {
         setRangeSliderValue(newValue)
+    }
+
+    const generateSortPath = (pathName:string)=>{
+        if(router.query.order_by){
+            return `${router.asPath},${pathName}`
+        }
+        return `${router.asPath}&order_by=${pathName}`
+
     }
 
     return (
@@ -37,13 +47,12 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
                                 </button>
                             </div>
 
-                            <div className="group-hover/sort-menu:scale-100 scale-0 top-4 absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+                            <div className="group-hover/sort-menu:scale-100 scale-0 top-4 absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-100 opacity-95 backdrop-blur-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
                                 <div className="py-1">
-                                    <a href="#" className="font-medium text-gray-900 block px-4 py-2 text-sm">Most Popular</a>
-                                    <a href="#" className="text-gray-500 block px-4 py-2 text-sm" >Best Rating</a>
-                                    <a href="#" className="text-gray-500 block px-4 py-2 text-sm" >Newest</a>
-                                    <a href="#" className="text-gray-500 block px-4 py-2 text-sm" >Price: Low to High</a>
-                                    <a href="#" className="text-gray-500 block px-4 py-2 text-sm" >Price: High to Low</a>
+                                    <a href={generateSortPath("popularity")} className=" block px-4 py-1 text-sm hover:bg-slate-200">Most Popular</a>
+                                    <a href={generateSortPath("most-rated")} className=" block px-4 py-1 text-sm hover:bg-slate-200" >Most Rated</a>
+                                    <a href={generateSortPath("price-asc")} className=" block px-4 py-1 text-sm hover:bg-slate-200" >Price: Low to High</a>
+                                    <a href={generateSortPath("price-desc")} className=" block px-4 py-1 text-sm hover:bg-slate-200" >Price: High to Low</a>
                                 </div>
                             </div>
                         </div>
