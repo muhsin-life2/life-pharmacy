@@ -1,6 +1,5 @@
 
 import { ProductsPage } from "@/components/products-page"
-import { useRouter } from 'next/router';
 import getProductsDataByCat from "@/lib/getProductsDataByCat";
 
 const Products = ({ productsData, cat, filterPath, selectedBrands }: { productsData: any, cat: any, filterPath: string, selectedBrands: string }) => {
@@ -22,18 +21,13 @@ export async function getServerSideProps({ locale, query }: { locale: any, query
         filterPath = `categories${query.categories != "" ? `=${query.categories}` : ""}`
         cat = query.categories
     }
-    if (query.brands) {
-
-        filterPath += `${filterPath != "" ? "&" : ""} brands=${query.brands}`
-
-    }
     const productsData = await getProductsDataByCat(filterPath, 0, false, locale);
     return {
         props: {
             productsData: productsData.data,
             filterPath,
             cat,
-            selectedBrands: query.brands?query.brands:""
+            selectedBrands: query.brands ? query.brands : ""
         }
     }
 }
