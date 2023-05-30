@@ -985,7 +985,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                             <div className="flex justify-between  w-full flex-wrap">
                               <div className="  lg:order-none md:w-full">
 
-                                <Example acc_data={item.children} />
+                                <Example acc_data={item} />
 
                               </div>
 
