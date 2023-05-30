@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import getProductsData from "@/lib/getProductsData";
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar, FaRegStar, FaStarHalfAlt, FaMinus, FaPlus } from 'react-icons/fa';

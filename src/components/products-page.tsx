@@ -6,81 +6,30 @@ import { useLanguage } from '@/hooks/useLanguage';
 import Image from 'next/image';
 import getCategoryData from '@/lib/getCategoryData';
 import BreadCrumb from './breadcrumb';
+import { useRouter } from 'next/router';
 
 export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData, selectedBrands }: { categoryData: any, menuData: any, filterPath: string, isSearchPage: boolean, selectedBrands: string }) => {
 
-    const [noOfProducts, setNoOfProducts] = useState(40)
-    const [animateSpin, setAnimateSpin] = useState(false)
-    const [showMoreProductsbtn, setShowMoreProductsbtn] = useState(true)
-    const [catData, setCatData] = useState({})
+
     const [readMoreClick, setReadMoreClick] = useState(false)
-    const { locale } = useLanguage();
-    const productsData = categoryData.products
-    const [data, setData] = useState(productsData)
-
-    function typeGenerate(type: string) {
-        switch (type) {
-            case "Category":
-                return "categories"
-            case "Collection":
-                return "collections"
-        }
-        return ""
-    }
-
-    function fetchData(query: any, noOfProducts: number, loadMoreData: boolean) {
-        debugger
-        if (query === null) {
-            getProductsDataByCat(filterPath, noOfProducts, true, locale).then(
-                (proData: any) => {
-                    if (loadMoreData) {
-                        categoryData.products = categoryData.products.concat(proData.data.products)
-                        setAnimateSpin(false)
-                        setShowMoreProductsbtn(false)
-                    }
-                }
-            )
-        }
-        else {
-            getProductsDataByCat(filterPath, noOfProducts, false, locale).then(
-                (proData: any) => {
-                    if (loadMoreData) {
-                        debugger
-                        setData([...data, ...proData.data.products])
-                        setAnimateSpin(false)
-                        setShowMoreProductsbtn(false)
-                    }
-                }
-            )
-        }
-    }
-
-    useEffect(() => {
-        getCategoryData().then(cat_data => {
-            setCatData(cat_data)
-        })
-    }, [])
-
-    function loadMoreProducts() {
-        setAnimateSpin(true)
-        fetchData(typeGenerate(menuData[0]), noOfProducts, true)
-        setNoOfProducts(c => c + 40)
-    }
+    const router = useRouter()
 
 
     return (
-        <div className="mx-auto max-w-[1450px] px-[10px] ">
+        <div className="mx-auto max-w-[1450px] px-[10px]">
             {
-                categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0] && categoryData.filters.categories[0].images.banner ?
+                categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0] && categoryData.filters.categories[0].images && categoryData.filters.categories[0].images.banner ?
                     <div className=''>
-                        <Image src={categoryData.filters.categories[0].images.banner} height={500} width={1440} alt="headerimg" className=' object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto ' />
+                        <Image src={categoryData.filters.categories[0].images.banner} height={500} width={1440} alt="headerimg" className='object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto' />
                         <BreadCrumb menuData={menuData} />
-                        <div className="relative">
-                            <p className={`text-sm text-gray-600 my-5  ${readMoreClick ? '' : 'overflow-y-hidden h-[7rem]'} text-ellipsis leading-7`} dangerouslySetInnerHTML={{ __html: categoryData.model_details.short_description }} />
-                            <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMoreClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
-                                <button onClick={() => setReadMoreClick(!readMoreClick)} className=' rounded-full text-sm bg-white border border-slate-200 hover:bg-slate-100 hover:text-blue-500 p-1 px-2'>Read {readMoreClick ? 'Less' : 'More'}</button>
+                        {categoryData.model_details.short_description &&
+                            <div className="relative">
+                                <p className={`text-sm text-gray-600 my-5  ${readMoreClick ? '' : 'overflow-y-hidden h-[7rem]'} text-ellipsis leading-7`} dangerouslySetInnerHTML={{ __html: categoryData.model_details.short_description }} />
+                                <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMoreClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
+                                    <button onClick={() => setReadMoreClick(!readMoreClick)} className=' rounded-full text-sm bg-white border border-slate-200 hover:bg-slate-100 hover:text-blue-500 p-1 px-2'>Read {readMoreClick ? 'Less' : 'More'}</button>
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div> :
                     <>
                         <div className=" h-[12em] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
@@ -92,18 +41,7 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
                         <BreadCrumb menuData={menuData} />
                     </>
             }
-            <ProductsPageData productsData={data} brandsData={categoryData.brands} cat_data={catData} isSearchPage={isSearchPage} selectedBrands={selectedBrands} >
-                {showMoreProductsbtn && productsData.length > 0 ?
-                    <div className='w-full flex justify-center mt-10'>
-                        <button onClick={() => { loadMoreProducts() }} className='border-slate-300 flex items-center border  px-3 py-2  rounded-full hover:bg-[#39f] hover:text-white transition-all duration-300'>
-                            <div className='mx-3 text-sm  items-center'>More Products</div>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className={`w-4 h-4 ${animateSpin ? 'animate-spin' : ''}`}>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                            </svg>
-                        </button>
-                    </div>
-                    : null}
-            </ProductsPageData>
+            <ProductsPageData filterPath={filterPath} categoryData={categoryData} brandsData={categoryData.brands} isSearchPage={isSearchPage} selectedBrands={menuData[0]!="Category"?selectedBrands:router.query.brands?router.query.brands:""} menuData={menuData} />
 
         </div>
     )

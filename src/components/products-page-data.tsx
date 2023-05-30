@@ -1,16 +1,48 @@
 import { SingleProductData } from "./single-product-data"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionTrigger, AccordionContent, AccordionItem } from "./accordion-radix";
 import { BrandsButton } from "./Button";
 import * as Slider from '@radix-ui/react-slider';
 import { useRouter } from "next/router";
-import { use } from "i18next";
-const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, selectedBrands, children }: { cat_data: any, isSearchPage: boolean, selectedBrands: string, productsData: any, brandsData: any, children: any }) => {
+import getProductsDataByCat from '@/lib/getProductsDataByCat';
+import getCategoryData from "@/lib/getCategoryData";
+import { useLanguage } from "@/hooks/useLanguage";
+import { ProductsSkeleton } from "./productsSkeleton";
+
+const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, selectedBrands, menuData }: { isSearchPage: boolean, selectedBrands: any, categoryData: any, brandsData: any, filterPath: any, menuData: any }) => {
 
     const [rangeSliderValue, setRangeSliderValue] = useState([50])
+    const [noOfProducts, setNoOfProducts] = useState(40)
+    const [animateSpin, setAnimateSpin] = useState(false)
+    const [showMoreProductsbtn, setShowMoreProductsbtn] = useState(true)
+    const [preSelectedBrands, setSelectedBrands] = useState<string[]>([])
+    const [catData, setCatData] = useState({
+        data: [{
 
-    const router = useRouter();
+        }]
+    })
+
+    const router = useRouter()
+
+    var brandsSelected: string[] = []
+
+    const [productFilterApplied, setProductsFilterApplied] = useState(false)
+
+    const skeletonArray = Array(12).fill(<ProductsSkeleton />)
+
+    const filters = [
+        { name: "popularity", text: "Most Popular" },
+        { name: "most-rated", text: "Most Rated" },
+        { name: "price-asc", text: "Price: Low to High" },
+        { name: "price-desc", text: "Price: High to Low" },
+    ]
+
+    const [selectedFilter, setFilter] = useState(filters[0])
+    const { locale } = useLanguage();
+    const productsData = categoryData.products
+    const [data, setData] = useState(productsData)
+
     function slugify(text: string) {
         return text.toLowerCase().replace(/[\/\s&]+/g, '-');
     }
@@ -23,14 +55,103 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
         setRangeSliderValue(newValue)
     }
 
-    const generateSortPath = (pathName:string)=>{
-        if(router.query.order_by){
-            return `${router.asPath},${pathName}`
-        }
-        return `${router.asPath}&order_by=${pathName}`
-
+    const routerPathReplace = (url: string, newUrl: string) => {
+        router.push(router.asPath.replace(url, newUrl))
     }
 
+    const addBrand = (value: string) => {
+        brandsSelected = [...brandsSelected, ...preSelectedBrands]
+        brandsSelected?.push(value)
+
+        if (brandsSelected.length > 1) {
+            // routerPathReplace(currentBrandsRoute, `&brands=${brandsSelected.toString()}`)
+        }
+        else {
+            // router.push(router.asPath + `&brands=${brandsSelected}`)
+        }
+    };
+
+
+    const removeBrand = (value: string) => {
+        brandsSelected = [...brandsSelected, ...preSelectedBrands]
+        brandsSelected = brandsSelected.filter(brand => brand !== value)
+        setSelectedBrands(brandsSelected)
+    };
+
+    function typeGenerate(type: string) {
+        switch (type) {
+            case "Category":
+                return "categories"
+            case "Collection":
+                return "collections"
+        }
+        return ""
+    }
+
+    const filterSet = (indx: number, type: string, value: any, isRemoveele: boolean) => {
+        if (type === "brands") {
+            if (isRemoveele) {
+                removeBrand(value)
+            }
+            else {
+                setSelectedBrands(brands => [...brands, value])
+                addBrand(value)
+            }
+            value = brandsSelected.toString()
+        }
+        else {
+            setFilter(filters[indx])
+        }
+
+        setProductsFilterApplied(true);
+        debugger
+        fetchData(typeGenerate(menuData[0]), 0, false, (type === "order_by" ? `&${type}=${value}` : "") + (type === "brands" && brandsSelected.length > 0 ? `&${type}=${value}` : ""))
+    }
+
+    function fetchData(query: any, noOfProducts: number, loadMoreData: boolean, filterPaths: string) {
+        if (query === null) {
+            getProductsDataByCat(filterPath + filterPaths, noOfProducts, true, locale).then(
+                (proData: any) => {
+                    if (loadMoreData) {
+                        setData([...data, ...proData.data.products])
+                        setAnimateSpin(false)
+                        setShowMoreProductsbtn(false)
+                    }
+                    else {
+                        setData(proData.data.products)
+                        setProductsFilterApplied(false);
+                    }
+                }
+            )
+        }
+        else {
+            getProductsDataByCat(filterPath + filterPaths, noOfProducts, false, locale).then(
+                (proData: any) => {
+                    if (loadMoreData) {
+                        setData([...data, ...proData.data.products])
+                        setAnimateSpin(false)
+                        setShowMoreProductsbtn(false)
+                    }
+                    else {
+                        setData(proData.data.products)
+                        setProductsFilterApplied(false);
+                    }
+                }
+            )
+        }
+    }
+
+    useEffect(() => {
+        getCategoryData().then(cat_data => {
+            setCatData(cat_data)
+        })
+    }, [])
+
+    function loadMoreProducts() {
+        setAnimateSpin(true)
+        fetchData(typeGenerate(menuData[0]), noOfProducts, true, "")
+        setNoOfProducts(c => c + 40)
+    }
     return (
         <div className='py-5 max-w-[1450px]  mx-auto'>
             {!isSearchPage ?
@@ -39,20 +160,22 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
                     <div className="flex items-center">
                         <div className="relative inline-block text-left group/sort-menu">
                             <div>
-                                <button type="button" className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button"  >
-                                    Sort
-                                    <svg className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" >
-                                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
-                                    </svg>
+                                <button type="button" className="group space-x-3 items-center inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button"  >
+                                    <span>Sort</span>
+                                    <div className="px-2 py-1 border border-gray-300 flex">
+                                        {selectedFilter.text}
+                                        <svg className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" >
+                                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
                                 </button>
                             </div>
 
-                            <div className="group-hover/sort-menu:scale-100 scale-0 top-4 absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-100 opacity-95 backdrop-blur-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+                            <div className="group-hover/sort-menu:scale-100 scale-0 top-6 right-8 absolute  z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-100 opacity-95 backdrop-blur-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
                                 <div className="py-1">
-                                    <a href={generateSortPath("popularity")} className=" block px-4 py-1 text-sm hover:bg-slate-200">Most Popular</a>
-                                    <a href={generateSortPath("most-rated")} className=" block px-4 py-1 text-sm hover:bg-slate-200" >Most Rated</a>
-                                    <a href={generateSortPath("price-asc")} className=" block px-4 py-1 text-sm hover:bg-slate-200" >Price: Low to High</a>
-                                    <a href={generateSortPath("price-desc")} className=" block px-4 py-1 text-sm hover:bg-slate-200" >Price: High to Low</a>
+                                    {filters.map((filter: any, indx: number) => (
+                                        <div onClick={() => filterSet(indx, "order_by", filters[indx].name, false)} className={`${selectedFilter.text === filter.text ? "bg-slate-500 text-white" : "hover:bg-slate-200"} block px-4 py-1 text-sm cursor-pointer`}>{filter.text}</div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -78,7 +201,7 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                     {!isSearchPage ?
                         <form className="hidden lg:block divide-y space-y-4">
-                            {cat_data.data ?
+                            {catData.data[1] ?
                                 <>
                                     <div ></div>
                                     <Accordion.Root
@@ -88,7 +211,7 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
                                         collapsible>
                                         <AccordionItem className="" value="item-1">
                                             <AccordionTrigger className="font-bold">Category</AccordionTrigger>
-                                            {cat_data.data.map((item: any) => (
+                                            {catData.data.map((item: any) => (
                                                 <AccordionContent className="" >
                                                     <Accordion.Root
                                                         className="ml-2"
@@ -132,8 +255,8 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
                                             <AccordionContent className="" >
                                                 {brandsData ?
                                                     brandsData.map((brand: any) => (
-                                                        brand.featured ?
-                                                            <BrandsButton selectedBrands={selectedBrands} brandName={brand.name} />
+                                                        brand.featured === true ?
+                                                            <BrandsButton selectedBrands={selectedBrands} brandName={brand.name} filterSet={filterSet} />
                                                             : null
                                                     ))
                                                     : null}
@@ -180,19 +303,33 @@ const ProductsPageData = ({ productsData, brandsData, cat_data, isSearchPage, se
                         : null}
                     <div className={`${isSearchPage ? ' col-span-full' : "col-span-3"}`}>
                         <div className={`grid ${isSearchPage ? "xl:grid-cols-6 lg:grid-cols-4  md:grid-cols-3" : "xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2"}  min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
-                            {productsData.length > 1 ? productsData.map((pro_data: any) => (
-                                <SingleProductData pro_data={pro_data} />
-                            )) : <div className="w-full col-span-3">
-                                <h1 className="text-blue-500 text-center py-2">No Products Found</h1>
-                            </div>
+                            {data.length > 0 ? data.map((pro_data: any) => (
+                                productFilterApplied ?
+                                    skeletonArray.map(sk =>
+                                        sk
+                                    ) :
+                                    <SingleProductData pro_data={pro_data} />
+                            ))
+                                : <div className="w-full col-span-3">
+                                    <h1 className="text-blue-500 text-center py-2">No Products Found</h1>
+                                </div>
                             }
+
                         </div>
-                        {children}
+                        {showMoreProductsbtn && productsData.length > 0 ?
+                            <div className='w-full flex justify-center mt-10'>
+                                <button onClick={() => { loadMoreProducts() }} className='border-slate-300 flex items-center border  px-3 py-2  rounded-full hover:bg-[#39f] hover:text-white transition-all duration-300'>
+                                    <div className='mx-3 text-sm  items-center'>More Products</div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className={`w-4 h-4 ${animateSpin ? 'animate-spin' : ''}`}>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                    </svg>
+                                </button>
+                            </div>
+                            : null}
                     </div>
 
                 </div>
             </div>
-
         </div >
 
 

@@ -901,17 +901,17 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
           <div className="grid grid-cols-3 gap-4  hidden lg:flex md:flex bg-white shadow-md">
             <div onMouseOver={() => setOverlay(true)} onMouseLeave={() => { setOverlay(false) }} className="group inline-block shop-by-cat ">
               <button
-                onMouseOver={() => shopByCatOnMouseOver()} className="group-hover:bg-blue-500 py-[5px]  group-hover:text-white hover:text-white dropdown BeautyCareele  border-r border-slate-300 w-[236px]"
+                onMouseOver={() => shopByCatOnMouseOver()} className="group-hover:bg-blue-500 py-[5px]  group-hover:text-white hover:text-white dropdown BeautyCareele  border-r border-slate-300 w-[236px] items-center flex"
                 id="dropdownDefaultButton" data-dropdown-toggle="dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                   stroke="currentColor" className="w-6 h-6 my-2 float-left ml-3">
                   <path strokeLinecap="round" strokeLinejoin="round"
                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-
-                <div className="text-start mt-2 float-left mr-10 text-sm group-1 ml-2 ">{langData.navbar.shop_by_cat}</div>
+                <div className="text-start float-left mr-10 text-sm group-1 align-middle flex items-center ml-2">
+                  {langData.navbar.shop_by_cat} </div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                  stroke="currentColor" className="h-6 float-right mt-2 w-4 mr-2">
+                  stroke="currentColor" className="h-6 float-right  w-4 mr-2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
               </button>

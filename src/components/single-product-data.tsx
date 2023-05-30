@@ -45,7 +45,7 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
 
             {pro_data ?
                 <div className="relative border border-slate-200 rounded-lg" >
-                    <Link href={`product/${pro_data.slug}`} className="  relative block p-2 mx-auto rounded-lg rounded-b-none  w-full">
+                    <Link href={`/product/${pro_data.slug}`} className="  relative block p-2 mx-auto rounded-lg rounded-b-none  w-full">
                         <Image className={`rounded-lg mx-auto border border-slate-100`} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
                         <span className="flex absolute bg-amber-400 opacity-90 rounded-bl-lg px-[7px] py-[1px] bottom-2 left-2 rounded-tr-xl shadow-xl ">
                             <div className="my-auto">
