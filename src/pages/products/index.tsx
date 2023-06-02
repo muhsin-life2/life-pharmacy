@@ -21,6 +21,10 @@ export async function getServerSideProps({ locale, query }: { locale: any, query
         filterPath = `categories${query.categories != "" ? `=${query.categories}` : ""}`
         cat = query.categories
     }
+    else if (query.brands) {
+        filterPath = `brands${query.brands != "" ? `=${query.brands}` : ""}`
+        cat = query.brands
+    }
     const productsData = await getProductsDataByCat(filterPath, 0, false, locale);
     return {
         props: {
