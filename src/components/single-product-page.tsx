@@ -54,7 +54,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
 
     return (
         <>
-            <div className="max-w-[1450px] mx-auto md:text-sm sm:text-xs md:bg-white bg-slate-50 py-5 px-[10px]">
+            <div className="max-w-[1450px] mx-auto  sm:px-[10px] px-[5px]  md:text-sm sm:text-xs md:bg-white bg-slate-50 py-5 ">
                 {pro_data ?
                     <div>
                         <div className="mx-auto flex flex-wrap ">

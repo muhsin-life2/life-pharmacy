@@ -6,6 +6,7 @@ import { CheckCircleIcon, CheckIcon, ChevronLeftIcon, ChevronUpDownIcon } from '
 import TransitionComp from './transition'
 import { useRouter } from 'next/router'
 import { URL } from 'url'
+import { countReset } from 'console'
 
 interface compProps {
     setModalState: any
@@ -189,12 +190,16 @@ relative flex cursor-pointer rounded-lg px-5 md:py-4 py-2 shadow-md focus:outlin
 
 
                                     {IsCountryChangeClicked ?
-                                        <TransitionComp props={countryProps} setTransition={IsCountryChangeClicked} />
+                                        <TransitionComp setTransition={IsCountryChangeClicked}>
+                                            {countryProps}
+                                        </TransitionComp> 
                                         : null}
 
 
                                     {IsLanguageChangeClicked ?
-                                        <TransitionComp props={languageProps} setTransition={IsLanguageChangeClicked} />
+                                        <TransitionComp setTransition={IsLanguageChangeClicked}>
+                                            {languageProps}
+                                        </TransitionComp>
                                         : null}
                                 </Dialog.Panel>
                             </Transition.Child>

@@ -20,7 +20,6 @@ const Products = ({ lang, slug, type_key }: {
         case "category":
             type_key = "categories"
             break
-
     }
 
     const url = `https://prodapp.lifepharmacy.com/api/web/products?${type_key}=${slug}&order_by=popularity&type=cols&skip=0&take=7&new_method=true&lang=${lang}`

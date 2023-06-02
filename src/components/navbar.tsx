@@ -38,6 +38,7 @@ import { toast } from 'react-toastify';
 import React, { FC } from 'react'
 import Example from "./categories-accordion";
 import dynamic from "next/dynamic"
+import { FaUserAlt, FaUserAstronaut, FaUserCheck } from "react-icons/fa";
 
 
 const DeliveryModal = dynamic(() => import("./delivery-modal"));
@@ -172,12 +173,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
   const [chooseLanguage, setChooseLanguage] = useState(false)
   const [laguage, setLaguage] = useState(setLanguage())
 
-  // function languageClicked(lan) {
-  //   setChooseCountr(false);
-  //   setChooseLanguage(true);
-  //   setLaguage(lan)
-  // }
-
   function languageBackClicked() {
     setChooseCountr(true);
     setChooseLanguage(false);
@@ -190,7 +185,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
   const handleChange = (state: string) => setState(state);
 
-  // const [seconds, setSeconds] = useState(59);
   const [countDownVisible, setCountDownVisible] = useState(false);
 
   const { time, start, pause, reset, status } = useTimer({
@@ -220,7 +214,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
       router.push(`/search?term=${searchData}`)
     }
     else {
-      router.push(`/products/${searchData}`)
+      router.push(`/product/${searchData}`)
     }
   }
 
@@ -591,7 +585,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
     <>
 
       {highestRatedP ?
-        <TransitionComp props={
+        <TransitionComp
+          setTransition={highestRatedP} >
           <div className="grid grid-flow-col  bg-pink-800 text-white  text-xs px-4 py-2 md:hidden ">
             <div className="flex justify-start">
               <svg onClick={() => { sethighestRatedP(false) }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -603,13 +598,13 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
 
             <div className="text-end text-md my-auto">{langData.navbar.download_now}</div>
           </div>
-        } setTransition={highestRatedP} />
+        </TransitionComp>
         : null}
 
       <div className="sticky top-0  z-50 bg-white mx-auto ">
 
         <div className="md:bg-[#002579] bg-white  backdrop-blur backdrop-filter ">
-          <div className="mx-auto flex max-w-[1450px] gap-5  py-4 px-[10px]">
+          <div className="mx-auto flex max-w-[1450px] sm:px-[10px] px-[5px] gap-5  py-4 ">
             <Link href={"/"} className="my-auto">
               <Image src="https://www.lifepharmacy.com/images/logo-white.svg" alt=""
                 className=" bg-[#002579] filter md:flex hidden" width={380} height={250} />
@@ -684,8 +679,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                           </div>
                           <div className="group-search text-xs text-gray-600">
                             <h5 className="mb-3 text-xs text-sky-500">PRODUCTS</h5>
-
-
                             <div role="status" className="mb-3 flex">
                               <div className="loading-img "></div>
                               <div className="h-10 w-full mx-4">
@@ -794,17 +787,16 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
               </div>
 
               {session ? <>
-                <Menu as="div" className="relative inline-block text-left my-auto">
-                  <Menu.Button className="flex-col md:hidden lg:flex hidden" onClick={() => { setShowDropdown(!showDropdown) }}>
+                <Link className="  text-left mt-1 flex flex-col justify-around" href="/dashboard">
+                  <FaUserAlt className="w-8 h-8 mx-auto fill-white" />
 
-                    <img src="https://cdn-icons-png.flaticon.com/512/309/309748.png?w=740t=st=1678711444~exp=1678712044~hmac=9fdd9608d210eeffcc5069fd9c6888bb3fcb3407e24160947ac7f3c7a85ca203" className="w-9 h-9 my-auto mx-auto" />
-                    <div className="text-[11px] text-center text-white">Account</div>
+                  <div className="text-[11px] text-center text-white">Account</div>
 
-                  </Menu.Button>
 
-                  <AccountDetails sessionData={sessionServ} signOut={signOut} refreshData={refreshData} />
 
-                </Menu>
+                  {/* <AccountDetails sessionData={sessionServ} signOut={signOut} refreshData={refreshData} /> */}
+
+                </Link>
 
 
               </> : <a href="#" className=" flex-col md:hidden lg:flex hidden" onClick={() => { setLocationModal(true) }}>
@@ -885,7 +877,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
             </div>
           </div>
           <div className="bg-[#a92579] items-center">
-            <div className=" flex justify-between py-1 px-[10px] max-w-[1450px] mx-auto text-white lg:flex md:flex hidden  text-xs " >
+            <div className=" flex justify-between py-1 max-w-[1450px] mx-auto  sm:px-[10px] px-[5px] text-white lg:flex md:flex hidden  text-xs " >
               <div className={"flex justify-start items-center space-x-3 h-fit"}>
                 <div className={`${isArabic ? 'ml-2' : 'mr-2'}`}>{langData.navbar.highest_rated_phar} </div>
                 <Image src={"https://www.lifepharmacy.com/images/app-rating.svg"} className="w-20 h-5" height={30} width={30} alt={"app-rating"} /></div>
@@ -1008,7 +1000,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                     <path strokeLinecap="round" strokeLinejoin="round"
                       d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                   </svg>
-                  <div className=" text-start mt-2 float-left font-bold uppercase ">{langData.navbar.brands}</div>
+                  <Link href={"/brands"} className=" text-start mt-2 float-left font-bold uppercase ">{langData.navbar.brands}</Link>
                   {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className=" h-6 float-left mt-2 w-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -1016,15 +1008,19 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                 </button>
                 <ul
                   className="bg-white shadow-lg transform scale-0 group-hover:scale-100 absolute 
-                z-10 transition duration-150 ease-in-out origin-top hidden group-hover:flex flex-col absolute left-0 px-5 py-0 text-black left-0 right-0 overflow-auto h-[30rem]">
-                  <li key={"brands-section"}>
-                    <div className="grid grid-cols-5 gap-5" id="brands-section">
+                z-10 transition duration-150 ease-in-out origin-top hidden group-hover:flex flex-col  px-5  text-black left-0 right-0 h-fit ">
+                  <li key={"brands-section"} >
+                    <div className="grid grid-cols-5 gap-3  mx-auto" id="brands-section">
                       {brands_data.data.brands.map((bd: any) => (
                         <div className="grid-flow-row mb-5"> <div className={`flex flex-col mr-5`}>
-                          <Image className="mx-auto rounded-full border border-white bg-white shadow-md" width={150} height={150} src={bd.images.logo} alt="" />
-                          <h5 className="text-center mt-3">{bd.name} </h5>
+                          <Image className="mx-auto rounded-full border border-white bg-white shadow-md" width={120} height={120} src={bd.images.logo} alt="" />
+                          <h5 className="text-center mt-3">{bd.name}</h5>
                         </div></div>
                       ))}
+                    </div>
+                    <div className="w-full text-center my-5">
+                      <Link href="/brands" className="text-white px-8 py-2 text-sm mx-auto rounded-full bg-[#39f]">VIEW ALL</Link>
+
                     </div>
                   </li>
                 </ul>
@@ -1040,7 +1036,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
                   </svg>
 
-                  <div className=" text-start mt-2 float-left font-bold uppercase">{langData.navbar.offers}</div>
+                  <Link href={"/offers"} className=" text-start mt-2 float-left font-bold uppercase">{langData.navbar.offers}</Link>
                   {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className=" h-6 float-left mt-1 w-4">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -1084,7 +1080,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
                     d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M4.5 10.5H18V15H4.5v-4.5zM3.75 18h15A2.25 2.25 0 0021 15.75v-6a2.25 2.25 0 00-2.25-2.25h-15A2.25 2.25 0 001.5 9.75v6A2.25 2.25 0 003.75 18z" />
                 </svg> */}
 
-                <div className="mb-1 text-start float-left uppercase font-bold">{langData.navbar.health_packages}</div>
+                <Link href={"/health_checkup"} className="mb-1 text-start float-left uppercase font-bold">{langData.navbar.health_packages}</Link>
                 {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                   stroke="currentColor" className=" h-6 float-left mt-2 w-4">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -1841,10 +1837,12 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, sessionServ, isArabic, lan
           </Link>
 
           <button className="group/button">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-6 h-6 mx-auto  fill-gray-500 my-auto group-focus/button:fill-blue-500">
-              <path d="M5.127 3.502L5.25 3.5h9.5c.041 0 .082 0 .123.002A2.251 2.251 0 0012.75 2h-5.5a2.25 2.25 0 00-2.123 1.502zM1 10.25A2.25 2.25 0 013.25 8h13.5A2.25 2.25 0 0119 10.25v5.5A2.25 2.25 0 0116.75 18H3.25A2.25 2.25 0 011 15.75v-5.5zM3.25 6.5c-.04 0-.082 0-.123.002A2.25 2.25 0 015.25 5h9.5c.98 0 1.814.627 2.123 1.502a3.819 3.819 0 00-.123-.002H3.25z" />
-            </svg>
-            <p className="sm:text-xs text-[10px]">Category</p>
+            <Link className="" href={'/category-menu/beauty-care'}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="sm:w-8 sm:h-8 w-6 h-6 mx-auto  fill-gray-500 my-auto group-focus/button:fill-blue-500">
+                <path d="M5.127 3.502L5.25 3.5h9.5c.041 0 .082 0 .123.002A2.251 2.251 0 0012.75 2h-5.5a2.25 2.25 0 00-2.123 1.502zM1 10.25A2.25 2.25 0 013.25 8h13.5A2.25 2.25 0 0119 10.25v5.5A2.25 2.25 0 0116.75 18H3.25A2.25 2.25 0 011 15.75v-5.5zM3.25 6.5c-.04 0-.082 0-.123.002A2.25 2.25 0 015.25 5h9.5c.98 0 1.814.627 2.123 1.502a3.819 3.819 0 00-.123-.002H3.25z" />
+              </svg>
+              <p className="sm:text-xs text-[10px]">Category</p>
+            </Link>
 
 
           </button>

@@ -153,7 +153,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
         setNoOfProducts(c => c + 40)
     }
     return (
-        <div className='py-5 max-w-[1450px]  mx-auto'>
+        <div className='py-5 max-w-[1450px] mx-auto  sm:px-[10px] px-[5px]'>
             {!isSearchPage ?
                 <div className="flex justify-end  py-2">
 

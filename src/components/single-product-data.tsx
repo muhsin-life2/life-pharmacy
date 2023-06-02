@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { incrementQuantity } from '../redux/cart.slice';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import ProductImgLoader from './product-img-loader';
 
 export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
     const { pathname } = useRouter()
@@ -38,6 +39,10 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
         addedToCartState(true);
         toast.success(`Item Added to the cart`);
     }
+    const [isValidImage, setIsValidImage] = useState(true);
+    const handleImageError = () => {
+        setIsValidImage(false);
+    };
 
     return (
         <>
@@ -45,13 +50,23 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
 
             {pro_data ?
                 <div className="relative border border-slate-200 rounded-lg" >
-                    <Link href={`/product/${pro_data.slug}`} className="  relative block p-2 mx-auto rounded-lg rounded-b-none  w-full">
-                        <Image className={`rounded-lg mx-auto border border-slate-100`} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
+                    <Link href={`/product/${pro_data.slug}`} className="  relative block bg-white p-2 mx-auto rounded-lg rounded-b-none  w-full">
+
+
+                        {isValidImage ?
+                            <Image onError={handleImageError} className={`rounded-lg mx-auto border border-slate-100`} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
+                            :
+                            <div className='max-h-[250px] max-w-[250px] mx-auto'>
+                             <ProductImgLoader/>
+                            </div>
+                     
+                        }
                         <span className="flex absolute bg-amber-400 opacity-90 rounded-bl-lg px-[7px] py-[1px] bottom-2 left-2 rounded-tr-xl shadow-xl ">
                             <div className="my-auto">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill={reviewColor(pro_data.rating)} viewBox="0 0 24 24" stroke-width="1.5" stroke={reviewColor(pro_data.rating)} className="lg:w-4 stroke-white lg:h-3 w-3 h-3 mr-1 fill-white">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                                 </svg>
+
                             </div>
                             <div className=" lg:text-sm !text-[12px] text-white ml-1">{pro_data.rating}</div>
                         </span>
@@ -60,7 +75,7 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
                                 {pro_data.offers.value ?
                                     <>{parseFloat(pro_data.offers.value).toFixed(0)} % OFF</>
                                     : <>BUY1 GET1</>}</div> : null}
-                        {pro_data.label ? <div style={{background: pro_data.label.color_code}} className={`  skeleton-box flex absolute left-2 top-2 w-fit text-white px-5 items-center rounded-tl-lg rounded-br-2xl py-1 text-xs h-fit`}><span className='items-center'>{pro_data.label.label_text}</span>
+                        {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={`  skeleton-box flex absolute left-2 top-2 w-fit text-white px-5 items-center rounded-tl-lg rounded-br-2xl py-1 text-xs h-fit`}><span className='items-center'>{pro_data.label.label_text}</span>
                             <div className={`${pathname?.substring(4, 6) === 'en' ? "ml-2" : "ml-2"}`}>{generateIcon(pro_data.label.icon_type)}</div></div> : null}
                         {/* {pro_data.out_of_stock ?
                         <div className="text-white absolute translate bg-black bg-opacity-50 px-3">Out of Stock</div>:null} */}
@@ -72,18 +87,18 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
                             {pro_data.prices ? pro_data.prices[0].price.offer_price != pro_data.prices[0].price.regular_price ?
                                 <span className='whitespace-nowrap'>
                                     <b className='text-red-500 '>
-                                        <span className="md:text-sm text-xs">AED</span> <span className="lg:text-lg sm:text-base text-base ">{pro_data.prices[0].price.offer_price}</span>
+                                        <span className="md:text-xs text-[10px]">AED</span> <span className="lg:text-lg sm:text-base text-base font-semibold">{pro_data.prices[0].price.offer_price}</span>
                                     </b>
                                     <b className='sm:mx-3 ml-1 text-blue-400'>
                                         <span className="sm:text-xs text-[10px] line-through sm:inline-block hidden">AED</span> <span className="sm:text-xs  line-through text-[10px]">{pro_data.prices[0].price.regular_price}</span>
                                     </b>
                                 </span>
                                 : <div className='text-blue-400' >
-                                    <span className="md:text-sm text-xs ">AED</span> <span className="lg:text-lg sm:text-base text-sm ">{pro_data.prices ? parseFloat(pro_data.prices[0].price.regular_price).toFixed(2) : null}</span>
+                                    <span className="md:text-xs text-[10px] ">AED</span> <span className="lg:text-lg sm:text-base text-sm font-semibold">{pro_data.prices ? parseFloat(pro_data.prices[0].price.regular_price).toFixed(2) : null}</span>
                                 </div> : null}
                         </div>
                         <Link href={`product/${pro_data.slug}`} className="h-8 block">
-                            <div className="lg:text-sm text-xs text-[#002579] ">{pro_data.title?.substring(0, 60) + '...'}</div>
+                            <div className="lg:text-sm text-xs text-[#002579]">{pro_data.title?.substring(0, 60) + '...'}</div>
 
                         </Link>
                         <div className="mt-5">

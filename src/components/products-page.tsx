@@ -10,13 +10,12 @@ import { useRouter } from 'next/router';
 
 export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData, selectedBrands }: { categoryData: any, menuData: any, filterPath: string, isSearchPage: boolean, selectedBrands: string }) => {
 
-
     const [readMoreClick, setReadMoreClick] = useState(false)
     const router = useRouter()
 
 
     return (
-        <div className="mx-auto max-w-[1450px] px-[10px]">
+        <div className="max-w-[1450px] mx-auto  sm:px-[10px] px-[5px]">
             {
                 categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0] && categoryData.filters.categories[0].images && categoryData.filters.categories[0].images.banner ?
                     <div className=''>
@@ -35,13 +34,13 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
                         <div className=" h-[12em] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
                             <div className='my-auto space-y-2'>
                                 {menuData[0] ? <h1 className='text-4xl text-center capitalize'>{menuData[0]}</h1> : null}
-                                <h1 className='text-2xl  text-center   capitalize text-blue-500'>{menuData[1] ? String(menuData[1]).toLowerCase().replace(/-/g, ' ') : " Products"} </h1>
+                                <h1 className='text-2xl  text-center   capitalize text-blue-500'>{menuData[1] ? menuData[1] : " Products"} </h1>
                             </div>
                         </div>
                         <BreadCrumb menuData={menuData} />
                     </>
             }
-            <ProductsPageData filterPath={filterPath} categoryData={categoryData} brandsData={categoryData.brands} isSearchPage={isSearchPage} selectedBrands={menuData[0]!="Category"?selectedBrands:router.query.brands?router.query.brands:""} menuData={menuData} />
+            <ProductsPageData filterPath={filterPath} categoryData={categoryData} brandsData={categoryData.brands} isSearchPage={isSearchPage} selectedBrands={menuData[0] != "Category" ? selectedBrands : router.query.brands ? router.query.brands : ""} menuData={menuData} />
 
         </div>
     )

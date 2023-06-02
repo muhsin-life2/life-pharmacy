@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
+
+
 
 export const BrandsButton = ({ selectedBrands, brandName, filterSet }: { selectedBrands: string, brandName: any, filterSet: any }) => {
     const [isInverted, setIsInverted] = useState(false);
@@ -11,6 +14,14 @@ export const BrandsButton = ({ selectedBrands, brandName, filterSet }: { selecte
                 filterSet(0, "brands", brandName.toLowerCase().replace(/[\s&]+/g, '-'), true)
                 : filterSet(0, "brands", brandName.toLowerCase().replace(/[\s&]+/g, '-'), false)
         }} className={`${brandsArray.includes(brandName.toLowerCase().replace(/[\s&]+/g, '-')) ? "!bg-blue-500 !text-white" : ""} ${isInverted ? "!bg-blue-500 !text-white " : " "} cursor-pointer text-blue-500 border border-blue-500 px-2 py-1 text-center my-1 mr-2 rounded-full hover:bg-blue-500 hover:text-white inline-block text-xs`}>{brandName}</div>
+    )
+}
 
+
+export const ShopNowButton = ({ classNames, children }: { children: any, classNames: string }) => {
+    return (
+        <button className={"border-[#39f] border rounded-lg hover:bg-[#39f] bg-white transition-colors duration-400 text-[#39f] hover:text-white " + classNames}>
+            {children}
+        </button>
     )
 }

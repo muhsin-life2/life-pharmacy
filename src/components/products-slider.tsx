@@ -6,9 +6,9 @@ import { Autoplay } from "swiper";
 import { SingleProductData } from "./single-product-data";
 
 const ProductsSlider = ({ proData }: { proData: any }) => {
-    return <>
+    return (
         <Swiper
-            className="my-7"
+            className="mb-7 w-[99%]"
             slidesPerView={2}
             modules={[Autoplay]}
             breakpoints={{
@@ -23,13 +23,14 @@ const ProductsSlider = ({ proData }: { proData: any }) => {
                     slidesPerView: 3
                 },
             }}>
-            {proData.map((pro_data:any) => (
-                <SwiperSlide className="cursor-grab w-full mr-5">
+            {proData.map((pro_data: any, indx: number) => (
+                <SwiperSlide className={`cursor-grab w-full mr-2 py-3 ${indx === 0 ? "ml-3" : ""}`}>
                     <SingleProductData pro_data={pro_data} />
                 </SwiperSlide>
             ))}
 
-        </Swiper></>
+        </Swiper>
+    )
 }
 
 export default ProductsSlider
