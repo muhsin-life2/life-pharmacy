@@ -19,7 +19,7 @@ type TProps = AppProps & {
   data: any,
   brands_data: any,
   session: any,
-  userAddrData:any
+  userAddrData: any
 };
 
 
@@ -35,10 +35,10 @@ const App = ({ Component, data, brands_data, session, pageProps, userAddrData }:
   const { t, locale } = useLanguage();
   return (
     <>
-    <Head>
-    <title>Life Pharmacy UAE - Online Pharmacy Delivery in 30 minutes</title>
-    </Head>
-      <NextNProgress color="#eba834"/>
+      <Head>
+        <title>Life Pharmacy UAE - Online Pharmacy Delivery in 30 minutes</title>
+      </Head>
+      <NextNProgress color="#eba834" />
       <SessionProvider session={session}>
         <main dir={getDirection(locale)} className={poppins.className}>
           <Layout data={data} brands_data={brands_data} sessionServ={session} isArabic={false} lang={locale ? locale : "en"} langData={t} userAddressData={userAddrData}>
@@ -55,7 +55,7 @@ App.getInitialProps = async (context: any) => {
 
   const data = await getCategoryData()
 
-  const brands_data = await getBrandsData()
+  const brands_data = await getBrandsData(false)
 
   const session = await getSession(context);
   var userAddrData = {
