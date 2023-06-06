@@ -261,7 +261,7 @@ input:focus {
   }
 } */
 
-.sugg-pro{
+.sugg-pro {
     @apply p-2 rounded-lg flex hover:bg-gray-100 w-full h-16
 }
 
@@ -287,29 +287,64 @@ input:focus {
 
 .skeleton-box {
 
-  overflow: hidden;
-  background-color: #F4F4F4;
+    overflow: hidden;
+    background-color: #F4F4F4;
 
-  
+
 }
+
 .skeleton-box::after {
     position: absolute;
     top: -50%;
     left: -50%;
     right: -50%;
     bottom: -50%;
-    background-image: linear-gradient(90deg,hsla(0,0%,100%,0) 20%,hsla(0,0%,100%,.8) 50%,hsla(0,0%,100%,0) 80%);
- 
+    background-image: linear-gradient(90deg, hsla(0, 0%, 100%, 0) 20%, hsla(0, 0%, 100%, .8) 50%, hsla(0, 0%, 100%, 0) 80%);
+
     animation: shimmer 1.5s infinite;
     content: '';
-  }
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
 }
 
-.leading-5{
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.leading-5 {
     @apply space-y-2
 }
 
+.border-muted{
+    @apply border border-[#eee]
+}
+
+p{
+    @apply text-[#777] leading-[1.6rem]
+}
+
+.text-dark{
+    @apply text-[#333] 
+}
+.text-life{
+    @apply text-[#002579]
+}
+
+.bg-primary{
+    @apply bg-[#39f]
+}
+
+.text-primary{
+    @apply text-[#39f]
+}
+
+.btn-primary{
+    @apply border-[#39f] border rounded-lg hover:bg-[#39f] bg-white transition-colors duration-200 ease-in text-[#39f] hover:text-white 
+}
+
+strong{
+    @apply my-5 font-bold leading-10
+}
+li{
+    @apply leading-6
+}
