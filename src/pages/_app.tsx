@@ -23,7 +23,7 @@ type TProps = AppProps & {
 };
 
 
-const App = ({ Component, data, brands_data, session, pageProps, userAddrData }: TProps) => {
+const App = ({ Component, data, brands_data, pageProps }: TProps) => {
 
   const getDirection = (lang: any) => {
     if (lang === "ar") {
@@ -39,9 +39,9 @@ const App = ({ Component, data, brands_data, session, pageProps, userAddrData }:
         <title>Life Pharmacy UAE - Online Pharmacy Delivery in 30 minutes</title>
       </Head>
       <NextNProgress color="#eba834" />
-      <SessionProvider session={session}>
+      <SessionProvider >
         <main dir={getDirection(locale)} className={poppins.className}>
-          <Layout data={data} brands_data={brands_data} sessionServ={session} isArabic={false} lang={locale ? locale : "en"} langData={t} userAddressData={userAddrData}>
+          <Layout data={data} brands_data={brands_data}  isArabic={false} lang={locale ? locale : "en"} langData={t} >
             <Component {...pageProps} />
           </Layout>
         </main>
@@ -57,25 +57,23 @@ App.getInitialProps = async (context: any) => {
 
   const brands_data = await getBrandsData(false)
 
-  const session = await getSession(context);
-  var userAddrData = {
-    data: {
-      addresses: []
-    }
-  };
-  if (session) {
-    const userAddrheaderRes = await fetch('https://prodapp.lifepharmacy.com/api/user/addresses', {
-      headers: {
-        Authorization: `Bearer ${session.token.token}`
-      }
-    });
-    userAddrData = await userAddrheaderRes.json();
-  }
+  // const session = await getSession(context);
+  // var userAddrData = {
+  //   data: {
+  //     addresses: []
+  //   }
+  // };
+  // if (session) {
+  //   const userAddrheaderRes = await fetch('https://prodapp.lifepharmacy.com/api/user/addresses', {
+  //     headers: {
+  //       Authorization: `Bearer ${session.token.token}`
+  //     }
+  //   });
+  //   userAddrData = await userAddrheaderRes.json();
+  // }
   return {
     data,
-    brands_data,
-    session,
-    userAddrData
+    brands_data
   };
 };
 

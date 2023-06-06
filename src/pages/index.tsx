@@ -12,7 +12,7 @@ export default function Home({ homePageData, locale }: { homePageData: any, loca
   )
 }
 
-export async function getServerSideProps({ locale }: { locale: any }) {
+export async function getStaticProps({ locale }: { locale: any }) {
 
   const homePageData = await getHomePageData(locale);
 
