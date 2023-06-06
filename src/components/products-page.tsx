@@ -25,7 +25,7 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
                             <div className="relative">
                                 <p className={`text-sm text-gray-600 my-5  ${readMoreClick ? '' : 'overflow-y-hidden h-[7rem]'} text-ellipsis leading-7`} dangerouslySetInnerHTML={{ __html: categoryData.model_details.short_description }} />
                                 <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMoreClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
-                                    <button onClick={() => setReadMoreClick(!readMoreClick)} className=' rounded-full text-sm bg-white border border-slate-200 hover:bg-slate-100 hover:text-blue-500 p-1 px-2'>Read {readMoreClick ? 'Less' : 'More'}</button>
+                                    <button onClick={() => setReadMoreClick(!readMoreClick)} className=' rounded-full text-sm bg-white border border-muted hover:bg-slate-100 hover:text-blue-500 p-1 px-2'>Read {readMoreClick ? 'Less' : 'More'}</button>
                                 </div>
                             </div>
                         }

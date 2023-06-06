@@ -40,8 +40,8 @@ const Cart = ({ children }: { children: any }) => {
                 {cartItems.length > 0 ?
                     <>
                         <div className='bg-[#f4f7ff] pt-0 md:w-8/12 w-full py-1 rounded-xl mr-3 h-fit'>
-                            <div className="w-full flex bg-white justify-between items-center rounded-xl py-1 px-3 border-2 border-slate-100 ">
-                                <p className='text-[#002579] font-semibold text-sm'> BUY1GET1</p>
+                            <div className="w-full flex bg-white justify-between items-center rounded-xl py-1 px-3 border-2 border-muted ">
+                                <p className='text-life  font-semibold text-sm'> BUY1GET1</p>
                                 <div className='p-1'>
                                     <Image src={"https://www.lifepharmacy.com/images/standard-nr.svg"} height={30} width={30} alt={"delivery"} />
                                 </div>
@@ -49,10 +49,10 @@ const Cart = ({ children }: { children: any }) => {
                             <div className='m-3'>
                                 {
                                     cartItems.map((item: any) => (
-                                        <div className="rounded-lg border border-slate-200 my-3 relative bg-white">
+                                        <div className="rounded-lg border border-muted my-3 relative bg-white">
                                             <div className="flex p-3 space-x-4">
                                                 <div className="max-h-[10rem]">
-                                                    <Image src={item.images.featured_image} height={150} width={150} className=" border border-slate-200 rounded-lg " alt="pro_Image" />
+                                                    <Image src={item.images.featured_image} height={150} width={150} className=" border border-muted rounded-lg " alt="pro_Image" />
                                                 </div>
                                                 <div className="rounded-lg flex-col flex-grow justify-between flex ">
                                                     <p className=" xl:text-lg lg:text-base sm:text-sm text-xs">{item.title}</p>
@@ -66,7 +66,7 @@ const Cart = ({ children }: { children: any }) => {
                                                     onClick={() => {
                                                         dispatch(decrementQuantity(item.id))
                                                         toast.info(`Cart successfully updated`);
-                                                    }} className="border border-slate-100 bg-white px-1 w-[2rem]">
+                                                    }} className="border border-muted bg-white px-1 w-[2rem]">
                                                     <Image src="https://www.lifepharmacy.com/images/trash.svg" height="15" width="15" alt="trash" className="h-5 mx-auto  w-4" />
                                                 </button>
                                                 <div className="px-2 text-center my-auto"><span>{getProductQuantity(item.id)}</span></div>
@@ -87,16 +87,16 @@ const Cart = ({ children }: { children: any }) => {
                             </div>
                         </div>
                         <div className="  bg-white rounded-lg py-1 px-2  md:w-4/12 w-full">
-                            <div className='border-2 border-slate-100 h-fit flex p-2 rounded-lg shadow-sm mb-3'>
+                            <div className='border-2 border-muted h-fit flex p-2 rounded-lg shadow-sm mb-3'>
                                 <div className='mr-2'>
                                     <Image src={"https://www.lifepharmacy.com/images/return.svg"} height={35} width={35} alt={"delivery"} />
                                 </div>
                                 <div className='p-1'>
-                                    <p className='text-[#002579] text-xs font-semibold'> RETURN POLICY</p>
+                                    <p className='text-life  text-xs font-semibold'> RETURN POLICY</p>
                                     <p className='text-[10px]'>Orders once placed can't be returned or exchanged <span><a className='text-blue-500'>Learn More</a></span> </p>
                                 </div>
                             </div>
-                            <div className='border-2 border-slate-100 h-fit  p-5 rounded-lg shadow-md text-[#002579] text-xs'>
+                            <div className='border-2 border-muted h-fit  p-5 rounded-lg shadow-md text-life  text-xs'>
                                 <h1 className='mb-2 font-semibold'>ORDER SUMMARY</h1>
                                 <div className='space-y-3'>
                                     <div className='flex justify-between'>

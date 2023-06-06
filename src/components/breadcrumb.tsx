@@ -2,7 +2,7 @@ const BreadCrumb = ({ menuData }: { menuData: any }) => {
 console.log(menuData);
 
     return (
-        <nav className="flex px-5 py-3 mb-5 text-gray-700   border-slate-200 border-b" aria-label="Breadcrumb">
+        <nav className="flex px-5 py-3 mb-5 text-gray-700   border-muted border-b" aria-label="Breadcrumb">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
                 <li className="inline-flex items-center">
                     <a href={`/`} className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 ">

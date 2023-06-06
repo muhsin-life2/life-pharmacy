@@ -49,12 +49,12 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
             <p className='hidden bg-[#fb7979] bg-[#9b274f] bg-[#f50a0a] bg-[#f245a1] bg-[#ef0b0b] bg-[#f90101] bg-[#d81851]'></p>
 
             {pro_data ?
-                <div className="relative border border-slate-200 rounded-lg" >
+                <div className="relative border border-muted rounded-lg" >
                     <Link href={`/product/${pro_data.slug}`} className="  relative block bg-white p-2 mx-auto rounded-lg rounded-b-none  w-full">
 
 
                         {isValidImage ?
-                            <Image onError={handleImageError} className={`rounded-lg mx-auto border border-slate-100`} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
+                            <Image onError={handleImageError} className={`rounded-lg mx-auto border border-muted`} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
                             :
                             <div className='max-h-[250px] max-w-[250px] mx-auto'>
                              <ProductImgLoader/>
@@ -98,14 +98,14 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
                                 </div> : null}
                         </div>
                         <Link href={`product/${pro_data.slug}`} className="h-8 block">
-                            <div className="lg:text-sm text-xs text-[#002579]">{pro_data.title?.substring(0, 60) + '...'}</div>
+                            <div className="lg:text-sm text-xs text-life">{pro_data.title?.substring(0, 60) + '...'}</div>
 
                         </Link>
                         <div className="mt-5">
                             <div className="flex justify-start overflow-x-auto no-scrollbar">
                                 {pro_data.categories ?
                                     pro_data.categories.map((cat: any) => (
-                                        <a href={`products?categories=${cat.slug}`} className="whitespace-nowrap lg:text-[10px] text-[9px] border border-gray-300 hover:bg-gray-300 hover-border-white mr-2 rounded-md px-2 bg-[#f4f7ff] py-[2px] text-[#002579]">{cat.name}</a>
+                                        <a href={`products?categories=${cat.slug}`} className="whitespace-nowrap lg:text-[10px] text-[9px] border border-gray-300 hover:bg-gray-300 hover-border-white mr-2 rounded-md px-2 bg-[#f4f7ff] py-[2px] text-life">{cat.name}</a>
                                     ))
                                     : null}
                             </div>

@@ -20,7 +20,7 @@ export const BrandsButton = ({ selectedBrands, brandName, filterSet }: { selecte
 
 export const ShopNowButton = ({ classNames, children }: { children: any, classNames: string }) => {
     return (
-        <button className={"border-[#39f] border rounded-lg hover:bg-[#39f] bg-white transition-colors duration-400 text-[#39f] hover:text-white " + classNames}>
+        <button className={"btn-primary " + classNames}>
             {children}
         </button>
     )

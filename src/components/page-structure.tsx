@@ -14,7 +14,8 @@ interface compProps {
 }
 
 const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
-
+    const invalidSlugs = ["recently-viewed", "buy-again", "recently-purchased"]
+    const restrictedId= ["c0350501-1e25-4671-93b8-da18a2a0209a"]
     const router = useRouter()
 
     return (
@@ -39,30 +40,32 @@ const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
                     data.section_type === "dynamic_grid" ?
                         <>
                             <div className={`min-[566px]:hidden block`} style={{ background: data.settings.background_value }}>
+                                {data.settings.show_section_title &&
+                                    <h4 className="md:text-xl sm:text-lg text-base font-bold flex-1">{data.section_title}</h4>}
                                 <DynamicGrid data={data} isDesktop={false} isMobile={!data.settings.hide_in_mobile_web || data.settings.hide_in_mobile_web === false} />
                             </div>
                             <div className="max-[565px]:hidden block" style={{ background: data.settings.background_value }}>
+                                {data.settings.show_section_title &&
+                                    <h4 className="md:text-xl sm:text-lg text-base font-bold flex-1 text-center">{data.section_title}</h4>}
                                 <DynamicGrid data={data} isDesktop={!data.settings.hide_in_desktop_web || data.settings.hide_in_desktop_web === false} isMobile={false} />
                             </div>
                         </>
                         : ""
                 }
                 {
-                    data.section_type === "product_grid" && (data.is_section_visible || data.is_enabled) ?
-                        <>
+                    data.section_type === "product_grid" && (data.is_section_visible || data.is_enabled) && !invalidSlugs.includes(data.section_data_object.slug) && !restrictedId.includes(data.section_data_object.id)?
+                        < div style={{ background: data.settings.background_value }}>
                             {data.settings.show_section_title ?
-                                <div className="flex justify-between my-5 mx-4">
-                                    <h4 className="md:text-2xl text-sm  font-bold flex-1">{data.section_title}</h4>
+                                <div className="flex justify-between pt-3 mx-4">
+                                    <h4 className="md:text-2xl sm:text-lg text-base font-bold flex-1">{data.section_title}</h4>
                                     <button onClick={() => { router.push(`/products?collections=${data.section_data_object.slug}`) }} className="bg-[#39f] px-2 text-white text-xs">View All</button>
                                 </div>
                                 : null}
-                            <div style={{ background: data.settings.background_value }}>
-                                {children}
-                            </div></>
-
+                            {children}
+                        </div>
                         : null
                 }
-            </div>
+            </div >
         </>
     )
 }

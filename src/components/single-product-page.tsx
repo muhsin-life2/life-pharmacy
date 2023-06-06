@@ -102,7 +102,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                             </div>
 
                             <div className="xl:w-5/12 lg:w-5/12 w-full lg:px-10 lg:py-6 mt-6 lg:mt-0">
-                                <h1 className=" xl:text-2xl lg:text-xl  title-font font-bold mb-1 text-[#002579]">{pro_data.title}</h1>
+                                <h1 className=" xl:text-2xl lg:text-xl  title-font font-bold mb-1 text-life">{pro_data.title}</h1>
                                 <div className=" flex">
                                     <span className="flex items-center">
                                         {calculateRating(pro_data.rating).map(str => (
@@ -117,7 +117,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                     ))}
                                 </div>
                                 <div className="relative">
-                                    <div className={`leading-relaxed text-gray-500 md:text-sm sm:text-sm text-xs ${readMorClick ? "from-white to-gray-200" : " overflow-y-hidden h-24 bg-gradient-to-b "}`} dangerouslySetInnerHTML={{ __html: pro_data.short_description }} />
+                                    <div className={` text-gray-500 md:text-sm sm:text-sm text-xs ${readMorClick ? "from-white to-gray-200" : " overflow-y-hidden h-24 bg-gradient-to-b "}`} dangerouslySetInnerHTML={{ __html: pro_data.short_description }} />
                                     {readMorClick ?
                                         <button onClick={() => { setReadMoreCLick(false) }} className="text-blue-500 text-xs text-center mx-auto w-full">read less</button>
                                         :
@@ -126,7 +126,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
 
                                     }
                                 </div>
-                                <div className="border-slate-200 border rounded-lg mt-6">
+                                <div className="border-muted border rounded-lg mt-6">
                                     <div className="flex  items-center p-2  border-b-2 border-gray-100 justify-between">
                                         <div className="title-font font-medium text-2xl text-gray-900">
                                             {pro_data.prices ? pro_data.prices[0].price.offer_price != pro_data.prices[0].price.regular_price ?

@@ -36,7 +36,7 @@ const AccordionCategoryMenu = ({ accordionData }: { accordionData: any }) => {
         >
             {accordionData.children.map((child: any, indx: number) => (
                 <AccordionItem  value={indx.toString()} className="">
-                    <AccordionTrigger className="w-full data-[state=open]:text-blue-500 data-[state=open]:border-none border-slate-200 border-b md:text-base sm:text-sm text-[9px]">{child.name}</AccordionTrigger>
+                    <AccordionTrigger className="w-full data-[state=open]:text-blue-500 data-[state=open]:border-none border-muted border-b md:text-base sm:text-sm text-[9px]">{child.name}</AccordionTrigger>
                     <AccordionContent className="">
                         <div className='grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-3 sm:gap-3'>
                             {child.sections.map((child_sec: any) => (

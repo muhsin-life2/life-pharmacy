@@ -27,20 +27,20 @@ const DynamicSliderGrid: FC<props> = ({ data, isDesktop, isMobile }) => {
         <Swiper
             slidesPerView={isDesktop ? data.settings.desktop.column : data.settings.mobile.column}
             pagination={data.settings.show_pagination === true ? { dynamicBullets: true } : false}
-            // onPaginationHide={data.settings.show_pagination === true}
             navigation={data.settings.navigation}
             modules={[Pagination, Navigation, Autoplay]}
             autoplay={data.settings.autoplay ? true : false}
             spaceBetween={20}
-            className={data.settings.navigation?"max-w-[1600px]":"max-w-[1440px]"}
-          >
+            className={"max-w-[1440px]"}
+        >
 
             {data.section_data_array.map((sec_data: any) => (
+                (isDesktop && sec_data.desktop.image_url || isMobile && sec_data.mobile.image_url) &&
+
                 <SwiperSlide>
-                    {(sec_data.desktop.image_url || sec_data.mobile.image_url) &&
-                        <ImgPage sectionData={sec_data} isDesktop={isDesktop} isMobile={isMobile} m_height={0} m_width={0}/>
-                    }
+                    <ImgPage sectionData={sec_data} isDesktop={isDesktop} isMobile={isMobile} m_height={0} m_width={0} />
                 </SwiperSlide>
+
             ))}
         </Swiper>
     </>

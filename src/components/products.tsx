@@ -20,13 +20,16 @@ const Products = ({ lang, slug, type_key }: {
         case "category":
             type_key = "categories"
             break
+
+        case "brand":
+            type_key = "brands"
+            break
     }
 
     const url = `https://prodapp.lifepharmacy.com/api/web/products?${type_key}=${slug}&order_by=popularity&type=cols&skip=0&take=7&new_method=true&lang=${lang}`
     const { data, error, isLoading } = useSWR(url, fetcher)
 
     return (
-
         data ?
             <ProductsSlider proData={data.data.products} /> :
             <div className="flex overflow-x-auto no-scrollbar">
