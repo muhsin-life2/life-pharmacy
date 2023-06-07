@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaStar, FaRegStar, FaStarHalfAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useLanguage } from "@/hooks/useLanguage";
-
+import AddtoCartMobileview from "./add-cart-mobile-view";
+import { useSession } from "next-auth/react";
 const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
 
     const [selectedImg, setSelectedImg] = useState(0);
@@ -12,7 +13,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
     const [cartValue, setCartValue] = useState(1);
     const [readMorClick, setReadMoreCLick] = useState(false)
     const [FeaturedImage, setFeaturedImage] = useState("https://www.lifepharmacy.com/images/default-product-image.png")
-
+    const { data: session } = useSession()
     const { locale } = useLanguage();
 
     useEffect(() => {
@@ -51,40 +52,52 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
     //     return classes.filter(Boolean).join(' ')
     // }
 
+    console.log(session);
 
     return (
         <>
             <div className="max-w-[1450px] mx-auto  sm:px-[10px] px-[5px]  md:text-sm sm:text-xs md:bg-white bg-slate-50 py-5 ">
                 {pro_data ?
                     <div>
-                        <div className="mx-auto flex flex-wrap ">
-                            <div className="hidden md:block">
-                                {pro_data.images && pro_data.images.gallery_images[0] ?
-                                    <div className="mr-4">
-                                        {pro_data.images.gallery_images.map((gal_img: any, indx: number) => (
-                                            <Image className={`lg:max-w-[4.5rem] mb-3 rounded-lg cursor-pointer ${selectedImg === indx ? "border-2 border-blue-400  " : ""}`} src={gal_img.thumbnail} height={80} width={80} onClick={() => {
-                                                setSelectedImg(indx)
-                                                setFeaturedImage(gal_img.full)
-                                            }} alt="thumbnail-img" />
-                                        ))}
-                                    </div>
-                                    :
-                                    <div className="mr-4">
-                                        <Image className={"border-2 border-blue-400 rounded-lg mb-3 w-full lg:max-w-[4.5rem]"} src={pro_data.images.featured_image} height={80} width={80} alt="thumbnail-img" />
-                                    </div>
-                                }
-                            </div>
-
-                            <div className="xl:w-1/4 lg:w-3/12 md:w-1/2 w-full  m-2 relative  bg-bottom">
-                                <div className="w-full items-center object-cover object-center rounded-lg bg-white">
-                                    <Image alt="ecommerce" className="w-full  " height={300} width={300} src={FeaturedImage} />
+                        {/* flex flex-wrap */}
+                        <div className="mx-auto  grid grid-cols-12 gap-x-5 my-5">
+                            <div className="flex md:col-span-4 min-[570px]:col-span-6 col-span-full border-2 border-muted rounded-lg shadow-md p-1 h-fit lg:flex-row md:flex-col-reverse">
+                                <div className="hidden md:block col-span-2 ">
+                                    {pro_data.images && pro_data.images.gallery_images[0] ?
+                                        <div className="mr-4 lg:h-[21rem] h-fit no-scrollbar overflow-auto lg:block flex lg:space-x-0 space-x-2">
+                                            {pro_data.images.gallery_images.map((gal_img: any, indx: number) => (
+                                                <Image className={`lg:max-w-[4.5rem] max-h-[4rem] mb-3 rounded-lg cursor-pointer ${selectedImg === indx ? "border-2 border-blue-400  " : ""}`} src={gal_img.thumbnail} height={80} width={80} onClick={() => {
+                                                    setSelectedImg(indx)
+                                                    setFeaturedImage(gal_img.full)
+                                                }} alt="thumbnail-img" />
+                                            ))}
+                                        </div>
+                                        :
+                                        <div className="">
+                                            <Image className={"border-2 border-blue-400 rounded-lg mb-3 max-w-[4.5rem]"} src={pro_data.images.featured_image} height={80} width={80} alt="thumbnail-img" />
+                                        </div>
+                                    }
                                 </div>
-                                {pro_data.offers && pro_data.offers.value ?
-                                    <div className="absolute right-3 top-3 bg-red-500 rounded-full text-white lg:text-xs text-[10px]  p-1 shadow-lg text-center w-[2.7rem]">{parseFloat(pro_data.offers.value).toFixed(0)}% OFF</div> : null}
-                                {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={` skeleton-box absolute left-0 top-0 w-fit text-white px-5 rounded-tl-lg rounded-br-2xl py-1 text-sm`}>{pro_data.label.label_text}</div> : null}
 
+                                <div className=" w-full  m-2 relative  bg-bottom col-span-10">
+                                    <div className="w-full items-center h-full object-cover object-center rounded-lg bg-white">
+                                        <Image alt="ecommerce" className="w-full  " height={300} width={300} src={FeaturedImage} />
+                                    </div>
+                                    {pro_data.offers && pro_data.offers.value ?
+                                        <div className="absolute right-3 top-3 bg-[#00b929] rounded-lg text-white md:text-sm text-xs  px-2 py-1 shadow-lg text-center ">~ {parseFloat(pro_data.offers.value).toFixed(0)}% OFF</div> : null}
+                                    {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={`skeleton-box absolute left-0 top-0 w-fit text-white px-5 rounded-tl-lg rounded-br-2xl py-1 text-sm`}>{pro_data.label.label_text}</div> : null}
+                                    <div className="absolute right-3 bottom-5 space-y-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-6 h-6 fill-blue-950" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-6 h-6 fill-blue-950" viewBox="0 0 16 16">
+                                            <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
-                            <div className=" md:hidden block mx-auto">
+
+                            {/* <div className=" md:hidden block mx-auto">
                                 {pro_data.images.gallery_images && pro_data.images.gallery_images[0] ?
                                     <div className="grid grid-flow-col">
                                         {
@@ -96,13 +109,13 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                             ))}
                                     </div>
                                     : <div className="mr-4 ">
-                                        <Image className={"border-2 border-blue-400 rounded-lg mb-3 w-full lg:max-w-[4.5rem]"} src={pro_data.images.featured_image} height={80} width={80} alt="thumbnail-img" />
+                                        <Image className={"border-2 border-blue-400 rounded-lg mb-3 w-full sm:max-w-[7rem] max-w-[4.5rem] "} src={pro_data.images.featured_image} height={80} width={80} alt="thumbnail-img" />
                                     </div>
                                 }
-                            </div>
-
-                            <div className="xl:w-5/12 lg:w-5/12 w-full lg:px-10 lg:py-6 mt-6 lg:mt-0">
-                                <h1 className=" xl:text-2xl lg:text-xl  title-font font-bold mb-1 text-life">{pro_data.title}</h1>
+                            </div> */}
+                            {/* xl:w-5/12 lg:w-5/12 w-full lg:px-10 lg:py-6 */}
+                            <div className=" pt-6 lg:mt-0 md:col-span-5  min-[570px]:col-span-6 col-span-full">
+                                <h1 className=" xl:text-xl text-base  title-font mb-1 text-life">{pro_data.title}</h1>
                                 <div className=" flex">
                                     <span className="flex items-center">
                                         {calculateRating(pro_data.rating).map(str => (
@@ -111,20 +124,18 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                     </span>
                                     <span className="text-gray-600 ml-3">{pro_data.rating}</span>
                                 </div>
+                                {pro_data.categories ?
                                 <div className=" py-2 ">
                                     {pro_data.categories.map((cat_data: any) => (
-                                        <Link href={`/products?categories=${cat_data.slug}`} className=" inline-flex mr-3 hover:text-white hover:bg-red-500 text-red-500  px-2 text-[10px] border border-red-500 rounded-md my-1">{cat_data.name}</Link>
+                                        <Link href={`/products?categories=${cat_data.slug}`} className=" inline-flex mr-3 hover:text-white hover:bg-red-500 text-red-500  px-2 text-[10px] py-0.5 border border-red-500 rounded-md my-1">{cat_data.name}</Link>
                                     ))}
                                 </div>
-                                <div className="relative">
-                                    <div className={` text-gray-500 md:text-sm sm:text-sm text-xs ${readMorClick ? "from-white to-gray-200" : " overflow-y-hidden h-24 bg-gradient-to-b "}`} dangerouslySetInnerHTML={{ __html: pro_data.short_description }} />
-                                    {readMorClick ?
-                                        <button onClick={() => { setReadMoreCLick(false) }} className="text-blue-500 text-xs text-center mx-auto w-full">read less</button>
-                                        :
-                                        (pro_data.short_description).length > 300 ?
-                                            <button onClick={() => { setReadMoreCLick(true) }} className="text-blue-500 text-xs text-center mx-auto w-full h-5 ">read more</button> : null
-
-                                    }
+                                :null}
+                                <div className="relative md:block hidden">
+                                    <div className={` text-gray-500 md:text-sm sm:text-sm text-xs ${readMorClick ? "from-white to-gray-200 h-[10rem] overflow-y-auto" : " overflow-y-hidden h-24 bg-gradient-to-b "}`} dangerouslySetInnerHTML={{ __html: pro_data.short_description }} />
+                                    <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMorClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
+                                        <button onClick={() => setReadMoreCLick(!readMorClick)} className=' rounded-full text-sm    text-primary hover:text-blue-500 p-1 px-2'>Read {readMorClick ? 'Less' : 'More'}</button>
+                                    </div>
                                 </div>
                                 <div className="border-muted border rounded-lg mt-6">
                                     <div className="flex  items-center p-2  border-b-2 border-gray-100 justify-between">
@@ -135,7 +146,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                                         <span className="text-[8px] lg:text-xs">AED </span>
                                                         <span className="font-semibold text-2xl">{pro_data.sale_price}</span>
                                                     </div>
-                                                    <div className="text-sky-500 text-xs my-auto">
+                                                    <div className="text-life text-xs my-auto">
                                                         <span ><del>AED {parseFloat(pro_data.filter_price).toFixed(2)}</del></span>
                                                     </div>
                                                 </div> :
@@ -149,7 +160,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                             <span className="text-xs my-auto ml-3 ">1-3 HOURS</span>
                                         </div>
                                     </div>
-                                    <div className="flex justify-center h-fit p-3 bg-slate-100 space-x-2">
+                                    <div className=" justify-center h-fit p-3 bg-gray space-x-2 min-[570px]:flex hidden ">
                                         <div className="flex">
                                             <button className="border  border-sky-600 text-white px-3 rounded-lg" onClick={() => cartValue > 1 ? setCartValue(value => value - 1) : null}>
                                                 <FaMinus className="text-sky-600 h-[10px] " />
@@ -160,53 +171,65 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                             </button>
                                         </div>
 
-                                        <button className="  text-white bg-sky-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded w-full ">
+                                        <button className="  text-white bg-sky-500 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-600 rounded w-full lg:text-base md:text-xs text-[10px] whitespace-nowrap">
                                             <svg className="inline-block w-5 h-5 my-auto fill-white mr-2" fill="#000000" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M 4 7 C 3.449219 7 3 7.449219 3 8 C 3 8.550781 3.449219 9 4 9 L 6.21875 9 L 8.84375 19.5 C 9.066406 20.390625 9.863281 21 10.78125 21 L 23.25 21 C 24.152344 21 24.917969 20.402344 25.15625 19.53125 L 27.75 10 L 25.65625 10 L 23.25 19 L 10.78125 19 L 8.15625 8.5 C 7.933594 7.609375 7.136719 7 6.21875 7 Z M 22 21 C 20.355469 21 19 22.355469 19 24 C 19 25.644531 20.355469 27 22 27 C 23.644531 27 25 25.644531 25 24 C 25 22.355469 23.644531 21 22 21 Z M 13 21 C 11.355469 21 10 22.355469 10 24 C 10 25.644531 11.355469 27 13 27 C 14.644531 27 16 25.644531 16 24 C 16 22.355469 14.644531 21 13 21 Z M 16 7 L 16 10 L 13 10 L 13 12 L 16 12 L 16 15 L 18 15 L 18 12 L 21 12 L 21 10 L 18 10 L 18 7 Z M 13 23 C 13.5625 23 14 23.4375 14 24 C 14 24.5625 13.5625 25 13 25 C 12.4375 25 12 24.5625 12 24 C 12 23.4375 12.4375 23 13 23 Z M 22 23 C 22.5625 23 23 23.4375 23 24 C 23 24.5625 22.5625 25 22 25 C 21.4375 25 21 24.5625 21 24 C 21 23.4375 21.4375 23 22 23 Z"></path></g></svg>
                                             Add to Cart
                                         </button>
 
                                     </div>
+                                    {session?.token.addresses.length > 0 ?
+                                        <div className="min-[570px]:hidden block  rounded-lg w-full p-3 space-y-2">
+                                            <p className="text-[10px]" >DELIVER TO <span className="text-black text-[10px] font-semibold">{session?.token.addresses[0].state} , </span><span className="text-black text-[10px] font-semibold">{session?.token.addresses[0].country}</span> </p>
+                                            <div className="flex justify-between">
+                                                <div className="flex space-x-3">
+                                                    <Image src={"https://www.lifepharmacy.com/images/standard-nr.svg"} height={"20"} width={"20"} alt="delivery" />
+                                                    <p className="text-[10px] text-life">IN 1-2 DAYS</p>
+                                                </div>
+                                                <h6 className="text-life text-[10px] font-bold ml-auto">CHANGE</h6>
+                                            </div>
+                                        </div>
+                                        : null}
                                 </div>
 
                             </div>
 
-                            <ul className="flex flex-col hidden lg:flex xl:w-1/6 max-w-fit flex-1 ml-auto justify-around my-5 py-4 px-5  border border-gray-200 rounded-lg ">
-                                <li className="flex   lg:w-fit w-1/2 justify-center">
+                            <ul className="md:flex hidden col-span-3  flex-col ml-auto justify-around my-5 py-4 px-3  border border-gray-200 rounded-lg h-fit space-y-10">
+                                <li className="flex    w-[9rem]">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-gift.svg"} height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col mx-6">
-                                        <h5 className="text-indigo-900 text-sm font-semibold">Free Delivery</h5>
-                                        <div className="text-xs text-gray-400">For all orders over AED 29</div>
+                                    <div className="flex flex-col ml-4">
+                                        <h5 className="text-indigo-900 lg:text-sm text-[12px] font-semibold whitespace-nowrap">Free Delivery</h5>
+                                        <div className="text-[10px] whitespace-nowrap text-gray-400 lg:text-xs">For all orders over AED 29</div>
                                     </div>
                                 </li>
-                                <li className="flex lg:w-fit w-1/2 justify-center">
+                                <li className="flex  ">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-return.svg"} height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col mx-6">
-                                        <h5 className="text-indigo-900 text-sm font-semibold">Easy Return</h5>
-                                        <div className="text-xs text-gray-400">Easy return and refund</div>
+                                    <div className="flex flex-col ml-4">
+                                        <h5 className="text-indigo-900 lg:text-sm text-[12px] font-semibold whitespace-nowrap">Easy Return</h5>
+                                        <div className="text-[10px] whitespace-nowrap lg:text-xs text-gray-400">Easy return and refund</div>
                                     </div>
                                 </li>
-                                <li className="flex lg:w-fit w-1/2  justify-center">
+                                <li className="flex   ">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-shield.svg"} height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col mx-6">
-                                        <h5 className="text-indigo-900 text-sm font-semibold">Secure Payments</h5>
-                                        <div>
+                                    <div className="flex flex-col ml-4">
+                                        <h5 className="text-indigo-900 lg:text-sm text-[12px] font-semibold whitespace-nowrap">Secure Payments</h5>
+                                        <div className="">
                                             <Image src={"https://www.lifepharmacy.com/images/payment-method.svg"} height={200} width={200} alt="free delivery" />
                                         </div>
                                     </div>
                                 </li>
-                                <li className="flex lg:w-fit w-1/2  justify-center">
+                                <li className="flex   ">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-phone.svg"} height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col mx-6">
-                                        <h5 className="text-indigo-900 text-sm font-semibold">24/7 Support</h5>
-                                        <div className="text-xs text-gray-400">Dedicated Support</div>
+                                    <div className="flex flex-col ml-4">
+                                        <h5 className="text-indigo-900 lg:text-sm text-[12px] font-semibold whitespace-nowrap">24/7 Support</h5>
+                                        <div className="lg:text-xs text-gray-400 text-[10px] whitespace-nowrap">Dedicated Support</div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
-
+                        {/* 
                         <div>
-                            <ul className="grid sm:grid-cols-4 grid-cols-2  justify-around  lg:hidden mx-4 space-x-3 mb-4">
-                                <li className="  mb-3 bg-slate-100 p-2 rounded-lg">
+                            <ul className="grid sm:grid-cols-4 grid-cols-2  justify-between  lg:hidden  my-4">
+                                <li className="  mb-3 bg-slate-100 p-2 rounded-lg mr-2">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-gift.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ">
                                         <h5 className="text-indigo-900 text-xs font-semibold text-center">Free Delivery</h5>
@@ -220,7 +243,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                         <div className="text-xs text-gray-400 text-center">Easy return and refund</div>
                                     </div>
                                 </li>
-                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 ">
+                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 mr-2">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-shield.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ">
                                         <h5 className="text-indigo-900 text-xs font-semibold text-center">Secure Payments</h5>
@@ -237,30 +260,34 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                     </div>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
 
 
 
-                        <div className="flex justify-between">
-                            <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/Product%20page%20banner/ppb-1.gif" width="48%" className="" />
-                            <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/Product%20page%20banner/ppb-2.gif" width="48%" className="" />
+                        <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-3 gap-y-3">
+                            <div>
+                                <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/Product%20page%20banner/ppb-1.gif" className="w-full" />
+                            </div>
+                            <div>
+                                <img src="https://lifeadmin-app.s3.me-south-1.amazonaws.com/mobile-app/homescreen/Product%20page%20banner/ppb-2.gif" className="w-full" />
+                            </div>
                         </div>
-                        <div className="py-4">
-                            <h5 className="text-pink-700 text-xl font-semibold mb-2">Overview</h5>
-                            <div dangerouslySetInnerHTML={{ __html: pro_data.short_description }} className="text-gray-500 md:text-sm text-xs leading-relaxed " />
+                        <div className="py-4 px-2">
+                            <h5 className="text-life-2 md:text-xl text-base font-semibold mb-2">Overview</h5>
+                            <div dangerouslySetInnerHTML={{ __html: pro_data.short_description }} className="text-gray-500 px-3 md:text-sm text-xs leading-relaxed " />
                         </div>
-                        <div className="py-4">
-                            <h5 className="text-pink-700 text-xl font-semibold mb-2 details-sec">Details</h5>
-                            <div dangerouslySetInnerHTML={{ __html: pro_data.description }} className="text-gray-500 md:text-sm text-xs leading-relaxed " />
+                        <div className="py-4 px-2">
+                            <h5 className="text-life-2  md:text-xl text-base font-semibold mb-2 details-sec">Details</h5>
+                            <div dangerouslySetInnerHTML={{ __html: pro_data.description }} className="text-gray-500 px-3 md:text-sm text-xs leading-relaxed " />
                         </div>
-                        <div className="py-4">
-                            <h5 className="text-pink-700 text-xl font-semibold mb-2">More Info</h5>
-                            <div className="text-gray-500">SKU: {pro_data.sku}</div>
+                        <div className="py-4 px-2">
+                            <h5 className="text-life-2 md:text-xl text-base font-semibold mb-2">More Info</h5>
+                            <div className="text-gray-500 text-xs">SKU: {pro_data.sku}</div>
                         </div>
                         <div className="lg:flex justify-between">
                             <div className="lg:w-3/12 w-full lg:px-0 px-6">
                                 <div className="text-center">
-                                    <h3 className="text-blue-500 font-semibold text-2xl p-2">Product Rating</h3>
+                                    <h3 className="text-blue-500 font-semibold md:text-2xl text-xl p-2">Product Rating</h3>
                                     <h2 className=" font-semibold text-4xl p-5">{pro_data.rating}<span className="text-gray-600">/5</span></h2>
                                     <div className="lg:w-1/2 w-1/4 mx-auto flex justify-around">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-4 h-4">
@@ -286,38 +313,38 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                 <div>
                                     <div className="text-gray-500 text-center py-3">Based on {pro_data.number_of_reviews} Ratings</div>
                                     <div className="flex justify-between mb-2">
-                                        <div className="w-full bg-gray-200  h-3 className=">
-                                            <div className="bg-yellow-400 h-3 " style={{ width: '85%' }}></div>
+                                        <div className="w-full bg-gray-200  h-3 rounded-full">
+                                            <div className="bg-yellow-400 h-3 rounded-full" style={{ width: '85%' }}></div>
                                         </div>
                                     </div>
                                     <div className="flex justify-between mb-2">
-                                        <div className="w-full bg-gray-200  h-3 className=">
-                                            <div className="bg-yellow-400 h-3 " style={{ width: '38%' }}></div>
+                                        <div className="w-full bg-gray-200  h-3 rounded-full">
+                                            <div className="bg-yellow-400 h-3 rounded-full" style={{ width: '38%' }}></div>
                                         </div>
                                     </div>
                                     <div className="flex justify-between mb-2">
-                                        <div className="w-full bg-gray-200  h-3 className=">
-                                            <div className="bg-yellow-400 h-3 " style={{ width: '60%' }}></div>
+                                        <div className="w-full bg-gray-200  h-3 rounded-full">
+                                            <div className="bg-yellow-400 h-3 rounded-full" style={{ width: '60%' }}></div>
                                         </div>
                                     </div>
                                     <div className="flex justify-between mb-2">
-                                        <div className="w-full bg-gray-200  h-3 className=">
-                                            <div className="bg-yellow-400 h-3 " style={{ width: '30%' }}></div>
+                                        <div className="w-full bg-gray-200  h-3 rounded-full">
+                                            <div className="bg-yellow-400 h-3 rounded-full" style={{ width: '30%' }}></div>
                                         </div>
                                     </div>
                                     <div className="flex justify-between mb-2">
-                                        <div className="w-full bg-gray-200  h-3 className=">
-                                            <div className="bg-yellow-400 h-3 " style={{ width: '10%' }}></div>
+                                        <div className="w-full bg-gray-200  h-3 rounded-full">
+                                            <div className="bg-yellow-400 h-3 rounded-full" style={{ width: '10%' }}></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="lg:w-7/12 w-full py-3  ">
-                                <h3 className="font-semibold text-xl ">Reviews (5 of 36)</h3>
-                                <div className="flex justify-start py-4">
+                            <div className="lg:w-7/12 w-full py-3  px-2">
+                                <h3 className="font-semibold md:text-lg text-base ">Reviews (5 of 36)</h3>
+                                <div className="flex justify-start py-4 border-b border-muted ">
                                     <div className="w-1/4">
-                                        <h5 className="text-sm">Jaspreet singh</h5>
+                                        <h5 className="text-xs md:text-sm">Jaspreet singh</h5>
                                         <div className="w-1/2 flex justify-start py-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
                                                 <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
@@ -335,15 +362,67 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                                 <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
-                                        <div className="text-gray-400 text-sm">Feb 21,2023</div>
+                                        <div className="text-gray-400 sm:text-sm text-xs">Feb 21,2023</div>
+                                        <div className=" text-[10px] my-2"><i>No comment</i></div>
+
                                     </div>
-                                    <div className="w-3/4">
-                                        <div className="text-gray-500 text-sm"><i>No comment</i></div>
+
+
+                                </div>
+                                <div className="flex justify-start py-4 border-b border-muted">
+                                    <div className="w-1/4">
+                                        <h5 className="text-xs md:text-sm">Jaspreet singh</h5>
+                                        <div className="w-1/2 flex justify-start py-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="text-gray-400 sm:text-sm text-xs">Feb 21,2023</div>
+                                        <div className=" text-[10px] my-2"><i>No comment</i></div>
+
+                                    </div>
+
+                                </div>
+                                <div className="flex justify-start py-4 border-b border-muted">
+                                    <div className="w-1/4">
+                                        <h5 className="text-xs md:text-sm">Jaspreet singh</h5>
+                                        <div className="w-1/2 flex justify-start py-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
+                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <div className="text-gray-400 sm:text-sm text-xs">Feb 21,2023</div>
+                                        <div className=" text-[10px] my-2"><i>No comment</i></div>
+
                                     </div>
                                 </div>
-                                <div className="flex justify-start py-4">
+                                <div className="flex justify-start py-4 border-b border-muted">
                                     <div className="w-1/4">
-                                        <h5 className="text-sm">Jaspreet singh</h5>
+                                        <h5 className="text-xs md:text-sm">Jaspreet singh</h5>
                                         <div className="w-1/2 flex justify-start py-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
                                                 <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
@@ -361,62 +440,9 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                                 <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
                                             </svg>
                                         </div>
-                                        <div className="text-gray-400 text-sm">Feb 21,2023</div>
-                                    </div>
-                                    <div className="w-3/4">
-                                        <div className="text-gray-500 text-sm"><i>No comment</i></div>
-                                    </div>
-                                </div>
-                                <div className="flex justify-start py-4">
-                                    <div className="w-1/4">
-                                        <h5 className="text-sm">Jaspreet singh</h5>
-                                        <div className="w-1/2 flex justify-start py-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <div className="text-gray-400 text-sm">Feb 21,2023</div>
-                                    </div>
-                                    <div className="w-3/4">
-                                        <div className="text-gray-500 text-sm"><i>No comment</i></div>
-                                    </div>
-                                </div>
-                                <div className="flex justify-start py-4">
-                                    <div className="w-1/4">
-                                        <h5 className="text-sm">Jaspreet singh</h5>
-                                        <div className="w-1/2 flex justify-start py-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="orange" className="w-3 h-3">
-                                                <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <div className="text-gray-400 text-sm">Feb 21,2023</div>
-                                    </div>
-                                    <div className="w-3/4">
-                                        <div className="text-gray-500 text-sm"><i>No comment</i></div>
+                                        <div className="text-gray-400 sm:text-sm text-xs">Feb 21,2023</div>
+                                        <div className=" text-[10px] my-2"><i>No comment</i></div>
+
                                     </div>
                                 </div>
                             </div>
@@ -449,7 +475,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                         </div>
                     </div>
                 }
-
+                <AddtoCartMobileview salePrice={pro_data.sale_price} filterPrice={pro_data.filter_price} />
             </div>
         </>
     )

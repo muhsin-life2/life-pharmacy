@@ -220,19 +220,21 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
   const [queryData, setQueryData] = useState("")
 
   function searchButtonOnClick(isOpen: boolean) {
+    debugger
     if (window.innerWidth > 767) {
       const lgScreenSearchBox = document.getElementById("lg-screen-search") as HTMLInputElement
 
       if (isOpen) {
         document.getElementsByClassName("lg-screen-searchsuggestion-lg")[0].classList.remove("hidden");
-        lgScreenSearchBox.classList.add("rounded-t-xl");
-        lgScreenSearchBox.classList.remove("rounded-xl");
+        lgScreenSearchBox.classList.remove("rounded-full");
+        lgScreenSearchBox.classList.add("rounded-b-none", "rounded-xl");
 
       }
       else {
         document.getElementsByClassName("lg-screen-searchsuggestion-lg")[0].classList.add("hidden");
-        lgScreenSearchBox.classList.remove("rounded-t-xl");
-        lgScreenSearchBox.classList.add("rounded-xl");
+        lgScreenSearchBox.classList.remove("rounded-b-none", "rounded-xl");
+        lgScreenSearchBox.classList.add("rounded-full");
+
       }
     }
 
@@ -422,7 +424,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
       {highestRatedP ?
         <TransitionComp
           setTransition={highestRatedP} >
-          <div className="grid grid-flow-col  bg-pink-800 text-white  text-xs px-4 py-2 md:hidden ">
+          <div className="grid grid-flow-col  bg-life-2 text-white  text-xs px-4 py-1 md:hidden ">
             <div className="flex justify-start">
               <svg onClick={() => { sethighestRatedP(false) }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" className="w-5 h-7 ">
@@ -431,7 +433,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
               <div className="my-auto text-md mx-3">{langData.navbar.highest_rated_phar}</div>
             </div>
 
-            <div className="text-end text-md my-auto">{langData.navbar.download_now}</div>
+            <div className="text-end text-md my-auto font-bold">{langData.navbar.download_now}</div>
           </div>
         </TransitionComp>
         : null}
@@ -439,7 +441,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
       <div className="sticky top-0 z-50 bg-white mx-auto ">
 
         <div className="md:bg-[#002579] bg-white  backdrop-blur backdrop-filter ">
-          <div className="mx-auto flex max-w-[1450px] sm:px-[10px] px-[5px] gap-5  py-4 ">
+          <div className="mx-auto flex max-w-[1450px] sm:px-[10px] px-[5px] gap-5  sm:py-3 py-0 ">
             <Link href={"/"} className="my-auto">
               <Image src="https://www.lifepharmacy.com/images/logo-white.svg" alt=""
                 className=" bg-[#002579] filter md:flex hidden" width={380} height={250} />
@@ -452,7 +454,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
               <label htmlFor="simple-search-lg" className="sr-only">Search</label>
               <div className="relative w-full">
 
-                <div className="relative group-search bg-white  rounded-xl " id="lg-screen-search" onKeyDown={(e) => { searchButtonOnMouseEnter((e.target as HTMLInputElement).value, e.key, false) }} onMouseDown={(e) => { searchButtonOnClick(true) }}   >
+                <div className="relative group-search bg-gray-100  rounded-full " id="lg-screen-search" onKeyDown={(e) => { searchButtonOnMouseEnter((e.target as HTMLInputElement).value, e.key, false) }} onMouseDown={(e) => { searchButtonOnClick(true) }}   >
                   <div className={`absolute inset-y-0  flex items-center pointer-events-none ${isArabic ? 'right-0 pr-3 ' : 'left-0 pl-3'}`}>
                     <svg aria-hidden="true" className="w-5 h-5 text-gray-500 " fill="currentColor"
                       viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -465,10 +467,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                     <svg fill="none" className={`animate-spin w-5 h-5 absolute inline ${isArabic ? "left-8" : "right-8"}  inset-y-0 m-auto w-4 h-4 mx-2`} stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" shape-rendering="geometricPrecision" viewBox="0 0 24 24" height="24" width="24" ><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> : ""}
 
                   < input type="search" id="lg-searchbox"
-                    className={`focus:ring-0 focus:ring-offset-0 hidden md:block bg-gray-100 border-gray-200 p-2 border text-gray-900 text-sm rounded-lg  block w-full ${isArabic ? 'pr-10 ' : 'pl-10 '} p-3`}
+                    className={`focus:ring-0 focus:ring-offset-0 hidden md:block bg-gray-100 border-gray-200 p-2 border text-gray-900 text-sm rounded-full  w-full ${isArabic ? 'pr-10 ' : 'pl-10 '} p-3`}
                     placeholder={langData.navbar.searchbox_text} />
 
-                  <div className="shadow-xl py-1 pt-4 px-3 lg-screen-searchsuggestion-lg scale-100 hidden absolute top-13  right-0 left-0  bg-white border-gray-200 overflow-auto search-suggestion-height rounded-t-0 rounded-b-md z-30">
+                  <div className="shadow-xl py-1 pt-4 px-3 lg-screen-searchsuggestion-lg scale-100 hidden absolute top-13  right-0 left-0  bg-gray-100 border-gray-200 overflow-auto search-suggestion-height rounded-t-0 rounded-b-md z-30">
                     {searchData.results[1] ?
                       <>
                         <div className="mb-5 group-search">
@@ -600,7 +602,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                   < input type="button" onClick={() => {
                     setSmScreenSearchBox(true)
                   }}
-                    className={`cursor-pointer md:hidden block bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-0 block w-full ${isArabic ? "text-right pr-12" : "pl-10 text-left"}  p-3  rounded-full`}
+                    className={`cursor-pointer md:hidden block bg-gray-50 border border-slate-300 text-[#9ba0b1] text-sm rounded-lg focus:ring-0 w-full ${isArabic ? "text-right pr-12" : "pl-10 text-left"}  p-3  rounded-full`}
                     value={langData.navbar.searchbox_text} />
 
                 </div>
@@ -609,32 +611,42 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
 
             <div className="grid grid-flow-col w-100  gap-5 md:flex lg:flex my-auto">
 
-              <div className="relative mt-1 z-30">
+              <div className="relative  z-30">
                 <button className="mx-auto my-auto " onClick={() => { setLanguageModal(true) }}>
                   <Image src={countrySet.flag} alt=""
-                    className=" h-10 w-10" width={100} height={100} />
-                  <div className="text-[11px] text-center md:text-white">{laguage.name === "Arabic" ? "English" : "Arabic"}</div>
+                    className=" h-10 w-10 rounded-[30px]" width={100} height={100} />
+                  <div className="text-[11px] text-center md:text-white">{laguage.name === "Arabic" ? "English" : "العربية"}</div>
                 </button>
               </div>
 
-              {session ? <>
-                <Link className="  text-left mt-1 flex flex-col justify-around flex-col md:hidden lg:flex hidden" href="/dashboard">
-                  <FaUserAlt className="w-8 h-8 mx-auto fill-white" />
+              {session ?
+                <Link className="  text-left  justify-center space-y-[1px] flex-col   md:hidden lg:flex hidden" href="/dashboard">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-7 h-7 mx-auto fill-white" viewBox="0 0 16 16">
+                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
+                  </svg>
                   <div className="text-[11px] text-center text-white">Account</div>
                 </Link>
+                : <a href="#" className=" flex-col md:hidden lg:flex hidden" onClick={() => { setLocationModal(true) }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
+                    stroke="currentColor" className=" my-auto text-white w-7 h-7 mx-auto">
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  </svg>
+
+                  <div className="text-[11px] text-center text-white">{langData.navbar.account}</div>
+                </a>}
 
 
-              </> : <a href="#" className=" flex-col md:hidden lg:flex hidden" onClick={() => { setLocationModal(true) }}>
+              <a href="#" className=" justify-center space-y-[1px] flex-col md:hidden lg:flex hidden  my-auto ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                  stroke="currentColor" className=" my-auto text-white w-8 h-8 mx-auto">
+                  stroke="currentColor" className=" text-white w-7 h-7 mx-auto">
                   <path strokeLinecap="round" strokeLinejoin="round"
-                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                 </svg>
+                <div className="text-[11px] text-center text-white whitespace-nowrap">{langData.navbar.wishlist}</div>
 
-                <div className="text-[11px] text-center text-white">{langData.navbar.account}</div>
-              </a>}
-
-              <a href={`/cart`} className="flex flex-col md:hidden lg:flex hidden relative cart group/cart">
+              </a>
+              <a href={`/cart`} className="justify-center space-y-[1px] flex-col md:hidden lg:flex hidden relative cart group/cart">
                 {domLoaded ?
                   cartItems && cartItems.length != 0 ?
                     < div className="bg-red-500 rounded-full absolute top-0 -right-2 text-xs py-[3px] px-[8px] text-white font-semibold">
@@ -642,11 +654,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                     </div>
                     : null : null}
 
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                  stroke="currentColor" className="my-auto  text-white w-8 h-8 mx-auto">
-                  <path strokeLinecap="round" strokeLinejoin="round"
-                    d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-7 h-7 fill-white" viewBox="0 0 16 16">
+                  <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5zM3.14 5l1.25 5h8.22l1.25-5H3.14zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0zm9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0z" />
                 </svg>
                 <div className="text-[11px] text-center text-white" >{langData.navbar.cart}</div>
 
@@ -689,15 +698,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                     </div>
                   </div>
                   : null}
-              </a>
-              <a href="#" className="flex flex-col md:hidden lg:flex hidden ">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                  stroke="currentColor" className="my-auto  text-white w-8 h-8 mx-auto">
-                  <path strokeLinecap="round" strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                </svg>
-                <div className="text-[11px] text-center text-white whitespace-nowrap">{langData.navbar.wishlist}</div>
-
               </a>
             </div>
           </div>
@@ -905,7 +905,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
 
 
 
-        <div className="flex  bg-indigo-900 text-white text-xs px-[10px] py-1 justify-between items-center">
+        <div className="flex  bg-life text-white text-xs px-[10px] py-1 justify-between items-center">
           <div>{langData.navbar.deliver_to}:   <span className="mx-2">Business Bay, Dubai</span>  </div>
           <button className="bg-white rounded text-pink-700 w-20 py-1" onClick={() => { locationOnClickHandle() }}>CHANGE</button>
         </div>

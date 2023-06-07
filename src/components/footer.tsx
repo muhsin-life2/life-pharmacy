@@ -3,26 +3,29 @@ export default function Footer({ langData }: { langData: any }) {
     return (
         <>
             <div className="z-10  mx-auto ">
-                <div className="flex justify-around   lg:text-2xl md:text-2xl text-xl lg:py-5 py-3 max-w-[1450px] mx-auto px-[10px]">
+                <div className="     border border-muted lg:py-5 py-3">
+                    <div className="max-w-[1450px] mx-auto px-[10px] flex justify-around lg:text-2xl md:text-2xl text-xl ">
                     <div >
                         <div className="text-center  font-bold  ">{langData.footer.top_part.n26}</div>
-                        <div className=" text-center font-semibold text-gray-600  md:text-sm text-[10px]">{langData.footer.top_part.years_of_trust}</div>
+                        <div className=" text-center  text-gray-600  md:text-sm text-[10px]">{langData.footer.top_part.years_of_trust}</div>
                     </div>
                     <div >
                         <div className="text-center font-bold ">{langData.footer.top_part.n25M}</div>
-                        <div className=" text-center font-semibold text-gray-600 md:text-sm text-[10px]">{langData.footer.top_part.orders_delivered}</div>
+                        <div className=" text-center  text-gray-600 md:text-sm text-[10px]">{langData.footer.top_part.orders_delivered}</div>
                     </div>
                     <div >
                         <div className="text-center  font-bold ">{langData.footer.top_part.n375}</div>
-                        <div className="text-center font-semibold text-gray-600 md:text-sm mr-3 text-[10px]">{langData.footer.top_part.stores}</div>
+                        <div className="text-center  text-gray-600 md:text-sm mr-3 text-[10px]">{langData.footer.top_part.stores}</div>
                     </div>
+                    </div>
+             
                 </div>
                 <div className="bg-sub-img">
                     <div className="-z-10  max-w-[1450px] mx-auto px-[10px]">
                         <div className=" flex flex-col py-5">
                             <div className="lg:flex justify-around sm:grid-flow-row ">
                                 <div className="lg:hidden mb-5">
-                                    <div className="text-white font-semibold md:text-2xl text-lg text-center mb-2">{langData.footer.top_part.download_app}</div>
+                                    <div className="text-white  md:text-2xl text-lg text-center mb-2">{langData.footer.top_part.download_app}</div>
                                     <div className="flex justify-center ">
                                         <Image src="https://www.lifepharmacy.com/images/appstore.svg" className="mx-3 w-1/4 sm:w-1/4 md:w-1/6 lg:w-1/6 " alt="Download" width={700} height={700} />
                                         <Image src="https://www.lifepharmacy.com/images/playstore.svg" className="w-1/4 sm:w-1/4 md:w-1/6 lg:w-1/6 " alt="AppStore" width={300} height={300} />
@@ -38,7 +41,7 @@ export default function Footer({ langData }: { langData: any }) {
                                     </div>
                                 </div>
                                 <div className="sm:hidden md:hidden lg:block hidden">
-                                    <div className="text-white font-semibold text-2xl text-center mb-2 " >{langData.footer.top_part.download_app}</div>
+                                    <div className="text-white  text-2xl text-center mb-2 " >{langData.footer.top_part.download_app}</div>
                                     <div className="flex justify-around">
                                         <Image src="https://www.lifepharmacy.com/images/appstore.svg" className="mx-3 w-1/2" alt="AppStore" width={300} height={300} />
                                         <Image src="https://www.lifepharmacy.com/images/playstore.svg" className="w-1/2" alt="AppStore" width={300} height={300} />

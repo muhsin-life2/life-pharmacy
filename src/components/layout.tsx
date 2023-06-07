@@ -20,8 +20,8 @@ export const Layout: FC<layoutProps> = ({ children, data, brands_data, isArabic,
   function searchButtonOnLeave(e: any) {
     if (!e.target.parentNode.classList.contains("group-search")) {
       document.getElementsByClassName("lg-screen-searchsuggestion-lg")[0].classList.add("hidden");
-      (document.getElementById("lg-screen-search") as HTMLInputElement).classList.remove("rounded-t-xl");
-      (document.getElementById("lg-screen-search") as HTMLInputElement).classList.add("rounded-xl");
+      (document.getElementById("lg-screen-search") as HTMLInputElement).classList.remove("rounded-b-none", "rounded-xl");
+      (document.getElementById("lg-screen-search") as HTMLInputElement).classList.add("rounded-full");
     }
   }
   function languageClickedToast() {
@@ -55,7 +55,7 @@ export const Layout: FC<layoutProps> = ({ children, data, brands_data, isArabic,
         theme="colored"
       />
       <section onMouseDown={(e) => { searchButtonOnLeave(e) }}>
-        <Navbar data={data} brands_data={brands_data} isArabic={isArabic} lang={lang} langData={langData} languageClickedToast={languageClickedToast}  />
+        <Navbar data={data} brands_data={brands_data} isArabic={isArabic} lang={lang} langData={langData} languageClickedToast={languageClickedToast} />
         <main>{children}</main>
         <Footer langData={langData} />
       </section>

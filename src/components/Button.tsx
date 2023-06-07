@@ -20,7 +20,7 @@ export const BrandsButton = ({ selectedBrands, brandName, filterSet }: { selecte
 
 export const ShopNowButton = ({ classNames, children }: { children: any, classNames: string }) => {
     return (
-        <button className={"btn-primary " + classNames}>
+        <button className={"btn-primary sm:text-base text-sm sm:py-3 py-2 sm:px-7 px-5 " + classNames}>
             {children}
         </button>
     )

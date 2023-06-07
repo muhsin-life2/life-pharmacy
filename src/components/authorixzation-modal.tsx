@@ -198,10 +198,10 @@ const AuthModal = ({ showModal, setCloseModal, setaddnewAddressFormVisibility, s
                             <Tabs value="phone" className="border-none ">
                                 <TabsHeader >
                                     <Tab key="phone" value="phone">
-                                        <p className="sm:text-base text-xs">Using Phone</p>
+                                        <span className="sm:text-base text-xs">Using Phone</span>
                                     </Tab>
                                     <Tab key="email" value="email">
-                                        <p className="sm:text-base text-xs">Using Email</p>
+                                        <span className="sm:text-base text-xs">Using Email</span>
                                     </Tab>
                                 </TabsHeader>
                                 <TabsBody >
@@ -258,8 +258,8 @@ const AuthModal = ({ showModal, setCloseModal, setaddnewAddressFormVisibility, s
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" disabled={isPhoneNumberValid || isEmailValid ? false : true} onClick={() => { isValidPhoneNoInput(true) }} className={"bg-blue-500 disabled:bg-blue-300" + (" flex justify-center w-full text-white  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ")}>
-                                <p className="mr-4">PROCEED</p>
+                            <button type="button" disabled={isPhoneNumberValid || isEmailValid ? false : true} onClick={() => { isValidPhoneNoInput(true) }} className={"bg-blue-500 disabled:bg-blue-300" + (" flex justify-center w-full   focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ")}>
+                                <span className="mr-4 text-white">PROCEED</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-3 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                 </svg>
@@ -299,13 +299,13 @@ const AuthModal = ({ showModal, setCloseModal, setaddnewAddressFormVisibility, s
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-3 h-3">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                                     </svg>
-                                    <p className="ml-4">Back</p>
+                                    <span className="ml-4">Back</span>
                                 </button>
                                 <button type="button" onClick={(e) => {
                                     e.preventDefault()
                                     otpIsValid(state)
-                                }} disabled={state.length === 4 ? false : true} className={" disabled:bg-blue-300 bg-blue-500  items-center flex justify-center w-full text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "}>
-                                    <p className="mr-4">PROCEED</p>
+                                }} disabled={state.length === 4 ? false : true} className={" disabled:bg-blue-300 bg-blue-500  items-center flex justify-center w-full focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center "}>
+                                    <span className="mr-4 text-white ">PROCEED</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-3 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                                     </svg>
