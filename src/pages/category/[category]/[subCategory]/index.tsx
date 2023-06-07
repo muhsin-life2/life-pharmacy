@@ -12,7 +12,6 @@ export async function getStaticProps({ locale, params }: { locale: any, params: 
     const subCategory = params.subCategory
     let filterPath = `categories=${subCategory}`
 
-
     const categoryData = await getProductsDataByCat(filterPath, 0, false, locale);
 
     return {

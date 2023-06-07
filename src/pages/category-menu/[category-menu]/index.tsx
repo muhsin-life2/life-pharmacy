@@ -31,8 +31,8 @@ export default function CategoryMenu({ categoryMenuParams, catData, menuData = [
                     <h1 className="font-semibold md:block hidden">Category</h1>
                     {catData.data.map((cat_data: any) => (
                         <div className="flex justify-between text-gray-800 text-sm md:font-normal font-bold ">
-                            <div className="md:text-left text-center w-full md:py-0 sm:py-2 py-[2px]  md:shadow-none shadow-md shadow-slate-200">
-                                <Link href={`/category-menu/${slugify(cat_data.name)}`} className={`sm:text-xs max-[350px]:text-[7px] text-[10px] md:text-base leading-none ${menuData[1] === cat_data.name.toLowerCase() ? "text-blue-500" : ""} hover:text-blue-500`}>{cat_data.name}</Link>
+                            <div className="md:text-left text-center w-full md:py-0 sm:py-2 py-[10px]  md:shadow-none shadow-md shadow-slate-200 sm:leading-6 leading-[6px]">
+                                <Link href={`/category-menu/${slugify(cat_data.name)}`} className={`sm:text-xs max-[350px]:text-[7px] text-[10px] md:text-base  ${menuData[1] === cat_data.name.toLowerCase() ? "text-blue-500" : ""} hover:text-blue-500`}>{cat_data.name}</Link>
                             </div>
                         </div>
                     ))}
