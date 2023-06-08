@@ -26,12 +26,16 @@ export async function getStaticProps({ locale, params }: { locale: any, params: 
 
 export async function getStaticPaths() {
 
+    function slugify(text: string) {
+        return text.toLowerCase().replace(/[\/\s&]+/g, '-');
+    }
+
     const categoryData = await getCategoryData()
     const paths = categoryData.data.reduce((acc: any, category: any) => {
         category.children.forEach((child: any) => {
             acc.push({
                 params: {
-                    category: String(category.name).replace(/-/g, ' '),
+                    category: slugify(category.name),
                     subCategory: child.slug
                 }
             })
