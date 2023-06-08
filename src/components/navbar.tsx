@@ -29,7 +29,7 @@ import Example from "./categories-accordion";
 import dynamic from "next/dynamic"
 import { FaUserAlt, FaUserAstronaut, FaUserCheck } from "react-icons/fa";
 import LocationModal from "./location-modal";
-import AuthModal from "./authorization-modal";
+import AuthModal from "./authorixzation-modal";
 import InvalidOTPModal from "./invalid-otp-modal";
 import AddressModal from "./address-modal";
 import { SmSearchBoxModal } from "./sm-searchbox-modal";
