@@ -14,7 +14,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
     const [readMorClick, setReadMoreCLick] = useState(false)
     const [FeaturedImage, setFeaturedImage] = useState("https://www.lifepharmacy.com/images/default-product-image.png")
     const { data: session } = useSession()
-    const { locale } = useLanguage();
+
 
     useEffect(() => {
         setFeaturedImage(pro_data.images.featured_image);
@@ -48,9 +48,6 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
         }
         return stars;
     }
-    // function classNames(...classes) {
-    //     return classes.filter(Boolean).join(' ')
-    // }
 
     console.log(session);
 
@@ -85,7 +82,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                     </div>
                                     {pro_data.offers && pro_data.offers.value ?
                                         <div className="absolute right-3 top-3 bg-[#00b929] rounded-lg text-white md:text-sm text-xs  px-2 py-1 shadow-lg text-center ">~ {parseFloat(pro_data.offers.value).toFixed(0)}% OFF</div> : null}
-                                    {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={`skeleton-box absolute left-0 top-0 w-fit text-white px-5 rounded-tl-lg rounded-br-2xl py-1 text-sm`}>{pro_data.label.label_text}</div> : null}
+                                    {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={`skeleton-box flex absolute left-2 top-2 w-fit text-white px-3 items-center rounded-tl-lg rounded-br-2xl text-[9px] sm:py-1 py-[2px] sm:text-xs h-fit`}>{pro_data.label.label_text}</div> : null}
                                     <div className="absolute right-3 bottom-5 space-y-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-6 h-6 fill-blue-950" viewBox="0 0 16 16">
                                             <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
@@ -97,23 +94,6 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                 </div>
                             </div>
 
-                            {/* <div className=" md:hidden block mx-auto">
-                                {pro_data.images.gallery_images && pro_data.images.gallery_images[0] ?
-                                    <div className="grid grid-flow-col">
-                                        {
-                                            pro_data.images.gallery_images.map((gal_img: any, indx: number) => (
-                                                <Image className={`lg:max-w-[4.5rem] mr-4 rounded-lg ${selectedImg === indx ? "border-2 border-blue-400  " : ""}`} src={gal_img.thumbnail} height={80} width={80} onClick={() => {
-                                                    setSelectedImg(indx)
-                                                    setFeaturedImage(gal_img.full)
-                                                }} alt="thumbnail-img" />
-                                            ))}
-                                    </div>
-                                    : <div className="mr-4 ">
-                                        <Image className={"border-2 border-blue-400 rounded-lg mb-3 w-full sm:max-w-[7rem] max-w-[4.5rem] "} src={pro_data.images.featured_image} height={80} width={80} alt="thumbnail-img" />
-                                    </div>
-                                }
-                            </div> */}
-                            {/* xl:w-5/12 lg:w-5/12 w-full lg:px-10 lg:py-6 */}
                             <div className=" pt-6 lg:mt-0 md:col-span-5  min-[570px]:col-span-6 col-span-full">
                                 <h1 className=" xl:text-xl text-base  title-font mb-1 text-life">{pro_data.title}</h1>
                                 <div className=" flex">
@@ -125,17 +105,19 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                     <span className="text-gray-600 ml-3">{pro_data.rating}</span>
                                 </div>
                                 {pro_data.categories ?
-                                <div className=" py-2 ">
-                                    {pro_data.categories.map((cat_data: any) => (
-                                        <Link href={`/products?categories=${cat_data.slug}`} className=" inline-flex mr-3 hover:text-white hover:bg-red-500 text-red-500  px-2 text-[10px] py-0.5 border border-red-500 rounded-md my-1">{cat_data.name}</Link>
-                                    ))}
-                                </div>
-                                :null}
+                                    <div className=" py-2 ">
+                                        {pro_data.categories.map((cat_data: any) => (
+                                            <Link href={`/products?categories=${cat_data.slug}`} className=" inline-flex mr-3 hover:text-white hover:bg-red-500 text-red-500  px-2 text-[10px] py-0.5 border border-red-500 rounded-md my-1">{cat_data.name}</Link>
+                                        ))}
+                                    </div>
+                                    : null}
                                 <div className="relative md:block hidden">
                                     <div className={` text-gray-500 md:text-sm sm:text-sm text-xs ${readMorClick ? "from-white to-gray-200 h-[10rem] overflow-y-auto" : " overflow-y-hidden h-24 bg-gradient-to-b "}`} dangerouslySetInnerHTML={{ __html: pro_data.short_description }} />
-                                    <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMorClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
-                                        <button onClick={() => setReadMoreCLick(!readMorClick)} className=' rounded-full text-sm    text-primary hover:text-blue-500 p-1 px-2'>Read {readMorClick ? 'Less' : 'More'}</button>
-                                    </div>
+                                    {readMorClick ?
+                                        <div className={`absolute -bottom-6 left-0 right-0 text-center ${readMorClick ? '' : 'bg-gradient-to-b from-transparent to-white'} pt-16`}>
+                                            <button onClick={() => setReadMoreCLick(false)} className=' rounded-full text-sm    text-primary hover:text-blue-500 p-1 px-2'>Read More</button>
+                                        </div>
+                                        : null}
                                 </div>
                                 <div className="border-muted border rounded-lg mt-6">
                                     <div className="flex  items-center p-2  border-b-2 border-gray-100 justify-between">
@@ -190,7 +172,6 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                         </div>
                                         : null}
                                 </div>
-
                             </div>
 
                             <ul className="md:flex hidden col-span-3  flex-col ml-auto justify-around my-5 py-4 px-3  border border-gray-200 rounded-lg h-fit space-y-10">
@@ -226,43 +207,6 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                 </li>
                             </ul>
                         </div>
-                        {/* 
-                        <div>
-                            <ul className="grid sm:grid-cols-4 grid-cols-2  justify-between  lg:hidden  my-4">
-                                <li className="  mb-3 bg-slate-100 p-2 rounded-lg mr-2">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-gift.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col ">
-                                        <h5 className="text-indigo-900 text-xs font-semibold text-center">Free Delivery</h5>
-                                        <div className="text-xs text-gray-400 text-center">For all orders over AED 29</div>
-                                    </div>
-                                </li>
-                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 ">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-return.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col ">
-                                        <h5 className="text-indigo-900 text-xs font-semibold text-center">Easy Return</h5>
-                                        <div className="text-xs text-gray-400 text-center">Easy return and refund</div>
-                                    </div>
-                                </li>
-                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 mr-2">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-shield.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col ">
-                                        <h5 className="text-indigo-900 text-xs font-semibold text-center">Secure Payments</h5>
-                                        <div>
-                                            <Image src={"https://www.lifepharmacy.com/images/payment-method.svg"} className="mx-auto mb-3 " height={150} width={150} alt="free delivery" />
-                                        </div>
-                                    </div>
-                                </li>
-                                <li className="  mb-3 p-2 rounded-lg bg-slate-100 ">
-                                    <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-phone.svg"} className="mx-auto m-3" height={25} width={25} alt="free delivery" />
-                                    <div className="flex flex-col ">
-                                        <h5 className="text-indigo-900 text-xs font-semibold text-center">24/7 Support</h5>
-                                        <div className="text-xs text-gray-400 text-center">Dedicated Support</div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> */}
-
-
 
                         <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-3 gap-y-3">
                             <div>
@@ -391,10 +335,9 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                         </div>
                                         <div className="text-gray-400 sm:text-sm text-xs">Feb 21,2023</div>
                                         <div className=" text-[10px] my-2"><i>No comment</i></div>
-
                                     </div>
-
                                 </div>
+
                                 <div className="flex justify-start py-4 border-b border-muted">
                                     <div className="w-1/4">
                                         <h5 className="text-xs md:text-sm">Jaspreet singh</h5>
