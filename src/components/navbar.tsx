@@ -29,7 +29,7 @@ import Example from "./categories-accordion";
 import dynamic from "next/dynamic"
 import { FaUserAlt, FaUserAstronaut, FaUserCheck } from "react-icons/fa";
 import LocationModal from "./location-modal";
-import AuthModal from "./authorixzation-modal";
+import AuthModal from "./authorization-modal";
 import InvalidOTPModal from "./invalid-otp-modal";
 import AddressModal from "./address-modal";
 import { SmSearchBoxModal } from "./sm-searchbox-modal";
@@ -430,10 +430,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                 stroke="currentColor" className="w-5 h-7 ">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <div className="my-auto text-md mx-3">{langData.navbar.highest_rated_phar}</div>
+              <div className="my-auto sm:text-sm  text-[10px] mx-3">{langData.navbar.highest_rated_phar}</div>
             </div>
 
-            <div className="text-end text-md my-auto font-bold">{langData.navbar.download_now}</div>
+            <div className="text-end sm:text-sm  text-[10px]  my-auto font-bold">{langData.navbar.download_now}</div>
           </div>
         </TransitionComp>
         : null}
@@ -467,7 +467,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                     <svg fill="none" className={`animate-spin w-5 h-5 absolute inline ${isArabic ? "left-8" : "right-8"}  inset-y-0 m-auto w-4 h-4 mx-2`} stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" shape-rendering="geometricPrecision" viewBox="0 0 24 24" height="24" width="24" ><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> : ""}
 
                   < input type="search" id="lg-searchbox"
-                    className={`focus:ring-0 focus:ring-offset-0 hidden md:block bg-gray-100 border-gray-200 p-2 border text-gray-900 text-sm rounded-full  w-full ${isArabic ? 'pr-10 ' : 'pl-10 '} p-3`}
+                    className={`focus:ring-0 focus:ring-offset-0 hidden md:block bg-gray-100 border-gray-200 p-2 border text-gray-900 text-sm rounded-full w-full ${isArabic ? 'pr-10 ' : 'pl-10 '} p-3`}
                     placeholder={langData.navbar.searchbox_text} />
 
                   <div className="shadow-xl py-1 pt-4 px-3 lg-screen-searchsuggestion-lg scale-100 hidden absolute top-13  right-0 left-0  bg-gray-100 border-gray-200 overflow-auto search-suggestion-height rounded-t-0 rounded-b-md z-30">
