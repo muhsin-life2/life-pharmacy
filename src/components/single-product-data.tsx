@@ -32,7 +32,7 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
         }
     }
     function generateIcon(type: string) {
-        return <Image src={`https://www.lifepharmacy.com/images/label/${type}.svg`} height={30} width={30} alt="icon" className='w-4 h-4 item-center' />
+        return <Image src={`https://www.lifepharmacy.com/images/label/${type}.svg`} height={30} width={30} alt="icon" className='sm:w-4 sm:h-4 h-2 w-2  flex item-center' />
     }
     const addedToCart = (pro_data: any) => {
         dispatch(addToCart(pro_data))
@@ -75,7 +75,7 @@ export const SingleProductData = ({ pro_data }: { pro_data: any }) => {
                                 {pro_data.offers.value ?
                                     <>{parseFloat(pro_data.offers.value).toFixed(0)} % OFF</>
                                     : <>BUY1 GET1</>}</div> : null}
-                        {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={`  skeleton-box flex absolute left-2 top-2 w-fit text-white px-5 items-center rounded-tl-lg rounded-br-2xl py-1 text-xs h-fit`}><span className='items-center'>{pro_data.label.label_text}</span>
+                        {pro_data.label ? <div style={{ background: pro_data.label.color_code }} className={`  skeleton-box flex absolute left-2 top-2 w-fit text-white px-3 items-center rounded-tl-lg rounded-br-2xl text-[9px] sm:py-1 py-[2px] sm:text-xs h-fit`}><span className='items-center'>{pro_data.label.label_text}</span>
                             <div className={`${pathname?.substring(4, 6) === 'en' ? "ml-2" : "ml-2"}`}>{generateIcon(pro_data.label.icon_type)}</div></div> : null}
                         {/* {pro_data.out_of_stock ?
                         <div className="text-white absolute translate bg-black bg-opacity-50 px-3">Out of Stock</div>:null} */}
