@@ -45,11 +45,11 @@ const LanguageChangeModal: FC<compProps> = ({ setModalState, modalState, current
                         <Image src={contr.flag} height="20" width="20" className="h-full w-full" alt="" />
                     </div>
 
-                    <p className="font-bold whitespace-nowrap md:text-base text-[10px]">{contr.country}</p>
+                    <span className="font-bold whitespace-nowrap md:text-base text-[10px]">{contr.country}</span>
                     {contr.path === currentCountry.path ?
                         <div className='bg-emerald-500 flex text-white  rounded-full md:px-2 md:py-1 items-center space-x-2 px-2 py-[1px]'>
                             <CheckIcon className='md:w-4 md:h-4 h-3 w-3' />
-                            <p className='md:text-xs text-[8px]'>{currentLanguage.name}</p>
+                            <span className='md:text-xs text-[8px]'>{currentLanguage.name}</span>
                         </div> : null
                     }
                 </div>
@@ -177,7 +177,7 @@ relative flex cursor-pointer rounded-lg px-5 md:py-4 py-2 shadow-md focus:outlin
                                             <div onClick={() => { languageBackClicked() }} className='cursor-pointer'> <ChevronLeftIcon className='w-6 h-5 ' /></div>
 
                                             : null}
-                                        <p className="font-bold md:text-lg text-sm pb-6">Select Your Preference</p>
+                                        <span className="font-bold md:text-lg text-sm pb-6">Select Your Preference</span>
 
 
                                     </div>
