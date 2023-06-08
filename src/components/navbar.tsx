@@ -29,7 +29,7 @@ import Example from "./categories-accordion";
 import dynamic from "next/dynamic"
 import { FaUserAlt, FaUserAstronaut, FaUserCheck } from "react-icons/fa";
 import LocationModal from "./location-modal";
-import AuthModal from "./authorixzation-modal";
+import AuthModal from "./authorization-modal";
 import InvalidOTPModal from "./invalid-otp-modal";
 import AddressModal from "./address-modal";
 import { SmSearchBoxModal } from "./sm-searchbox-modal";
@@ -424,16 +424,16 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
       {highestRatedP ?
         <TransitionComp
           setTransition={highestRatedP} >
-          <div className="grid grid-flow-col  bg-life-2 text-white  text-xs px-4 py-1 md:hidden ">
+          <div className="grid grid-flow-col  bg-life-2 text-white  text-xs px-2 py-1 md:hidden ">
             <div className="flex justify-start">
               <svg onClick={() => { sethighestRatedP(false) }} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" className="w-5 h-7 ">
+                stroke="currentColor" className=" sm:w-5 sm:h-7 w-3 h-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
-              <div className="my-auto sm:text-sm  text-[10px] mx-3">{langData.navbar.highest_rated_phar}</div>
+              <div className="my-auto sm:text-sm  text-[8px] mx-2">{langData.navbar.highest_rated_phar}</div>
             </div>
 
-            <div className="text-end sm:text-sm  text-[10px]  my-auto font-bold">{langData.navbar.download_now}</div>
+            <div className="text-end sm:text-sm  text-[8px]  my-auto font-bold">{langData.navbar.download_now}</div>
           </div>
         </TransitionComp>
         : null}
