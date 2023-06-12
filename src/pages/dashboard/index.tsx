@@ -317,7 +317,7 @@ export default function DashboardPage({ }) {
                                 <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 my-3">
                                     {session.data.token.addresses.length > 0 ?
                                         session.data.token.addresses.map((addr: any) => (
-                                            <div className="border-muted rounded-lg px-4 py-3 space-y-4 h-full flex flex-col justify-between shadow-sm">
+                                            <div className="border-muted border shadow-md rounded-lg px-4 py-3 space-y-4 h-full flex flex-col justify-between ">
                                                 <div className="space-y-2">
                                                     <div className="text-life text-sm font-bold ">{addr.type}</div>
                                                     <div className="w-full bg-[#dee2e6] mx-auto h-[1px]"></div>
@@ -371,7 +371,7 @@ export default function DashboardPage({ }) {
                                         <ul className="flex space-x-3">
                                             <li>
                                                 <input type="radio" className="hidden peer" id="gender-selection-male" name="gender" value="male" />
-                                                <label htmlFor="gender-selection-male" className="inline-flex items-center justify-between  py-2 px-10  bg-white border border-gray-200 rounded-lg cursor-pointer   hover:text-gray-600 hover:bg-gray-100   peer-checked:border-blue-600 peer-checked:text-blue-600">
+                                                <label htmlFor="gender-selection-male" className="sm:px-10 px-5 sm:text-sm  text-xs inline-flex items-center justify-between  py-2  bg-white border border-gray-200 rounded-lg cursor-pointer   hover:text-gray-600 hover:bg-gray-100   peer-checked:border-blue-600 peer-checked:text-blue-600">
                                                     <div className="block">
                                                         <div className="w-full">Male</div>
                                                     </div>
@@ -379,7 +379,7 @@ export default function DashboardPage({ }) {
                                             </li>
                                             <li>
                                                 <input type="radio" className="hidden peer" id="gender-selection-female" name="gender" value="female" />
-                                                <label htmlFor="gender-selection-female" className="inline-flex items-center justify-between  py-2 px-10  bg-white border border-gray-200 rounded-lg cursor-pointer   hover:text-gray-600 hover:bg-gray-100  peer-checked:border-blue-600 peer-checked:text-blue-600 ">
+                                                <label htmlFor="gender-selection-female" className="sm:px-10 px-5 sm:text-sm  text-xs inline-flex items-center justify-between  py-2  bg-white border border-gray-200 rounded-lg cursor-pointer   hover:text-gray-600 hover:bg-gray-100  peer-checked:border-blue-600 peer-checked:text-blue-600 ">
                                                     <div className="block">
                                                         <div className="w-full">Female</div>
                                                     </div>
@@ -387,7 +387,7 @@ export default function DashboardPage({ }) {
                                             </li>
                                             <li>
                                                 <input type="radio" className="hidden peer" id="gender-selection-other" name="gender" value="other" />
-                                                <label htmlFor="gender-selection-other" className="inline-flex items-center justify-between  py-2 px-10  bg-white border border-gray-200 rounded-lg cursor-pointer   hover:text-gray-600 hover:bg-gray-100   peer-checked:border-blue-600 peer-checked:text-blue-600">
+                                                <label htmlFor="gender-selection-other" className="sm:px-10  px-5  sm:text-sm  text-xs inline-flex items-center justify-between  py-2  bg-white border border-gray-200 rounded-lg cursor-pointer   hover:text-gray-600 hover:bg-gray-100   peer-checked:border-blue-600 peer-checked:text-blue-600">
                                                     <div className="block">
                                                         <div className="w-full">Other</div>
                                                     </div>

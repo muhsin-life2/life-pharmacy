@@ -322,7 +322,7 @@ input:focus {
 }
 
 .border-muted{
-    @apply border border-[#eee]
+    @apply  border-[#eee]
 }
 
 p{
@@ -368,3 +368,37 @@ li{
 .bg-life-2{
     @apply bg-[#a92579]
 }
+
+.offers-btn{
+    @apply bg-[#ffde53] border border-[#ff9d00] rounded-sm w-fit text-[10px] px-2 py-[2px] text-life font-semibold
+}
+
+
+
+.label-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    min-width: 0;
+    border-radius: 50%;
+    line-height: 1;
+    font-weight: 400;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

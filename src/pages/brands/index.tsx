@@ -2,11 +2,20 @@ import getBrandsData from "@/lib/getBrandsData"
 import BreadCrumb from "@/components/breadcrumb"
 import Image from "next/image"
 import Link from "next/link"
+import { animateScroll, scroller } from 'react-scroll';
 const alphabets = ['#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'm', 'o']
 export default function BrandsPage({ brandsData, alphaBrands }: { brandsData: any, alphaBrands: any }) {
 
+    const scrollToSection = (alpha: string) => {
+        scroller.scrollTo(alpha, {
+            duration: 800,
+            delay: 0,
+            smooth: 'easeInOutQuart',
+        });
+    };
+
     return (
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-[1450px] px-[10px] ">
             <div className=" h-[12em] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
                 <div className='my-auto space-y-2'>
                     <h1 className='text-4xl text-center capitalize'>Brands</h1>
@@ -17,25 +26,22 @@ export default function BrandsPage({ brandsData, alphaBrands }: { brandsData: an
 
             <div className=" grid xl:grid-cols-5 sm:grid-cols-4 grid-cols-3  gap-3  mx-auto" id="brands-section">
                 {brandsData.map((bd: any) => (
-                    <div className="grid-flow-row mb-5"> <div className={`flex flex-col mr-5`}>
+                    <div className="grid-flow-row mb-5"> <Link href={`/brand/${bd.slug}`} className={`flex flex-col mr-5 group/brandMenu`}>
                         <Image className="mx-auto rounded-full border border-white bg-white shadow-md" width={120} height={120} src={bd.images.logo} alt="" />
-                        <h5 className="text-center mt-3 xl:text-base md:text-sm text-xs">{bd.name}</h5>
-                    </div></div>
+                        <h5 className="text-center mt-3 xl:text-base md:text-sm text-xs group-hover/brandMenu:text-blue-500 transition-colors duration-300 text-black">{bd.name}</h5>
+                    </Link></div>
                 ))}
             </div>
             <div className="mx-auto py-5 shadow-md overflow-x-auto no-scrollbar">
                 <div className="w-fit flex mx-auto">
                     {alphabets.map((alpha: string) =>
-                        <Link href="#" className="text-[#39f] font-extrabold scale-100 hover:scale-150 duration-200 transition-all ease-in mr-4 text-3xl ">{alpha}</Link>
+                        <button onClick={() => scrollToSection(alpha)} className="text-[#39f] font-extrabold scale-100 hover:scale-150 duration-200 transition-all ease-in mr-4 text-3xl ">{alpha}</button>
                     )}
                 </div>
             </div>
             {alphabets.map(alpha => (
-
-                <div className="space-y-3">
-                    <div>
-                        <h1 className="underline-offset-2 underline font-bold text-3xl py-2 sticky top-72">{alpha}</h1>
-                    </div>
+                <div className="space-y-3" id={`${alpha}`}>
+                    <h1 className="underline-offset-2 underline font-bold text-3xl py-2 sticky md:top-40 top-12 z-30">{alpha}</h1>
                     <div className="grid xl:grid-cols-6 md:grid-cols-4 grid-cols-3 gap-2 gap-y-3">
                         {alphaBrands[alpha].map((brand: any) => (
                             <Link href={`/brand/${brand.slug}`}>
@@ -44,17 +50,9 @@ export default function BrandsPage({ brandsData, alphaBrands }: { brandsData: an
                             </Link>
                         ))}
                     </div>
-
                 </div>
-
-
             ))}
-
-
-            <div>
-            </div>
         </div>
-
     )
 
 }

@@ -21,7 +21,7 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, { children: any, c
     <Accordion.Header className="flex">
         <Accordion.Trigger
             className={classNames(
-                'text-violet11 hover:bg-mauve2 group flex h-[45px] flex-1 cursor-default items-center justify-between bg-white  text-[15px] leading-none ',
+                'text-violet11 hover:bg-mauve2 group flex h-[30px] flex-1 cursor-default items-center justify-between bg-white  text-[15px] leading-none ',
                 className
             )}
             {...props}

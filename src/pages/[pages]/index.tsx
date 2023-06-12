@@ -3,14 +3,13 @@ import getHomePageData from "@/lib/getHomePageData"
 import getSinglePageData from "@/lib/getSinglePageData"
 import PageStructure from "@/components/page-structure"
 import Products from "@/components/products"
-import { useRouter } from "next/router"
-const PageData = ({ pageData }: { pageData: any }) => {
+const PageData = ({ pageData, locale }: { pageData: any, locale: any }) => {
     return (
         <div className="max-w-[1450px] px-[10px] mx-auto">
 
             {pageData.map((data: any, ind: number) => (
-                <PageStructure data={data} lang={"ae-en"} setLoading={ind === 0 ? true : false}>
-                    <Products lang={"ae-en"} slug={data.section_data_object?.slug} type_key={data.section_data_object?.type_key} />
+                <PageStructure data={data} lang={locale} >
+                    <Products lang={locale} slug={data.section_data_object?.slug} type_key={data.section_data_object?.type_key} />
                 </PageStructure >
             ))}
         </div>
@@ -18,6 +17,7 @@ const PageData = ({ pageData }: { pageData: any }) => {
 }
 
 export default PageData
+
 export const getStaticPaths = async () => {
     const data_res = await getHomePageData("ae-en")
 
@@ -37,7 +37,6 @@ export const getStaticPaths = async () => {
                 pages: slug
             }
         }
-
     ))
 
     return {
@@ -45,13 +44,20 @@ export const getStaticPaths = async () => {
         paths,
     };
 }
+
 export const getStaticProps: GetStaticProps = async (context) => {
     const pagesParams = context.params?.pages;
     const pageData = await getSinglePageData(pagesParams)
-
+    const locale = context.locale
+    if (!pageData.sucess) {
+        return {
+            notFound: true
+        }
+    }
     return {
         props: {
-            pageData: pageData.data.content
+            pageData: pageData.data.content,
+            locale
         },
     };
 };

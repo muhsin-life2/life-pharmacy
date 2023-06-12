@@ -10,12 +10,12 @@ interface compProps {
     data: any
     lang: string
     children: any
-    setLoading: boolean
+
 }
 
-const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
+const PageStructure: FC<compProps> = ({ data, lang, children }) => {
     const invalidSlugs = ["recently-viewed", "buy-again", "recently-purchased"]
-    const restrictedId= ["c0350501-1e25-4671-93b8-da18a2a0209a"]
+    const restrictedId = ["c0350501-1e25-4671-93b8-da18a2a0209a"]
     const router = useRouter()
 
     return (
@@ -53,7 +53,7 @@ const PageStructure: FC<compProps> = ({ data, lang, children, setLoading }) => {
                         : ""
                 }
                 {
-                    data.section_type === "product_grid" && (data.is_section_visible || data.is_enabled) && !invalidSlugs.includes(data.section_data_object.slug) && !restrictedId.includes(data.section_data_object.id)?
+                    data.section_type === "product_grid" && (data.is_section_visible || data.is_enabled) && !invalidSlugs.includes(data.section_data_object.slug) && !restrictedId.includes(data.section_data_object.id) ?
                         < div style={{ background: data.settings.background_value }}>
                             {data.settings.show_section_title ?
                                 <div className="flex justify-between pt-3 mx-4">

@@ -19,7 +19,7 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
             {
                 categoryData.filters && categoryData.filters.categories && categoryData.filters.categories[0] && categoryData.filters.categories[0].images && categoryData.filters.categories[0].images.banner ?
                     <div className=''>
-                        <Image src={categoryData.filters.categories[0].images.banner} height={500} width={1440} alt="headerimg" className='object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto' />
+                        <Image src={categoryData.filters.categories[0].images.banner} height={500} width={1440} alt="headerimg" className='object-cover lg:h-[20rem] md:h-[15rem] w-full mx-auto ' />
                         <BreadCrumb menuData={menuData} />
                         {categoryData.model_details.short_description &&
                             <div className="relative">
@@ -31,7 +31,7 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
                         }
                     </div> :
                     <>
-                        <div className=" h-[12em] px-[10px] grid items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y">
+                        <div className=" h-[12em] px-[10px] items-center mx-auto bg-[url('https://www.lifepharmacy.com/images/page-header-bg.jpg')] relative bg-repeat-y md:grid hidden">
                             <div className='my-auto space-y-2'>
                                 {menuData[0] ? <h1 className='text-4xl text-center capitalize'>{menuData[0]}</h1> : null}
                                 <h1 className='text-2xl  text-center   capitalize text-blue-500'>{menuData[1] ? menuData[1] : " Products"} </h1>
@@ -41,7 +41,6 @@ export const ProductsPage = ({ filterPath, isSearchPage, categoryData, menuData,
                     </>
             }
             <ProductsPageData filterPath={filterPath} categoryData={categoryData} brandsData={categoryData.brands} isSearchPage={isSearchPage} selectedBrands={menuData[0] != "Category" ? selectedBrands : router.query.brands ? router.query.brands : ""} menuData={menuData} />
-
         </div>
     )
 }

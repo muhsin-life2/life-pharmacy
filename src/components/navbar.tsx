@@ -13,8 +13,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import Link from "next/link";
-import { Dialog, Transition, RadioGroup } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import TransitionComp from "./transition";
 
 import AccountDetails from "./accountDetails";
@@ -26,27 +24,25 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import React, { FC } from 'react'
 import Example from "./categories-accordion";
-import dynamic from "next/dynamic"
-import { FaUserAlt, FaUserAstronaut, FaUserCheck } from "react-icons/fa";
 import LocationModal from "./location-modal";
 import AuthModal from "./authorixzation-modal";
 import InvalidOTPModal from "./invalid-otp-modal";
 import AddressModal from "./address-modal";
 import { SmSearchBoxModal } from "./sm-searchbox-modal";
 import SmMenu from "./sm-menu";
-
+import { useLabels } from "@headlessui/react/dist/components/label/label";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface navbarProps {
   data: any,
   brands_data: any,
   isArabic: boolean,
-  lang: string,
   langData: any,
   languageClickedToast: any
+  lang: string
 }
 
-
-const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, languageClickedToast }) => {
+const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, languageClickedToast, lang }) => {
 
   const countries = [
     { country: 'United Arab Emirates', flag: 'https://www.lifepharmacy.com/images/svg/flag-ae.svg', path: "ae" },
@@ -59,13 +55,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
   ]
 
   const { data: session } = useSession()
-  const { asPath } = useRouter()
-  const pathName = asPath
-  const path_name = lang;
-  const parts = path_name?.split("-");
+  //@ts-ignore
+
   const cartItems = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch();
-
   const [searchData, setData] = useState({
     results: [
       {
@@ -82,10 +75,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
       },
 
     ]
-
   })
-
-
+  const { locale } = useLanguage()
   const [signInUsing, signInSet] = useState("");
   const [isPhoneNumberValid, setPhoneNumberValidState] = useState(false);
   const [state, setState] = useState('');
@@ -107,13 +98,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
   const [showDropdown, setShowDropdown] = useState(false);
   const [AddressDataIndex, setAddressDataIndex] = useState(session?.token?.addresses[0]);
   const handleChange = (state: string) => setState(state);
-  const [countrySet, setCountry] = useState(setCountryFlag())
   const [chooseCountr, setChooseCountr] = useState(true)
   const [chooseLanguage, setChooseLanguage] = useState(false)
-  const [laguage, setLaguage] = useState(setLanguage())
-
-
-
 
 
   useEffect(() => {
@@ -121,32 +107,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
 
     if (!showDropdown) return;
     function handleClick(event: any) {
-
     }
     window.addEventListener("click", handleClick);
     return () => window.removeEventListener("click", handleClick);
   }, []);
-
-  function setCountryFlag() {
-    if (parts[0] === 'sa') {
-      return countries[1]
-    }
-    else {
-      return countries[0]
-    }
-  }
-
-  function setLanguage() {
-    if (parts === undefined) {
-      return languages[1]
-    }
-    if (parts[1] === 'en' || parts[1] === '') {
-      return languages[1]
-    }
-    else {
-      return languages[0]
-    }
-  }
 
 
   function languageBackClicked() {
@@ -418,6 +382,38 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
     });
     return parseFloat(totalPrice.toString()).toFixed(2);
   };
+
+  const parts = locale ? locale?.split("-") : ["ae", "en"]
+
+  const getFlagByLocale = () => {
+    if (parts) {
+      if (parts[0] === "sa") {
+        return countries[1].flag
+      }
+      else {
+        return countries[0].flag
+      }
+    }
+    else {
+      return countries[0].flag
+    }
+  }
+
+
+  const getLanguageByLocale = () => {
+    if (parts) {
+      if (parts[1] === "ar") {
+        return languages[0].name
+      }
+      else {
+        return languages[1].name
+      }
+    }
+    else {
+      return languages[0].name
+    }
+  }
+
   return (
 
     <>
@@ -610,12 +606,11 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
             </div>
 
             <div className="grid grid-flow-col w-100  gap-5 md:flex lg:flex my-auto">
-
-              <div className="relative  z-30">
+              <div className="relative z-30">
                 <button className="mx-auto my-auto " onClick={() => { setLanguageModal(true) }}>
-                  <Image src={countrySet.flag} alt=""
+                  <Image src={getFlagByLocale()} alt=""
                     className=" h-10 w-10 rounded-[30px]" width={100} height={100} />
-                  <div className="text-[11px] text-center md:text-white">{laguage.name === "Arabic" ? "English" : "العربية"}</div>
+                  <div className="text-[11px] text-center md:text-white">{getLanguageByLocale()}</div>
                 </button>
               </div>
 
@@ -782,12 +777,11 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
 
                       {brands_data.data.brands.map((bd: any) => (
                         <SwiperSlide className="cursor-grab">
-                          <div >
+                          <Link href={`/brand/${bd.slug}`}>
                             <Image className="mx-auto md:w-16 md:h-16 lg:w-24 lg:h-24 xl:w-24 xl:h-24 rounded-full border border-gray-300 " width={150} height={150} src={bd.images.logo} alt="" />
-                          </div>
+                          </Link>
                         </SwiperSlide>
                       ))}
-
                     </Swiper>
 
                   </div>
@@ -801,11 +795,8 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                           <div className=" mb-9 ">
                             <div className="flex justify-between  w-full flex-wrap">
                               <div className="  lg:order-none md:w-full">
-
                                 <Example acc_data={item} />
-
                               </div>
-
                             </div>
                           </div>
                         </li>
@@ -813,7 +804,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                     </div>
                   ))}
                 </div>
-
               </div>
             </div>
 
@@ -834,14 +824,15 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
                     <div className="grid grid-cols-5 gap-3  mx-auto" id="brands-section">
                       {brands_data.data.brands.map((bd: any) => (
                         <div className="grid-flow-row mb-5"> <div className={`flex flex-col mr-5`}>
-                          <Image className="mx-auto rounded-full border border-white bg-white shadow-md" width={120} height={120} src={bd.images.logo} alt="" />
-                          <h5 className="text-center mt-3">{bd.name}</h5>
+                          <Link href={`/brand/${bd.slug}`}>
+                            <Image className="mx-auto rounded-full border border-white bg-white shadow-md" width={120} height={120} src={bd.images.logo} alt="" />
+                            <h5 className="text-center mt-3">{bd.name}</h5>
+                          </Link>
                         </div></div>
                       ))}
                     </div>
                     <div className="w-full text-center my-5">
                       <Link href="/brands" className="text-white px-8 py-2 text-sm mx-auto rounded-full bg-[#39f]">VIEW ALL</Link>
-
                     </div>
                   </li>
                 </ul>
@@ -895,16 +886,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
             </div>
           </div>
         </div>
-
-
-
       </div >
 
 
       <div className="sm:visible md:hidden ">
-
-
-
         <div className="flex  bg-life text-white text-xs px-[10px] py-1 justify-between items-center">
           <div>{langData.navbar.deliver_to}:   <span className="mx-2">Business Bay, Dubai</span>  </div>
           <button className="bg-white rounded text-pink-700 w-20 py-1" onClick={() => { locationOnClickHandle() }}>CHANGE</button>
@@ -943,7 +928,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, lang, langData, 
         setavailableAddresses={setavailableAddresses} showModal={session && addNewAddress ? true : false}
         AddressDataIndex={AddressDataIndex} formDatahandleChange={formDatahandleChange} setAddressDataIndex={setAddressDataIndex} />
 
-      <LanguageChangeModal setModalState={setModalState} modalState={languageModal} currentLanguage={laguage} currentCountry={countrySet} countries={countries} languages={languages} lang={parts} languageClickedToast={() => { languageClickedToast() }} />
+      <LanguageChangeModal setModalState={setModalState} modalState={languageModal} currentLanguage={parts[1] === "ar" ? languages[0] : languages[1]} currentCountry={parts[0] === "sa" ? countries[1] : countries[0]} countries={countries} languages={languages} lang={parts} languageClickedToast={() => { languageClickedToast() }} />
 
       <SmSearchBoxModal showModal={smScreenSearchBox} setCloseModal={setSmScreenSearchBox} isArabic={isArabic} queryData={queryData} setQueryData={setQueryData} searchButtonOnMouseEnter={searchButtonOnMouseEnter} SearchLoadingState={SearchLoadingState} searchData={searchData} searchBoxClear={searchBoxClear} searchSuggestions={searchSuggestions} searchClosebtn={searchClosebtn} />
 

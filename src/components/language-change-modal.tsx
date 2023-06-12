@@ -1,12 +1,9 @@
 import { Dialog, Transition, RadioGroup } from '@headlessui/react'
 import { FC, Fragment, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { CheckCircleIcon, CheckIcon, ChevronLeftIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import TransitionComp from './transition'
 import { useRouter } from 'next/router'
-import { URL } from 'url'
-import { countReset } from 'console'
 
 interface compProps {
     setModalState: any
@@ -15,13 +12,12 @@ interface compProps {
     currentCountry: any
     countries: any
     languages: any
-    lang: string[]
+    lang: any
     languageClickedToast: any
 }
 
 const LanguageChangeModal: FC<compProps> = ({ setModalState, modalState, currentLanguage, currentCountry, countries, languages, lang, languageClickedToast }) => {
     const router = useRouter()
-
     const [IsLanguageChangeClicked, languageChangeClicked] = useState(false)
     const [IsCountryChangeClicked, CountryChangeClicked] = useState(true)
     const [selected, setSelected] = useState('')
@@ -94,7 +90,6 @@ relative flex cursor-pointer rounded-lg px-5 md:py-4 py-2 shadow-md focus:outlin
                                         className={`inline ${checked ? 'text-sky-100' : 'text-gray-500'
                                             }`}
                                     >
-
                                     </RadioGroup.Description>
                                 </div>
                             </div>
@@ -133,19 +128,9 @@ relative flex cursor-pointer rounded-lg px-5 md:py-4 py-2 shadow-md focus:outlin
     }
     return (
         <>
-            {/* <div className="fixed inset-0 flex items-center justify-center">
-                <button
-                    type="button"
-                    onClick={modalState}
-                    className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                >
-                    Open dialog
-                </button>
-            </div> */}
 
             <Transition appear show={modalState} as={Fragment}>
                 <Dialog as="div" className="relative z-50" onClose={closeModal}>
-
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -172,14 +157,10 @@ relative flex cursor-pointer rounded-lg px-5 md:py-4 py-2 shadow-md focus:outlin
                                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-4 text-left align-middle shadow-xl transition-all relative sm:text-sm md:text-base text-xs">
                                     <div className='flex justify-start space-x-3 my-auto'>
                                         {!IsCountryChangeClicked ?
-
-
                                             <div onClick={() => { languageBackClicked() }} className='cursor-pointer'> <ChevronLeftIcon className='w-6 h-5 ' /></div>
 
                                             : null}
                                         <span className="font-bold md:text-lg text-sm pb-6">Select Your Preference</span>
-
-
                                     </div>
 
                                     <button className="absolute top-4 right-4 bg-transparent  hover:text-gray-900 rounded-lg text-sm  items-center  " onClick={() => { closeModal() }}>
@@ -188,13 +169,11 @@ relative flex cursor-pointer rounded-lg px-5 md:py-4 py-2 shadow-md focus:outlin
                                         </svg>
                                     </button>
 
-
                                     {IsCountryChangeClicked ?
                                         <TransitionComp setTransition={IsCountryChangeClicked}>
                                             {countryProps}
-                                        </TransitionComp> 
+                                        </TransitionComp>
                                         : null}
-
 
                                     {IsLanguageChangeClicked ?
                                         <TransitionComp setTransition={IsLanguageChangeClicked}>

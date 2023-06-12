@@ -23,7 +23,7 @@ export default function Example({ acc_data }: { acc_data: any }) {
         }
     }
     function slugify(text: string) {
-        return text.toLowerCase().replace(/[\s&]+/g, '-');
+        return text.toLowerCase().replace(/[\s&/]+/g, '-')
     }
     function generatePath(grand_p: string, parent: string, child: string) {
         return `category/${slugify(grand_p)}/${parent}/${slugify(child)}`
@@ -44,9 +44,9 @@ export default function Example({ acc_data }: { acc_data: any }) {
                                                 } h-5 w-5 font-bold`}
                                         />
                                     </Disclosure.Button>
-                                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm border-gray-200 border bg-[#f4f7ff] rounded-xl my-2  text-gray-500">
+                                    <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm  bg-[#f4f7ff] backdrop-blur-lg rounded-xl my-2  text-gray-500">
                                         <div className="grid lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-3 gap-y-5 p-2">{cat_data.sections.map((ch_data: any) => (
-                                            <Link href={generatePath(acc_data.name, cat_data.slug, ch_data.name)} className=" xl:flex mx-2  hover:bg-white rounded-lg p-2 hover:border-gray-200 hover:border border border-gray-50 group/item">
+                                            <Link href={generatePath(acc_data.name, cat_data.slug, ch_data.name)} className=" xl:flex mx-2  hover:bg-white rounded-lg p-2 hover:shadow-sm group/item">
                                                 <Image className="xl:mx-0 mx-auto group-hover/item:scale-110 transition scale-100 duration-200 ease-in-out h-[50px] w-[50px]" src={LoadImages(ch_data.images)} height={50} width={50} alt={ch_data.name} />
                                                 <p className="xl:mx-3 xl:my-auto mt-3 xl:text-left ml-0 text-center text-[11px] my-auto ">{ch_data.name}</p>
                                             </Link>

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 
-
-
 export const BrandsButton = ({ selectedBrands, brandName, filterSet }: { selectedBrands: string, brandName: any, filterSet: any }) => {
     const [isInverted, setIsInverted] = useState(false);
     const brandsArray = selectedBrands.split(",")
@@ -18,9 +16,9 @@ export const BrandsButton = ({ selectedBrands, brandName, filterSet }: { selecte
 }
 
 
-export const ShopNowButton = ({ classNames, children }: { children: any, classNames: string }) => {
+export const ShopNowButton = ({ classNames, children, onClick }: { children: any, classNames: string, onClick?: () => void }) => {
     return (
-        <button className={"btn-primary sm:text-base text-sm sm:py-3 py-2 sm:px-7 px-5 " + classNames}>
+        <button className={"btn-primary sm:text-base text-sm sm:py-3 py-2 sm:px-7 px-5 " + classNames} onClick={onClick}>
             {children}
         </button>
     )

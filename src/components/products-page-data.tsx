@@ -22,6 +22,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
 
         }]
     })
+    const [isRowView, setIsRowView] = useState(false)
 
     const router = useRouter()
 
@@ -155,23 +156,24 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
     return (
         <div className='py-5 max-w-[1450px] mx-auto  sm:px-[10px] px-[5px]'>
             {!isSearchPage ?
-                <div className="flex justify-end  py-2">
-
-                    <div className="flex items-center">
+                <div className="flex justify-between  py-5 border-t border-muted">
+                    <div>
+                        <p className="sm:text-sm text-xs">Showing <span className="text-black">{categoryData.total_count}</span> of <span className="text-black ">{noOfProducts}</span> Products</p>
+                    </div>
+                    <div className=" items-center md:flex hidden">
                         <div className="relative inline-block text-left group/sort-menu">
                             <div>
                                 <button type="button" className="group space-x-3 items-center inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button"  >
-                                    <span>Sort</span>
-                                    <div className="px-2 py-1 border border-gray-300 flex">
+                                    <div className="px-2 py-1 border border-slate-300 rounded-md flex text-base sm:text-sm text-[10px] items-center justify-between">
                                         {selectedFilter.text}
-                                        <svg className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" >
+                                        <svg className="-mr-1 ml-1 h-4 w-4 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" >
                                             <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
                                 </button>
                             </div>
 
-                            <div className="group-hover/sort-menu:scale-100 scale-0 top-6 right-8 absolute  z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-100 opacity-95 backdrop-blur-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
+                            <div className="group-hover/sort-menu:scale-100 scale-0 top-6 right-0 absolute  z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-100 opacity-95 backdrop-blur-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
                                 <div className="py-1">
                                     {filters.map((filter: any, indx: number) => (
                                         <div onClick={() => filterSet(indx, "order_by", filters[indx].name, false)} className={`${selectedFilter.text === filter.text ? "bg-slate-500 text-white" : "hover:bg-slate-200"} block px-4 py-1 text-sm cursor-pointer`}>{filter.text}</div>
@@ -179,28 +181,32 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                 </div>
                             </div>
                         </div>
+                        <div className="ml-5">
+                            <input type="radio" defaultChecked={true} id="grid-view" name="col-type" className="hidden peer" value="chatWithUs" />
+                            <label htmlFor="grid-view" onClick={() => setIsRowView(false)} className="cursor-pointer -m-2  p-2 mr-2 text-gray-400 hover:text-gray-500 sm:ml-7 peer-checked:text-blue-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-5 h-5" viewBox="0 0 16 16">
+                                    <path d="M1 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V4zM1 9a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V9z" />
+                                </svg>
+                            </label>
+                        </div>
 
-                        <button type="button" className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7">
-                            <span className="sr-only">View grid</span>
-                            <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M4.25 2A2.25 2.25 0 002 4.25v2.5A2.25 2.25 0 004.25 9h2.5A2.25 2.25 0 009 6.75v-2.5A2.25 2.25 0 006.75 2h-2.5zm0 9A2.25 2.25 0 002 13.25v2.5A2.25 2.25 0 004.25 18h2.5A2.25 2.25 0 009 15.75v-2.5A2.25 2.25 0 006.75 11h-2.5zm9-9A2.25 2.25 0 0011 4.25v2.5A2.25 2.25 0 0013.25 9h2.5A2.25 2.25 0 0018 6.75v-2.5A2.25 2.25 0 0015.75 2h-2.5zm0 9A2.25 2.25 0 0011 13.25v2.5A2.25 2.25 0 0013.25 18h2.5A2.25 2.25 0 0018 15.75v-2.5A2.25 2.25 0 0015.75 11h-2.5z" clip-rule="evenodd"></path>
+                        <input type="radio" id="list-view" name="col-type" className="hidden peer" value="chaWithUs" />
+                        <label htmlFor="list-view" className="-m-2 cursor-pointer p-2 text-gray-400 hover:text-gray-500 peer-checked:text-blue-500" onClick={() => setIsRowView(true)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-5 h-5" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5H2zM3 3H2v1h1V3z" />
+                                <path d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9z" />
+                                <path fill-rule="evenodd" d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5V7zM2 7h1v1H2V7zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H2zm1 .5H2v1h1v-1z" />
                             </svg>
-                        </button>
-                        <button type="button" className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden">
-                            <span className="sr-only">Filters</span>
-                            <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 01.628.74v2.288a2.25 2.25 0 01-.659 1.59l-4.682 4.683a2.25 2.25 0 00-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 018 18.25v-5.757a2.25 2.25 0 00-.659-1.591L2.659 6.22A2.25 2.25 0 012 4.629V2.34a.75.75 0 01.628-.74z" clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
+                        </label>
                     </div>
                 </div> : null}
 
-            <div aria-labelledby="products-heading" className="pb-24 pt-6">
+            <div aria-labelledby="products-heading" className="pb-24">
                 <h2 id="products-heading" className="sr-only">Products</h2>
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                     {!isSearchPage ?
-                        <form className="hidden lg:block divide-y space-y-4">
+                        <form className="hidden lg:block divide-y top-40">
                             {catData.data[1] ?
                                 <>
                                     <div ></div>
@@ -209,7 +215,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                         type="single"
                                         defaultValue="item-1"
                                         collapsible>
-                                        <AccordionItem className="" value="item-1">
+                                        <AccordionItem className="py-2" value="item-1">
                                             <AccordionTrigger className="font-bold">Category</AccordionTrigger>
                                             {catData.data.map((item: any) => (
                                                 <AccordionContent className="" >
@@ -218,7 +224,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                                         type="single"
                                                         collapsible>
                                                         <AccordionItem className="" value="item-1">
-                                                            <AccordionTrigger className="font-semibold text-gray-600" >{item.name}</AccordionTrigger>
+                                                            <AccordionTrigger className=" text-gray-600" >{item.name}</AccordionTrigger>
                                                             {item.children.map((child: any) => (
                                                                 <AccordionContent className="" >
                                                                     <Accordion.Root
@@ -229,7 +235,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                                                             <AccordionTrigger className="" >{child.name}</AccordionTrigger>
                                                                             {child.sections.map((sec_data: any) => (
                                                                                 <AccordionContent className="ml-2" >
-                                                                                    <a className="text-blue-500 block my-2" href={generatePath(item.name, child.slug, sec_data.name)}>
+                                                                                    <a className="text-blue-500 block my-1" href={generatePath(item.name, child.slug, sec_data.name)}>
                                                                                         {sec_data.name}
                                                                                     </a>
                                                                                 </AccordionContent>
@@ -250,7 +256,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                         type="single"
                                         defaultValue="item-1"
                                         collapsible>
-                                        <AccordionItem className="" value="item-1">
+                                        <AccordionItem className="py-2" value="item-1">
                                             <AccordionTrigger className="font-bold">Brands</AccordionTrigger>
                                             <AccordionContent className="" >
                                                 {brandsData ?
@@ -272,7 +278,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                 defaultValue="item-1"
                                 collapsible
                             >
-                                <AccordionItem className="" value="item-1">
+                                <AccordionItem className="py-2" value="item-1">
                                     <AccordionTrigger className="font-bold">Price</AccordionTrigger>
 
                                     <AccordionContent className="" >
@@ -302,13 +308,13 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                         </form>
                         : null}
                     <div className={`${isSearchPage ? ' col-span-full' : "col-span-3"}`}>
-                        <div className={`grid ${isSearchPage ? "xl:grid-cols-6 lg:grid-cols-4  md:grid-cols-3" : "xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2"}  min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
+                        <div className={`grid ${isRowView ? "!grid-cols-1 !gap-0" : ""} ${isSearchPage ? "xl:grid-cols-6 lg:grid-cols-4  md:grid-cols-3" : "xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2"}  min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
                             {data.length > 0 ? data.map((pro_data: any) => (
                                 productFilterApplied ?
                                     skeletonArray.map(sk =>
                                         sk
                                     ) :
-                                    <SingleProductData pro_data={pro_data} />
+                                    <SingleProductData pro_data={pro_data} isRowView={isRowView} />
                             ))
                                 : <div className="w-full col-span-3">
                                     <h1 className="text-blue-500 text-center py-2">No Products Found</h1>

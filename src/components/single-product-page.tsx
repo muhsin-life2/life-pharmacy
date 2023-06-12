@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar, FaRegStar, FaStarHalfAlt, FaMinus, FaPlus } from 'react-icons/fa';
 import { useLanguage } from "@/hooks/useLanguage";
 import AddtoCartMobileview from "./add-cart-mobile-view";
 import { useSession } from "next-auth/react";
+import Swiper from 'swiper';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { input } from "@material-tailwind/react";
 const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
 
     const [selectedImg, setSelectedImg] = useState(0);
@@ -15,10 +20,10 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
     const [FeaturedImage, setFeaturedImage] = useState("https://www.lifepharmacy.com/images/default-product-image.png")
     const { data: session } = useSession()
 
-
     useEffect(() => {
         setFeaturedImage(pro_data.images.featured_image);
-    }, [])
+    }
+        , [])
 
     function cartItemAdded() {
         setTimeout(() => {
@@ -31,6 +36,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
     function addButtonClick() {
         setNoOfProducts(pro => pro + 1);
     }
+
     function minusButtonClick() {
         if (noOfProducts != 1) {
             setNoOfProducts(pro => pro - 1);
@@ -49,7 +55,13 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
         return stars;
     }
 
-    console.log(session);
+    var imagesArray: string[] = [];
+    if (pro_data.images.gallery_images) {
+        pro_data.images.gallery_images.map((gal_img: any) => (
+            imagesArray.push(gal_img.medium)
+        ))
+    }
+
 
     return (
         <>
@@ -58,15 +70,19 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                     <div>
                         {/* flex flex-wrap */}
                         <div className="mx-auto  grid grid-cols-12 gap-x-5 my-5">
-                            <div className="flex md:col-span-4 min-[570px]:col-span-6 col-span-full border-2 border-muted rounded-lg shadow-md p-1 h-fit lg:flex-row md:flex-col-reverse">
+                            <div className="flex md:col-span-4 min-[570px]:col-span-6 col-span-full border-2 border-muted rounded-lg shadow-md p-2 h-fit lg:flex-row md:flex-col-reverse">
                                 <div className="hidden md:block col-span-2 ">
                                     {pro_data.images && pro_data.images.gallery_images[0] ?
                                         <div className="mr-4 lg:h-[21rem] h-fit no-scrollbar overflow-auto lg:block flex lg:space-x-0 space-x-2">
                                             {pro_data.images.gallery_images.map((gal_img: any, indx: number) => (
-                                                <Image className={`lg:max-w-[4.5rem] max-h-[4rem] mb-3 rounded-lg cursor-pointer ${selectedImg === indx ? "border-2 border-blue-400  " : ""}`} src={gal_img.thumbnail} height={80} width={80} onClick={() => {
-                                                    setSelectedImg(indx)
-                                                    setFeaturedImage(gal_img.full)
-                                                }} alt="thumbnail-img" />
+                                                <div className=" mb-3">
+                                                    <input defaultChecked={"0galImg" === (indx + "galImg") ? true : false} type="radio" id={indx + "galImg"} className="hidden peer" name="proGalleryImage" />
+                                                    <label htmlFor={indx + "galImg"} className=" peer-checked:brightness-100 rounded-lg  brightness-75 transition-all duration-400 ">
+                                                        < Image className={`lg:max-w-[4.5rem] max-h-[4rem] rounded-lg cursor-pointer`} src={gal_img.thumbnail} height={80} width={80} onClick={() => {
+                                                            setFeaturedImage(imagesArray[indx])
+                                                        }} alt="thumbnail-img" />
+                                                    </label>
+                                                </div>
                                             ))}
                                         </div>
                                         :
@@ -174,7 +190,7 @@ const SingleProductsContent = ({ pro_data }: { pro_data: any }) => {
                                 </div>
                             </div>
 
-                            <ul className="md:flex hidden col-span-3  flex-col ml-auto justify-around my-5 py-4 px-3  border border-gray-200 rounded-lg h-fit space-y-10">
+                            <ul className="md:flex hidden col-span-3  flex-col ml-auto justify-around  py-4 px-3  border border-gray-200 rounded-lg h-fit space-y-10">
                                 <li className="flex    w-[9rem]">
                                     <Image src={"https://www.lifepharmacy.com/images/svg/ecommerce-gift.svg"} height={25} width={25} alt="free delivery" />
                                     <div className="flex flex-col ml-4">
