@@ -9,7 +9,8 @@ import Link from "next/link"
 const BrandsProductsPage = ({ data, menuData, brandPara }: { data: any, menuData: any, brandPara: any }) => {
     const [productFilterApplied, setProductsFilterApplied] = useState(false)
     const skeletonArray = Array(12).fill(<ProductsSkeleton />)
-    console.log(menuData[1]);
+    const [isRowView, setIsRowView] = useState(false)
+
 
     return (
         <>
@@ -42,13 +43,13 @@ const BrandsProductsPage = ({ data, menuData, brandPara }: { data: any, menuData
 
                     </div>
                     <div className="col-span-3">
-                        <div className={`grid xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2 min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
+                        <div className={`grid ${isRowView? "!grid-cols-1 !gap-0" : ""} xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2 min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
                             {data.products.length > 0 ? data.products.map((pro_data: any) => (
                                 productFilterApplied ?
                                     skeletonArray.map(sk =>
                                         sk
                                     ) :
-                                    <SingleProductData pro_data={pro_data} />
+                                    <SingleProductData pro_data={pro_data} isRowView={isRowView}/>
                             ))
                                 : <div className="w-full col-span-3">
                                     <h1 className="text-blue-500 text-center py-2">No Products Found</h1>

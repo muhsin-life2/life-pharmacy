@@ -25,7 +25,7 @@ const ProductsSlider = ({ proData }: { proData: any }) => {
             }}>
             {proData.map((pro_data: any, indx: number) => (
                 <SwiperSlide className={`cursor-grab w-full mr-2 py-3 ${indx === 0 ? "ml-3" : ""}`}>
-                    <SingleProductData pro_data={pro_data} />
+                    <SingleProductData pro_data={pro_data} isRowView={false} />
                 </SwiperSlide>
             ))}
 
