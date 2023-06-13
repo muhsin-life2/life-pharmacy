@@ -97,7 +97,7 @@ export const SingleProductData = ({ pro_data, isRowView }: { pro_data: any, isRo
                                     <span className="md:text-xs text-[10px] ">AED</span> <span className="lg:text-lg sm:text-base text-sm font-semibold">{pro_data.prices ? parseFloat(pro_data.prices[0].price.regular_price).toFixed(2) : null}</span>
                                 </div> : null}
                         </div>
-                        <Link href={`product/${pro_data.slug}`} className="h-8 block">
+                        <Link href={`product/${pro_data.slug}`} className="h-5 block">
                             <div className="lg:text-sm text-xs text-life overflow-hidden whitespace-normal" style={{ WebkitLineClamp: "2", WebkitBoxOrient: "vertical", display: "-webkit-box" }}>{pro_data.title}</div>
                         </Link>
                         <div className="mt-5">

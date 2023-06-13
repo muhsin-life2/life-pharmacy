@@ -56,9 +56,9 @@ const PageStructure: FC<compProps> = ({ data, lang, children }) => {
                     data.section_type === "product_grid" && (data.is_section_visible || data.is_enabled) && !invalidSlugs.includes(data.section_data_object.slug) && !restrictedId.includes(data.section_data_object.id) ?
                         < div style={{ background: data.settings.background_value }}>
                             {data.settings.show_section_title ?
-                                <div className="flex justify-between pt-3 mx-4">
+                                <div className="flex justify-between pt-3 mx-4 items-center ">
                                     <h4 className="md:text-2xl sm:text-lg text-base font-bold flex-1">{data.section_title}</h4>
-                                    <button onClick={() => { router.push(`/products?collections=${data.section_data_object.slug}`) }} className="bg-[#39f] px-2 text-white text-xs">View All</button>
+                                    <button onClick={() => { router.push(`/products?collections=${data.section_data_object.slug}`) }} className="bg-[#39f] px-3 text-white text-xs flex items-center rounded py-2 leading-none"><span>View All</span> </button>
                                 </div>
                                 : null}
                             {children}

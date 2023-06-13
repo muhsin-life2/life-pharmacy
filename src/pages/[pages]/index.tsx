@@ -3,6 +3,7 @@ import getHomePageData from "@/lib/getHomePageData"
 import getSinglePageData from "@/lib/getSinglePageData"
 import PageStructure from "@/components/page-structure"
 import Products from "@/components/products"
+import { log } from "console"
 const PageData = ({ pageData, locale }: { pageData: any, locale: any }) => {
     return (
         <div className="max-w-[1450px] px-[10px] mx-auto">
@@ -49,11 +50,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
     const pagesParams = context.params?.pages;
     const pageData = await getSinglePageData(pagesParams)
     const locale = context.locale
-    if (!pageData.sucess) {
+    console.log(pageData);
+    
+    if (!pageData.success) {
         return {
             notFound: true
         }
     }
+    
     return {
         props: {
             pageData: pageData.data.content,

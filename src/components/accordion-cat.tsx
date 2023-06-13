@@ -9,7 +9,7 @@ import Image from 'next/image';
 const AccordionCategoryMenu = ({ accordionData }: { accordionData: any }) => {
 
     function generatePath(grand_p: string, parent: string, child: string) {
-        return `category/${slugify(grand_p)}/${parent}/${slugify(child)}`
+        return `/category/${slugify(grand_p)}/${parent}/${slugify(child)}`
     }
     function slugify(text: string) {
         return text.toLowerCase().replace(/[\s&]+/g, '-');
