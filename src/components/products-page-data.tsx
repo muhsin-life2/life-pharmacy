@@ -3,17 +3,16 @@ import React, { useState, useEffect } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionTrigger, AccordionContent, AccordionItem } from "./accordion-radix";
 import { BrandsButton } from "./Button";
-import Slider from 'react-slider';
+
 import { useRouter } from "next/router";
 import getProductsDataByCat from '@/lib/getProductsDataByCat';
 import getCategoryData from "@/lib/getCategoryData";
 import { useLanguage } from "@/hooks/useLanguage";
 import { ProductsSkeleton } from "./productsSkeleton";
-import ReactSlider from "react-slider";
 
+import * as Slider from '@radix-ui/react-slider';
 const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, selectedBrands, menuData }: { isSearchPage: boolean, selectedBrands: any, categoryData: any, brandsData: any, filterPath: any, menuData: any }) => {
 
-    const [sliderValues, setSliderValues] = useState([20, 80]);
 
     const [noOfProducts, setNoOfProducts] = useState(40)
     const [animateSpin, setAnimateSpin] = useState(false)
@@ -25,7 +24,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
         }]
     })
     const [isRowView, setIsRowView] = useState(false)
-
+    const [rangeSliderValue, setRangeSliderValue] = useState([50])
     const router = useRouter()
 
     var brandsSelected: string[] = []
@@ -53,10 +52,6 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
     function generatePath(grand_p: string, parent: string, child: string) {
         return `category/${slugify(grand_p)}/${parent}/${slugify(child)}`
     }
-    const handleSliderChange = (values: any) => {
-        setSliderValues(values);
-    };
-
 
 
     const routerPathReplace = (url: string, newUrl: string) => {
@@ -92,6 +87,9 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
         return ""
     }
 
+    const rangeSliderValueChange = (newValue: number[]) => {
+        setRangeSliderValue(newValue)
+    }
     const filterSet = (indx: number, type: string, value: any, isRemoveele: boolean) => {
         if (type === "brands") {
             if (isRemoveele) {
@@ -285,33 +283,26 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
 
                                     <AccordionContent className="" >
                                         <div className="justify-between flex">
-                                            <div>Range: AED 0 — AED {sliderValues[0]}</div>
+                                            <div>Range: AED 0 — AED {rangeSliderValue}</div>
                                             <button className=" bg-slate-200 hover:bg-slate-300 text-sm w-fit px-2 p-1 rounded-full">Filter</button>
                                         </div>
-                                        <div className="my-8">
-                                            <ReactSlider
-                                                min={0}
-                                                max={100}
-                                                value={sliderValues}
-                                                onChange={handleSliderChange}
-                                                renderTrack={(props, state) => (
-                                                    <div
-                                                        {...props}
-                                                        className={`slider-track h-2 bg-gray-300 rounded-full ${state.index === 0 ? 'slider-track-first' : 'slider-track-second'}`}
-                                                    />
-                                                )}
-                                                renderThumb={(props, state) => (
-                                                    <div
-                                                        {...props}
-                                                        className={`slider-thumb h-6 w-6 bg-white border-2 border-gray-300 rounded-full absolute ${state.index === 0 ? 'slider-thumb-first' : 'slider-thumb-second'}`}
-                                                    />
-                                                )}
+
+                                        <Slider.Root
+                                            className="relative flex items-center select-none touch-none w-full h-5 mt-5"
+                                            defaultValue={[0]}
+                                            onValueChange={rangeSliderValueChange}
+                                            value={rangeSliderValue}
+                                            max={10000}
+                                            step={100}
+                                        >
+                                            <Slider.Track className="bg-blackA10 relative grow rounded-full h-[3px]">
+                                                <Slider.Range className="absolute bg-gray-400 rounded-full h-full" />
+                                            </Slider.Track>
+                                            <Slider.Thumb
+                                                className="block w-5 h-5 bg-gray-700   rounded-[10px]  focus:outline-none  "
+                                                aria-label="Volume"
                                             />
-                                            <div className="flex justify-between">
-                                                <span>{sliderValues[0]}</span>
-                                                <span>{sliderValues[1]}</span>
-                                            </div>
-                                        </div>
+                                        </Slider.Root>
 
                                     </AccordionContent>
                                 </AccordionItem>
