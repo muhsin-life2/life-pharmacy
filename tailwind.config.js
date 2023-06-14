@@ -26,6 +26,12 @@ module.exports = {
         slideDown: 'slideDown 300ms cubic-bezier(0.87, 0, 0.13, 1)',
         slideUp: 'slideUp 300ms cubic-bezier(0.87, 0, 0.13, 1)',
       },
+      screens: {
+        'lg': '991px',
+        'md': '767px',
+        'sm': '575px',
+        'xs': '310px',
+      },
     },
   },
   plugins: [],
