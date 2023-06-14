@@ -50,7 +50,7 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
     }
 
     function generatePath(grand_p: string, parent: string, child: string) {
-        return `category/${slugify(grand_p)}/${parent}/${slugify(child)}`
+        return `/category/${slugify(grand_p)}/${parent}/${slugify(child)}`
     }
 
 
@@ -322,7 +322,6 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                     <h1 className="text-blue-500 text-center py-2">No Products Found</h1>
                                 </div>
                             }
-
                         </div>
                         {showMoreProductsbtn && productsData.length > 0 ?
                             <div className='w-full flex justify-center mt-10'>
