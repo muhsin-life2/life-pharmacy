@@ -3,16 +3,18 @@ import React, { useState, useEffect } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { AccordionTrigger, AccordionContent, AccordionItem } from "./accordion-radix";
 import { BrandsButton } from "./Button";
-import * as Slider from '@radix-ui/react-slider';
+import Slider from 'react-slider';
 import { useRouter } from "next/router";
 import getProductsDataByCat from '@/lib/getProductsDataByCat';
 import getCategoryData from "@/lib/getCategoryData";
 import { useLanguage } from "@/hooks/useLanguage";
 import { ProductsSkeleton } from "./productsSkeleton";
+import ReactSlider from "react-slider";
 
 const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, selectedBrands, menuData }: { isSearchPage: boolean, selectedBrands: any, categoryData: any, brandsData: any, filterPath: any, menuData: any }) => {
 
-    const [rangeSliderValue, setRangeSliderValue] = useState([50])
+    const [sliderValues, setSliderValues] = useState([20, 80]);
+
     const [noOfProducts, setNoOfProducts] = useState(40)
     const [animateSpin, setAnimateSpin] = useState(false)
     const [showMoreProductsbtn, setShowMoreProductsbtn] = useState(true)
@@ -51,10 +53,11 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
     function generatePath(grand_p: string, parent: string, child: string) {
         return `category/${slugify(grand_p)}/${parent}/${slugify(child)}`
     }
+    const handleSliderChange = (values: any) => {
+        setSliderValues(values);
+    };
 
-    const rangeSliderValueChange = (newValue: number[]) => {
-        setRangeSliderValue(newValue)
-    }
+
 
     const routerPathReplace = (url: string, newUrl: string) => {
         router.push(router.asPath.replace(url, newUrl))
@@ -172,7 +175,6 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
                                     </div>
                                 </button>
                             </div>
-
                             <div className="group-hover/sort-menu:scale-100 scale-0 top-6 right-0 absolute  z-10 mt-2 w-40 origin-top-right rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none bg-slate-100 opacity-95 backdrop-blur-lg" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabIndex={-1}>
                                 <div className="py-1">
                                     {filters.map((filter: any, indx: number) => (
@@ -283,32 +285,41 @@ const ProductsPageData = ({ filterPath, categoryData, brandsData, isSearchPage, 
 
                                     <AccordionContent className="" >
                                         <div className="justify-between flex">
-                                            <div>Range: AED 0 — AED {rangeSliderValue}</div>
+                                            <div>Range: AED 0 — AED {sliderValues[0]}</div>
                                             <button className=" bg-slate-200 hover:bg-slate-300 text-sm w-fit px-2 p-1 rounded-full">Filter</button>
                                         </div>
-                                        <Slider.Root
-                                            className="relative flex items-center select-none touch-none w-full h-5 mt-5"
-                                            defaultValue={[0]}
-                                            onValueChange={rangeSliderValueChange}
-                                            value={rangeSliderValue}
-                                            max={10000}
-                                            step={100}
-                                        >
-                                            <Slider.Track className="bg-blackA10 relative grow rounded-full h-[3px]">
-                                                <Slider.Range className="absolute bg-gray-400 rounded-full h-full" />
-                                            </Slider.Track>
-                                            <Slider.Thumb
-                                                className="block w-5 h-5 bg-gray-700   rounded-[10px]  focus:outline-none  "
-                                                aria-label="Volume"
+                                        <div className="my-8">
+                                            <ReactSlider
+                                                min={0}
+                                                max={100}
+                                                value={sliderValues}
+                                                onChange={handleSliderChange}
+                                                renderTrack={(props, state) => (
+                                                    <div
+                                                        {...props}
+                                                        className={`slider-track h-2 bg-gray-300 rounded-full ${state.index === 0 ? 'slider-track-first' : 'slider-track-second'}`}
+                                                    />
+                                                )}
+                                                renderThumb={(props, state) => (
+                                                    <div
+                                                        {...props}
+                                                        className={`slider-thumb h-6 w-6 bg-white border-2 border-gray-300 rounded-full absolute ${state.index === 0 ? 'slider-thumb-first' : 'slider-thumb-second'}`}
+                                                    />
+                                                )}
                                             />
-                                        </Slider.Root>
+                                            <div className="flex justify-between">
+                                                <span>{sliderValues[0]}</span>
+                                                <span>{sliderValues[1]}</span>
+                                            </div>
+                                        </div>
+
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion.Root>
                         </form>
                         : null}
                     <div className={`${isSearchPage ? ' col-span-full' : "col-span-3"}`}>
-                        <div className={`grid ${isRowView ? "!grid-cols-1 !gap-0" : ""} ${isSearchPage ? "xl:grid-cols-6 lg:grid-cols-4  md:grid-cols-3" : "xl:grid-cols-4 lg:grid-cols-3  md:grid-cols-2"}  min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
+                        <div className={`grid ${isRowView ? "!grid-cols-1 !gap-0" : ""} ${isSearchPage ? "xl:grid-cols-6 lg:grid-cols-4  md:grid-cols-3" : "  md:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1"}  min-[300px]:grid-cols-2 grid-cols-1 sm:gap-3 gap-1`}>
                             {data.length > 0 ? data.map((pro_data: any) => (
                                 productFilterApplied ?
                                     skeletonArray.map(sk =>

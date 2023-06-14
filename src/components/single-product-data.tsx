@@ -52,9 +52,8 @@ export const SingleProductData = ({ pro_data, isRowView }: { pro_data: any, isRo
                 <div className="relative border border-muted rounded-lg" >
                     <Link href={`/product/${pro_data.slug}`} className="  relative block bg-white p-2 mx-auto rounded-lg rounded-b-none  w-full">
 
-
                         {isValidImage ?
-                            <Image onError={handleImageError} className={`rounded-lg mx-auto border border-muted`} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
+                            <Image onError={handleImageError} className={`rounded-lg mx-auto border border-muted `} src={pro_data.images?.featured_image} width={250} height={250} alt="product_img" />
                             :
                             <div className='max-h-[250px] max-w-[250px] mx-auto'>
                                 <ProductImgLoader />

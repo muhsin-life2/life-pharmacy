@@ -403,14 +403,14 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
   const getLanguageByLocale = () => {
     if (parts) {
       if (parts[1] === "ar") {
-        return languages[0].name
+        return languages[1].name
       }
       else {
-        return languages[1].name
+        return languages[0].name
       }
     }
     else {
-      return languages[0].name
+      return languages[1].name
     }
   }
 
@@ -463,7 +463,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
                     <svg fill="none" className={`animate-spin w-5 h-5 absolute inline ${isArabic ? "left-8" : "right-8"}  inset-y-0 m-auto w-4 h-4 mx-2`} stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" shape-rendering="geometricPrecision" viewBox="0 0 24 24" height="24" width="24" ><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> : ""}
 
                   < input type="search" id="lg-searchbox"
-                    className={`focus:ring-0 focus:ring-offset-0 hidden md:block bg-gray-100 border-gray-200 p-2 border text-gray-900 text-sm rounded-full w-full ${isArabic ? 'pr-10 ' : 'pl-10 '} p-3`}
+                    className={`focus:ring-0 focus:ring-offset-0 hidden md:block bg-gray-100 border-gray-200 p-[0.6rem] border text-gray-900 text-sm rounded-full w-full ${isArabic ? 'pr-10 ' : 'pl-10 '} p-3`}
                     placeholder={langData.navbar.searchbox_text} />
 
                   <div className="shadow-xl py-1 pt-4 px-3 lg-screen-searchsuggestion-lg scale-100 hidden absolute top-13  right-0 left-0  bg-gray-100 border-gray-200 overflow-auto search-suggestion-height rounded-t-0 rounded-b-md z-30">
@@ -594,7 +594,6 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
                     }
                   </div>
 
-                  {/* small screen search bar  */}
                   < input type="button" onClick={() => {
                     setSmScreenSearchBox(true)
                   }}
@@ -605,23 +604,22 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
               </div>
             </div>
 
-            <div className="grid grid-flow-col w-100  gap-5 md:flex lg:flex my-auto">
-              <div className="relative z-30">
-                <button className="mx-auto my-auto " onClick={() => { setLanguageModal(true) }}>
-                  <Image src={getFlagByLocale()} alt=""
-                    className=" h-10 w-10 rounded-[30px]" width={100} height={100} />
-                  <div className="text-[11px] text-center md:text-white">{getLanguageByLocale()}</div>
-                </button>
-              </div>
+            <div className="grid grid-flow-col w-100  md:flex lg:flex my-auto h-12">
+
+              <button className="mx-auto h-full flex items-center flex-col justify-between " onClick={() => { setLanguageModal(true) }}>
+                <Image src={getFlagByLocale()} alt=""
+                  className=" h-7 w-10 rounded-md object-cover border border-black" width={100} height={100} />
+                <div className="text-[11px] text-center md:text-white ">{getLanguageByLocale()}</div>
+              </button>
 
               {session ?
-                <Link className="  text-left  justify-center space-y-[1px] flex-col   md:hidden lg:flex hidden" href="/dashboard">
+                <Link className="  text-left  justify-between  flex-col pl-5  md:hidden lg:flex hidden" href="/dashboard">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-7 h-7 mx-auto fill-white" viewBox="0 0 16 16">
                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
                   </svg>
                   <div className="text-[11px] text-center text-white">Account</div>
                 </Link>
-                : <a href="#" className=" flex-col md:hidden lg:flex hidden" onClick={() => { setLocationModal(true) }}>
+                : <a href="#" className=" flex-col md:hidden lg:flex hidden pl-5" onClick={() => { setLocationModal(true) }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                     stroke="currentColor" className=" my-auto text-white w-7 h-7 mx-auto">
                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -631,8 +629,7 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
                   <div className="text-[11px] text-center text-white">{langData.navbar.account}</div>
                 </a>}
 
-
-              <a href="#" className=" justify-center space-y-[1px] flex-col md:hidden lg:flex hidden  my-auto ">
+              <a href="#" className=" justify-between  flex-col md:hidden lg:flex hidden   pl-5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                   stroke="currentColor" className=" text-white w-7 h-7 mx-auto">
                   <path strokeLinecap="round" strokeLinejoin="round"
@@ -641,12 +638,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
                 <div className="text-[11px] text-center text-white whitespace-nowrap">{langData.navbar.wishlist}</div>
 
               </a>
-              <a href={`/cart`} className="justify-center space-y-[1px] flex-col md:hidden lg:flex hidden relative cart group/cart">
+              <a href={`/cart`} className="justify-between flex-col md:hidden lg:flex hidden relative cart group/cart pl-5">
                 {domLoaded ?
                   cartItems && cartItems.length != 0 ?
-                    < div className="bg-red-500 rounded-full absolute top-0 -right-2 text-xs py-[3px] px-[8px] text-white font-semibold">
-                      <span className="my-auto"> {cartItems.length}</span>
-                    </div>
+                    <div className="absolute inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-red-500  rounded-full -top-2 -right-2 "> {cartItems.length}</div>
                     : null : null}
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="w-7 h-7 fill-white" viewBox="0 0 16 16">
@@ -655,32 +650,33 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
                 <div className="text-[11px] text-center text-white" >{langData.navbar.cart}</div>
 
                 {domLoaded && cartItems && cartItems.length > 0 ?
-                  <div className="group-hover/cart:scale-100  scale-0 absolute w-[25rem] top-[4rem] right-0 bg-white rounded-lg px-5 py-2  h-fit max-h-[20rem] overflow-y-auto shadow-lg">
-                    {cartItems.map((item: any) => (
-                      <>
-                        <div className="flex py-2">
-                          <a href={`product/${item.slug}`} className="w-3/4 text-sm  my-auto">{item.title}</a>
-                          <div className="w-1/4 flex">
-                            <a href={`product/${item.slug}`} className="w-3/4">
-                              <Image src={item.images.featured_image} height={100} width={100} className="w-full m-1" alt={item.title} />
-                            </a>
-                            <button onClick={() => {
-                              dispatch(removeFromCart(item.id))
-                              removedFromCart()
-                            }
-                            } className="w-1/4 ml-2 my-auto">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 fill-red-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
+                  <div className="group-hover/cart:scale-100  scale-0 absolute w-[25rem] top-[3rem] right-0 bg-white rounded-lg px-3 py-2  h-fit  shadow-lg">
+                    <div className="overflow-y-auto h-fit max-h-[20rem] px-2">
+                      {cartItems.map((item: any) => (
+                        <>
+                          <div className="flex py-2">
+                            <a href={`/product/${item.slug}`} className="w-3/4 text-sm  my-auto">{item.title}</a>
+                            <div className="w-1/4 flex">
+                              <a href={`/product/${item.slug}`} className="w-3/4">
+                                <Image src={item.images.featured_image} height={100} width={100} className="w-full m-1" alt={item.title} />
+                              </a>
+                              <button onClick={() => {
+                                dispatch(removeFromCart(item.id))
+                                removedFromCart()
+                              }
+                              } className="w-1/4 ml-2 my-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 fill-red-500">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </div>
+
                           </div>
+                          <div className="bg-gray-300 h-[1px] w-11/12 mx-auto mt-2"></div>
+                        </>
+                      ))}
+                    </div>
 
-                        </div>
-
-                        <div className="bg-gray-300 h-[1px] w-11/12 mx-auto mt-2"></div>
-
-                      </>
-                    ))}
                     <div className="py-3">
                       <div className="flex justify-between ">
                         <div>TOTAL <span className="text-xs">(WITHOUT SHIPPING)</span> </div>
@@ -698,8 +694,10 @@ const Navbar: FC<navbarProps> = ({ data, brands_data, isArabic, langData, langua
           </div>
           <div className="bg-[#a92579] items-center">
             <div className=" flex justify-between py-1 max-w-[1450px] mx-auto  sm:px-[10px] px-[5px] text-white lg:flex md:flex hidden  text-xs " >
-              <div className={"flex justify-start items-center space-x-3 h-fit"}>
-                <div className={`${isArabic ? 'ml-2' : 'mr-2'}`}>{langData.navbar.highest_rated_phar} </div>
+              <div className={"flex justify-start  space-x-3 "}>
+                <div className={`${isArabic ? 'ml-2' : 'mr-2'} my-auto`}>
+                  <span className="">{langData.navbar.highest_rated_phar}</span>
+                </div>
                 <Image src={"https://www.lifepharmacy.com/images/app-rating.svg"} className="w-20 h-5" height={30} width={30} alt={"app-rating"} /></div>
 
               <div className="text-end flex justify-between items-center ">
